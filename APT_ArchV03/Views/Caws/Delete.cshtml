@@ -1,0 +1,137 @@
+﻿@model APT_ArchV03.Models.Caw
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Caw</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.caw_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.caw_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.caw_client)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.caw_client)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.caw_partner)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.caw_partner)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.caw_manager)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.caw_manager)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.caw_office)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.caw_office)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.caw_stdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.caw_stdate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.caw_reldate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.caw_reldate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.caw_dldate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.caw_dldate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.caw_archdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.caw_archdate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.caw_fname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.caw_fname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.caw_notes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.caw_notes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.caw_status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.caw_status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.caw_crdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.caw_crdate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.caw_usrcreator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.caw_usrcreator)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

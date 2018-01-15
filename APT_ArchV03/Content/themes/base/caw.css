@@ -1,0 +1,36 @@
+﻿.vertical {
+    display: inline-block;
+    margin: 10px;
+}
+.nopadding {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+#btn-container {
+    padding: 10px 0;
+}
+.stage {
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+.stage1 {
+    background: green;
+}
+
+.stage2 {
+    background: yellow;
+}
+
+.stage3 {
+    background: red;
+}
+a[data-title="drpbutton"][disabled="disabled"] {
+    cursor: not-allowed;
+}
+.ui-menu {
+    z-index: 30000 !important;
+}

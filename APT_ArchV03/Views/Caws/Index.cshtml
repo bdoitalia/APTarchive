@@ -1,0 +1,320 @@
+﻿@model IEnumerable<APT_ArchV03.Models.Caw>
+
+@{
+    ViewBag.Title = "My caws";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/cawscripts")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+    @Styles.Render("~/Content/caw")
+
+}
+<h2>My caws</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="container nopadding">
+    <div id="btn-container" class="row">
+        <button id="btnpopupfilters" class="pull-right btn btn-primary">Filter</button>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="loginModal"
+         data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        ×
+                    </button>
+                    <h4 class="modal-title">Filters</h4>
+                </div>
+                <div class="modal-body form-horizontal">
+                    <form>
+                        <div class="form-group">
+                            @Html.Label("Year", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("lstYear",
+                                    new SelectList(string.Empty, "Value", "Text"),
+                                    "--Select year--",
+                                    htmlAttributes: new { @class = "form-control" })
+
+                                @*<input class="form-control" type="text"
+                                    placeholder="Type partner name" id="inputPartnerName" />*@
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Client", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+
+                                @*@Html.Editor("Client", new { htmlAttributes = new { @class = "form-control", placeholder = "Type client ID or name" } })*@
+                                @Html.DropDownList("lstClient",
+                                 new SelectList(string.Empty, "Value", "Text"),
+                                 "--Select year--",
+                                 htmlAttributes: new { @class = "form-control" })
+
+                                @*<input class="form-control" type="text"
+        placeholder="Type partner name" id="inputPartnerName" />*@
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Job", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+
+                                @Html.DropDownList("lstJob",
+                                 new SelectList(string.Empty, "Value", "Text"),
+                                 "--Select year--",
+                                 htmlAttributes: new { @class = "form-control" })
+
+                                @*<input class="form-control" type="text"
+        placeholder="Type partner name" id="inputPartnerName" />*@
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Partner", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+
+                                @Html.DropDownList("lstPartner",
+                                 new SelectList(string.Empty, "Value", "Text"),
+                                 "--Select year--",
+                                 htmlAttributes: new { @class = "form-control" })
+
+
+                                @*<input class="form-control" type="text"
+        placeholder="Type partner name" id="inputPartnerName" />*@
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Manager", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+
+                                @Html.DropDownList("lstManager",
+                                  new SelectList(string.Empty, "Value", "Text"),
+                                  "--Select year--",
+                                  htmlAttributes: new { @class = "form-control" })
+
+                                <input class="form-control" type="text"
+                                       placeholder="Type partner name" id="inputPartnerName" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Office", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+
+                               @Html.DropDownList("lstOffice",
+                               new SelectList(string.Empty, "Value", "Text"),
+                               "--Select year--",
+                               htmlAttributes: new { @class = "form-control" })
+
+
+                                <input class="form-control" type="text"
+                                       placeholder="Type partner name" id="inputPartnerName" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+
+                                @Html.DropDownList("lstStatus",
+                                new SelectList(string.Empty, "Value", "Text"),
+                                "--Select year--",
+                                htmlAttributes: new { @class = "form-control" })
+
+                                <input class="form-control" type="text"
+                                       placeholder="Type partner name" id="inputPartnerName" />
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary button button4">Apply</button>
+                    <button type="button" id="btnHideModal" class="btn btn-primary button button4">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="table-responsive tblcaws">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th class="col-md-2">
+                    @Html.DisplayNameFor(model => model.caw_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.caw_client)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.caw_partner)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.caw_manager)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.caw_office)
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.caw_stdate)*@
+                    Year
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.caw_reldate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.caw_dldate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.caw_archdate)
+                    </th>*@
+
+                @*<th>
+                        @Html.DisplayNameFor(model => model.caw_status)
+                    </th>*@
+                @*<th>
+                        @Html.DisplayNameFor(model => model.caw_crdate)
+                    </th>*@
+                @*<th>
+                        @Html.DisplayNameFor(model => model.caw_usrcreator)
+                    </th>*@
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr class='clickable-row' data-href='@Url.Action("Details", new { id = item.caw_id })'>
+
+                    <td>
+
+                        @*@Html.ActionLink(item.caw_name, "Details", new { id = item.caw_id })*@
+                        @Html.DisplayFor(modelItem => item.caw_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.caw_client)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.caw_partner)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.caw_manager)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.caw_office)
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.caw_stdate)*@
+                        @Html.Raw(DateTime.Parse(item.caw_stdate.ToString()).Year)
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.caw_reldate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.caw_dldate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.caw_archdate)
+                        </td>*@
+
+
+
+                    <td>
+
+                        @*@Html.DisplayFor(modelItem => item.caw_status)*@
+                        @*@Html.Raw("<div class=\"stage1\"></div>")*@
+                        <div class="@(item.caw_status == 1 ? "stage stage1" : ( item.caw_status == 2 ? "stage stage2" : "stage stage3" ) )"></div>
+
+                    </td>
+
+
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.caw_crdate)
+                        </td>*@
+
+
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.caw_usrcreator)
+                        </td>*@
+
+
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.caw_id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.caw_id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.caw_id })
+                    </td>
+
+
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.clickable-row').on("click", function () {
+            window.location = $(this).data("href");
+        });
+
+        $("#btnpopupfilters").click(function () {
+            $("#loginModal").modal('show');
+        });
+
+        $("#btnHideModal").click(function () {
+            $("#loginModal").modal('hide');
+        });
+
+        $("#inputPartnerName").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("CompletePartner")',
+                    datatype: "json",
+                    type: "POST",
+                    data: {
+                        Prefix: request.term
+                    },
+
+                    success: function (data) {
+                        console.log("Data : " + data);
+                        response($.map(data, function (val, item) {
+                            console.log("Data : " + val.Partner_Gestore);
+                            console.log("item : " + item.Partner_Gestore);
+                            return {
+                                label: val.Partner_Gestore,
+                                value: val.Partner_Gestore
+                            }
+                        }))
+                    }
+                })
+            },
+            delay: 300,
+            minLength: 1,
+            select: function (event, ui) {
+                $("#inputPartnerName").val(ui.item.Partner_Gestore);
+            }
+        });
+
+    });
+</script>
+<style>
+    .clickable-row:hover {
+        cursor: pointer;
+    }
+
+    tr > td {
+        white-space: nowrap;
+    }
+
+    @@media only screen and (max-width: 992px) {
+        .tblcaws {
+            overflow-x: scroll;
+        }
+    }
+</style>

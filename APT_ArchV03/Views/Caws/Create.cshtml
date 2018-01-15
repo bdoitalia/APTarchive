@@ -1,0 +1,339 @@
+﻿@model APT_ArchV03.Models.Caw
+@using APT_ArchV03.Models
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Html.EnableClientValidation(true);
+    Html.EnableUnobtrusiveJavaScript();
+
+}
+
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm("Create", "Caws", FormMethod.Post, new { @id = "cawcreateform" }))
+{
+    @Html.AntiForgeryToken()
+
+
+    <div class="form-horizontal">
+        <h4>Caw</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.caw_name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.caw_name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter caw name here" } })
+                @Html.ValidationMessageFor(model => model.caw_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.caw_client, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.DropDownList("Client", ViewData["Client"] as SelectListItem[], "--Select Client--", htmlAttributes: new { @class = "form-control" })*@
+                @Html.EditorFor(model => model.caw_client, new { htmlAttributes = new { @class = "form-control", placeholder = "Type client ID or name" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @*<div class="col-xs-12" style="padding:0px">*@
+            @Html.LabelFor(model => model.CawJobs, htmlAttributes: new { @class = "control-label col-md-2" })
+            @*</div>*@
+            <div class="col-md-10">
+                @*<div class="col-xs-5">*@
+                @Html.ListBox("LstNavJobs", new SelectList(string.Empty, "Value", "Text"), htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+
+                <input id="BtnAddJob" type="button" value="Add" class="btn vertical disabled" />
+                <input id="BtnRemoveJob" type="button" value="Remove" class="btn vertical disabled" />
+
+                @Html.ListBox("LstCawJobs", new SelectList(string.Empty, "Value", "Text"), htmlAttributes: new { @class = "form-control", required = "required", title = "Please, add some jobs to this caw", disabled = "disabled" })
+                @*@Html.ListBox("LstCawJobs", new SelectList(string.Empty, "Value", "Text"), htmlAttributes: new { @class = "form-control", required = "required" })*@
+                @Html.ValidationMessage("LstCawJobs", "", new { @class = "text-danger" })
+                @*@if (!ViewData.ModelState.IsValid)
+                    {
+                        <span class="text-danger">@ViewData.ModelState["LstCawJobs"].Errors[0].ErrorMessage</span>
+                    }*@
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.caw_partner, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Partner", new SelectList(string.Empty, "Value", "Text"), "--Select Partner--", htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.caw_manager, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10" data-text="Manager">
+                @Html.DropDownList("Manager", new SelectList(string.Empty, "Value", "Text"), "--Select Manager--", htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.caw_office, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Office", new SelectList(string.Empty, "Value", "Text"), "--Select Office--", htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.caw_stdate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.caw_stdate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.caw_stdate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.caw_notes, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.caw_notes, htmlAttributes : new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.caw_notes, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" onclick="selectDeselect('LstCawJobs', true)" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/cawscripts")
+    @Scripts.Render("~/bundles/combobox")
+    @Styles.Render("~/Content/cssjqryUi")
+    @Styles.Render("~/Content/caw")
+
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        
+
+
+        function PostAjax (datasource , iddatatarget, urltarget) {
+            $.ajax({
+                type: 'POST',
+                url: urltarget,
+
+                dataType: 'json',
+
+                data: { param: datasource },
+
+
+                success: function (elements) {
+
+
+                    $.each(elements, function (i, element) {
+                        console.log("element V: " + element.Value);
+                        console.log("element T: " + element.Text);
+                        iddatatarget.append('<option value="' + element.Value + '">' +
+                        element.Text + '</option>');
+
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve elements.' + ex);
+                }
+            });
+            return completed = 1;
+        };
+
+        $('#caw_client').on("change", function () {
+            var currentval = $('#caw_client').val().split(" - ").shift();
+            console.log("caw_client val = " + currentval);
+            console.log("caw_client = " + $('#caw_client'));
+            $("#LstNavJobs").empty();
+            $("#LstNavJobs, #LstCawJobs").removeAttr("disabled");
+
+            var datasource = $("#caw_client").val().split(" - ").shift();
+            var iddatatarget = $("#LstNavJobs");
+            var urltarget = '@Url.Action("GetJobs")';
+
+            var result = PostAjax(datasource, iddatatarget, urltarget);
+            //console.log(result);
+            if (result == 1) {
+
+            }
+            $(document).ajaxSuccess(function (event, xhr, settings) {
+                //debugger;
+                //console.log($('#LstNavJobs').val());
+                //console.log(event);
+                //console.log(xhr);
+                //console.log(settings.url);
+                //activetarget = $(event.currentTarget.activeElement).attr('id');
+                activetarget = $(event.currentTarget.activeElement).attr('id');
+                ///Caws/GetJobs
+                //console.log(activetarget);
+
+                if (settings.url == "/Caws/GetJobs") {
+
+                    $('input[data-title="drpinput"], a[data-title="drpbutton"]').removeAttr("disabled");
+                    ////
+                    $("#Partner").empty();
+                    $("#Partner").removeAttr("disabled");
+                    selectDeselect('LstNavJobs', true)
+                    var datasource = $("#LstNavJobs").val().shift();
+                    var iddatatarget = $("#Partner");
+                    var urltarget = '@Url.Action("GetPartner")';
+
+                    PostAjax(datasource, iddatatarget, urltarget);
+
+                    $("#Manager").empty();
+
+                    //var datasource = $("#Jobs").val();
+                    var iddatatarget = $("#Manager");
+                    var urltarget = '@Url.Action("GetManager")';
+
+                    PostAjax(datasource, iddatatarget, urltarget);
+
+                     $("#Office").empty();
+
+                    //var datasource = $("#Jobs").val();
+                    var iddatatarget = $("#Office");
+                    var urltarget = '@Url.Action("GetOffice")';
+
+                    PostAjax(datasource, iddatatarget, urltarget);
+
+                    @*var datasource = $("#Clients").val();
+                    var iddatatarget = $("#LstCawJobs");
+                    var urltarget = '@Url.Action("GetJobs")';
+                    PostAjax(datasource, iddatatarget, urltarget);*@
+
+                    $(event.currentTarget).unbind('ajaxSuccess')
+                    return false;
+                    /////
+
+                }
+            })
+            return false;
+
+
+        });
+
+        $('#LstNavJobs').on("change", function () {
+            //var currentval = $('#ClientId').val();
+            //console.log(currentval);
+
+            $("#Partner").empty();
+
+            var datasource = $("#LstNavJobs").val();
+            var iddatatarget = $("#Partner");
+            var urltarget = '@Url.Action("GetPartner")';
+
+            PostAjax(datasource, iddatatarget, urltarget);
+            return false;
+        });
+
+        ///////////////////////Combobox
+        //debugger;
+        $("#caw_client").autocomplete({
+
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("RetrieveClients")',
+                    datatype: "json",
+                    type: "POST",
+                    data: {
+                        Prefix: request.term
+                    },
+                    success: function (data) {
+                        response($.map(data, function (val, item) {
+                            //console.log("Data : " + data);
+                            //console.log("item : " + item);
+                            //console.log("Value : " + val.Client_Name);
+                            //console.log("Value : " + val.Client_ID);
+                            return {
+                                label: (val.Client_ID + " - " + val.Client_Name),
+                                value: (val.Client_ID + " - " + val.Client_Name)
+                            }
+                        }))
+                    }
+                })
+            },
+            delay: 300,
+            minLength: 2,
+            select: function (event, ui) {
+                $("#caw_client").val(ui.item.Client_Name);
+            }
+        });
+
+
+
+    });
+
+
+</script>
+<style>
+    .1custom-combobox {
+        position: relative;
+        display: inline-block;
+    }
+
+    .custom-combobox-toggle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin-left: -1px;
+        padding: 0;
+    }
+
+    .custom-combobox-input {
+        margin: 0;
+        padding: 5px 10px;
+        background: none!important;
+    }
+    .ui-state-active .ui-icon, .ui-button:active .ui-icon {
+        background: none!important;
+    }
+    .ui-icon {
+        width: 2px;
+        height: 2px;
+        background: none!important;
+    }
+    a.btncombo, a.btncombo:hover, span a.btncombo:active, a.btncombo:focus {
+        border: none;
+        background: none;
+        position: absolute;
+        border-radius: 4px;
+        padding: 0;
+    }
+    a.btncombo:focus {
+        outline: none !important;
+    }
+        a.btncombo span {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            margin-left: 2px;
+            vertical-align: middle;
+            border-top: 4px dashed;
+            border-top: 4px solid\9;
+            border-right: 4px solid transparent;
+            border-left: 4px solid transparent;
+        }
+    .custom-combobox a.btncombo span {
+        margin-left: 0;
+        margin-top: 0;
+    }
+
+    
+
+
+</style>

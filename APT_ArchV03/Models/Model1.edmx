@@ -1,0 +1,346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Db_APT_ArchModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Caw">
+          <Key>
+            <PropertyRef Name="caw_id" />
+          </Key>
+          <Property Name="caw_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="caw_name" Type="nvarchar" MaxLength="100" />
+          <Property Name="caw_client" Type="nvarchar" MaxLength="50" />
+          <Property Name="caw_partner" Type="nvarchar" MaxLength="50" />
+          <Property Name="caw_manager" Type="nvarchar" MaxLength="50" />
+          <Property Name="caw_office" Type="nvarchar" MaxLength="50" />
+          <Property Name="caw_stdate" Type="date" />
+          <Property Name="caw_reldate" Type="date" />
+          <Property Name="caw_dldate" Type="date" />
+          <Property Name="caw_archdate" Type="date" />
+          <Property Name="caw_fname" Type="nvarchar" MaxLength="255" />
+          <Property Name="caw_notes" Type="text" />
+          <Property Name="caw_status" Type="int" />
+          <Property Name="caw_crdate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="caw_usrcreator" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="CawJob">
+          <Key>
+            <PropertyRef Name="cawjob_id" />
+          </Key>
+          <Property Name="cawjob_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="caw_id" Type="int" Nullable="false" />
+          <Property Name="cawjob_jc" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="NavClients">
+          <Key>
+            <PropertyRef Name="Client ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Client Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Client ID" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NavJobs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Client" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Job Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Job Code" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Region" Type="nvarchar" MaxLength="70" />
+          <Property Name="Project Manager" Type="nvarchar" MaxLength="101" />
+          <Property Name="Partner Gestore" Type="nvarchar" MaxLength="101" />
+          <Property Name="Time Capacity" Type="int" />
+          <Property Name="Job Status" Type="nvarchar" MaxLength="101" />
+          <Property Name="Type" Type="nvarchar" MaxLength="223" />
+        </EntityType>
+        <EntityType Name="NavResources">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Resource Name" Type="nvarchar" MaxLength="101" Nullable="false" />
+          <Property Name="Role" Type="nvarchar" MaxLength="50" />
+          <Property Name="Location" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="Staff NO" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Start Date" Type="datetime" Nullable="false" />
+          <Property Name="End Date" Type="datetime" Nullable="false" />
+          <Property Name="Region" Type="nvarchar" MaxLength="70" Nullable="false" />
+          <Property Name="User name" Type="nvarchar" MaxLength="150" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="Active" Type="nvarchar" MaxLength="10" />
+          <Property Name="Diary" Type="nvarchar" MaxLength="10" />
+          <Property Name="Email" Type="nvarchar" MaxLength="80" />
+          <Property Name="PlanGroup" Type="nvarchar" MaxLength="80" />
+          <Property Name="Resource Level" Type="int" />
+        </EntityType>
+        <Association Name="FK_caw_id">
+          <End Role="Caw" Type="Self.Caw" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CawJob" Type="Self.CawJob" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Caw">
+              <PropertyRef Name="caw_id" />
+            </Principal>
+            <Dependent Role="CawJob">
+              <PropertyRef Name="caw_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NavJobs_NavClients">
+          <End Role="NavClients" Type="Self.NavClients" Multiplicity="1" />
+          <End Role="NavJobs" Type="Self.NavJobs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NavClients">
+              <PropertyRef Name="Client ID" />
+            </Principal>
+            <Dependent Role="NavJobs">
+              <PropertyRef Name="Client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Db_APT_ArchModelStoreContainer">
+          <EntitySet Name="Caw" EntityType="Self.Caw" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CawJob" EntityType="Self.CawJob" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NavClients" EntityType="Self.NavClients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NavJobs" EntityType="Self.NavJobs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NavResources" EntityType="Self.NavResources" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_caw_id" Association="Self.FK_caw_id">
+            <End Role="Caw" EntitySet="Caw" />
+            <End Role="CawJob" EntitySet="CawJob" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NavJobs_NavClients" Association="Self.FK_NavJobs_NavClients">
+            <End Role="NavClients" EntitySet="NavClients" />
+            <End Role="NavJobs" EntitySet="NavJobs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Db_APT_ArchModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Caw">
+          <Key>
+            <PropertyRef Name="caw_id" />
+          </Key>
+          <Property Name="caw_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="caw_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="caw_client" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="caw_partner" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="caw_manager" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="caw_office" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="caw_stdate" Type="DateTime" Precision="0" />
+          <Property Name="caw_reldate" Type="DateTime" Precision="0" />
+          <Property Name="caw_dldate" Type="DateTime" Precision="0" />
+          <Property Name="caw_archdate" Type="DateTime" Precision="0" />
+          <Property Name="caw_fname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="caw_notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="caw_status" Type="Int32" />
+          <Property Name="caw_crdate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="caw_usrcreator" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CawJobs" Relationship="Self.FK_caw_id" FromRole="Caw" ToRole="CawJob" />
+        </EntityType>
+        <EntityType Name="CawJob">
+          <Key>
+            <PropertyRef Name="cawjob_id" />
+          </Key>
+          <Property Name="cawjob_id" Type="Int32" Nullable="false" />
+          <Property Name="caw_id" Type="Int32" Nullable="false" />
+          <Property Name="cawjob_jc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Caw" Relationship="Self.FK_caw_id" FromRole="CawJob" ToRole="Caw" />
+        </EntityType>
+        <EntityType Name="NavClient">
+          <Key>
+            <PropertyRef Name="Client_ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Client_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Client_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="NavJobs" Relationship="Self.FK_NavJobs_NavClients" FromRole="NavClients" ToRole="NavJobs" />
+        </EntityType>
+        <EntityType Name="NavJob">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Client" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Job_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Job_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Region" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Name="Project_Manager" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="Partner_Gestore" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="Time_Capacity" Type="Int32" />
+          <Property Name="Job_Status" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="223" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="NavClient" Relationship="Self.FK_NavJobs_NavClients" FromRole="NavJobs" ToRole="NavClients" />
+        </EntityType>
+        <EntityType Name="NavResource">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Resource_Name" Type="String" MaxLength="101" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Staff_NO" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Start_Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="End_Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Region" Type="String" MaxLength="70" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="User_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="Active" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Diary" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="PlanGroup" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Resource_Level" Type="Int32" />
+        </EntityType>
+        <Association Name="FK_caw_id">
+          <End Role="Caw" Type="Self.Caw" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CawJob" Type="Self.CawJob" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Caw">
+              <PropertyRef Name="caw_id" />
+            </Principal>
+            <Dependent Role="CawJob">
+              <PropertyRef Name="caw_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NavJobs_NavClients">
+          <End Role="NavClients" Type="Self.NavClient" Multiplicity="1" />
+          <End Role="NavJobs" Type="Self.NavJob" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NavClients">
+              <PropertyRef Name="Client_ID" />
+            </Principal>
+            <Dependent Role="NavJobs">
+              <PropertyRef Name="Client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Db_APT_ArchEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Caws" EntityType="Self.Caw" />
+          <EntitySet Name="CawJobs" EntityType="Self.CawJob" />
+          <EntitySet Name="NavClients" EntityType="Self.NavClient" />
+          <EntitySet Name="NavJobs" EntityType="Self.NavJob" />
+          <EntitySet Name="NavResources" EntityType="Self.NavResource" />
+          <AssociationSet Name="FK_caw_id" Association="Self.FK_caw_id">
+            <End Role="Caw" EntitySet="Caws" />
+            <End Role="CawJob" EntitySet="CawJobs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NavJobs_NavClients" Association="Self.FK_NavJobs_NavClients">
+            <End Role="NavClients" EntitySet="NavClients" />
+            <End Role="NavJobs" EntitySet="NavJobs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Db_APT_ArchModelStoreContainer" CdmEntityContainer="Db_APT_ArchEntities">
+          <EntitySetMapping Name="Caws">
+            <EntityTypeMapping TypeName="Db_APT_ArchModel.Caw">
+              <MappingFragment StoreEntitySet="Caw">
+                <ScalarProperty Name="caw_id" ColumnName="caw_id" />
+                <ScalarProperty Name="caw_name" ColumnName="caw_name" />
+                <ScalarProperty Name="caw_client" ColumnName="caw_client" />
+                <ScalarProperty Name="caw_partner" ColumnName="caw_partner" />
+                <ScalarProperty Name="caw_manager" ColumnName="caw_manager" />
+                <ScalarProperty Name="caw_office" ColumnName="caw_office" />
+                <ScalarProperty Name="caw_stdate" ColumnName="caw_stdate" />
+                <ScalarProperty Name="caw_reldate" ColumnName="caw_reldate" />
+                <ScalarProperty Name="caw_dldate" ColumnName="caw_dldate" />
+                <ScalarProperty Name="caw_archdate" ColumnName="caw_archdate" />
+                <ScalarProperty Name="caw_fname" ColumnName="caw_fname" />
+                <ScalarProperty Name="caw_notes" ColumnName="caw_notes" />
+                <ScalarProperty Name="caw_status" ColumnName="caw_status" />
+                <ScalarProperty Name="caw_crdate" ColumnName="caw_crdate" />
+                <ScalarProperty Name="caw_usrcreator" ColumnName="caw_usrcreator" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CawJobs">
+            <EntityTypeMapping TypeName="Db_APT_ArchModel.CawJob">
+              <MappingFragment StoreEntitySet="CawJob">
+                <ScalarProperty Name="cawjob_id" ColumnName="cawjob_id" />
+                <ScalarProperty Name="caw_id" ColumnName="caw_id" />
+                <ScalarProperty Name="cawjob_jc" ColumnName="cawjob_jc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NavClients">
+            <EntityTypeMapping TypeName="Db_APT_ArchModel.NavClient">
+              <MappingFragment StoreEntitySet="NavClients">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Client_Name" ColumnName="Client Name" />
+                <ScalarProperty Name="Client_ID" ColumnName="Client ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NavJobs">
+            <EntityTypeMapping TypeName="Db_APT_ArchModel.NavJob">
+              <MappingFragment StoreEntitySet="NavJobs">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Client" ColumnName="Client" />
+                <ScalarProperty Name="Job_Name" ColumnName="Job Name" />
+                <ScalarProperty Name="Job_Code" ColumnName="Job Code" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="Project_Manager" ColumnName="Project Manager" />
+                <ScalarProperty Name="Partner_Gestore" ColumnName="Partner Gestore" />
+                <ScalarProperty Name="Time_Capacity" ColumnName="Time Capacity" />
+                <ScalarProperty Name="Job_Status" ColumnName="Job Status" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NavResources">
+            <EntityTypeMapping TypeName="Db_APT_ArchModel.NavResource">
+              <MappingFragment StoreEntitySet="NavResources">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Resource_Name" ColumnName="Resource Name" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Staff_NO" ColumnName="Staff NO" />
+                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
+                <ScalarProperty Name="End_Date" ColumnName="End Date" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="User_name" ColumnName="User name" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Diary" ColumnName="Diary" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PlanGroup" ColumnName="PlanGroup" />
+                <ScalarProperty Name="Resource_Level" ColumnName="Resource Level" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
