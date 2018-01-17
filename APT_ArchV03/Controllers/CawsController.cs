@@ -18,9 +18,116 @@ namespace APT_ArchV03.Controllers
         private Db_APT_ArchEntities db = new Db_APT_ArchEntities();
 
         // GET: Caws
-        public ActionResult Index()
+        public ActionResult Index(ProductSearchModel searchModel)
         {
-            return View(db.Caws.ToList());
+            var business = new ProductBusinessLogic();
+            var model = business.GetProducts(searchModel);
+
+            
+            var yearlst = model.Select(x => new SelectListItem {
+                Text = x.caw_stdate.Value.Year.ToString(),
+                Value = x.caw_stdate.Value.Year.ToString()
+            }).Distinct();
+
+            var officelst = model.Select(x => new SelectListItem
+            {
+                Text = x.caw_office.ToString(),
+                Value = x.caw_office.ToString()
+            }).Distinct();
+
+            var partnerlst = model.Select(x => new SelectListItem
+            {
+                Text = x.caw_partner.ToString(),
+                Value = x.caw_partner.ToString()
+            }).Distinct();
+
+            var managerlst = model.Select(x => new SelectListItem
+            {
+                Text = x.caw_manager.ToString(),
+                Value = x.caw_manager.ToString()
+            }).Distinct();
+
+            var clientlst = model.Select(x => new SelectListItem
+            {
+                Text = x.caw_client.ToString(),
+                Value = x.caw_client.ToString()
+            }).Distinct();
+
+            var statustlst = model.Select(x => new SelectListItem
+            {
+                Text = x.caw_status == 1 ? "Opened" : ( x.caw_status == 2 ? "Reporting" : "Closed" ),
+                Value = x.caw_status.ToString()
+            }).Distinct();
+
+            //List< CawJob > cawjobs = new List<CawJob>();
+
+            var cawjobs = (from nj in db.CawJobs
+                               //where nj.Job_Code.Equals(item.cawjob_jc)
+                               select nj.cawjob_jc).Distinct();
+
+            List<SelectListItem> joblst = new List<SelectListItem>();
+            foreach (var item in cawjobs)
+            {
+                var navjobsquery = from nj in db.NavJobs
+                                   where nj.Job_Code.Equals(item)
+                                   select nj.Job_Name;
+                joblst.Add( new SelectListItem() { Value = item, Text = item + " - " + navjobsquery.First() } );
+
+            }
+
+            
+            ViewData["lstYear"] = yearlst;
+            ViewData["lstOffice"] = officelst;
+            ViewData["lstJob"] = new SelectList(joblst,"Value","Text");
+            ViewData["lstManager"] = managerlst;
+            ViewData["lstPartner"] = partnerlst;
+            ViewData["lstClient"] = clientlst;
+            ViewData["lstStatus"] = statustlst;
+
+            
+            return View(model.ToList());
+            //return View(db.Caws.ToList());
+        }
+        [HttpPost]
+        public ActionResult ApplyFilter(string year, string client, string job, string partner, string manager, string office, string status )
+        {
+            ProductSearchModel searchModel = new ProductSearchModel();
+
+            if (!string.IsNullOrEmpty(year))
+            {
+                searchModel.Year = Convert.ToInt16(year);
+            }
+            
+            searchModel.Client = client;
+            searchModel.Job = job;
+            searchModel.Partner = partner;
+            searchModel.Manager = manager;
+            searchModel.Office = office;
+            if (!string.IsNullOrEmpty(status))
+            {
+                searchModel.Status = Convert.ToInt16(status);
+            }
+            
+
+            var business = new ProductBusinessLogic();
+            
+            var model = business.GetProducts(searchModel);
+            var list = model.ToList();
+            var table = list.Select( x => new {
+                CawID = x.caw_id,
+                CawName = x.caw_name,
+                Client = x.caw_client,
+                Partner = x.caw_partner,
+                Manager = x.caw_manager,
+                Office = x.caw_office,
+                Year = x.caw_stdate.Value.Year.ToString(),
+                Status = x.caw_status.ToString()
+
+            } ).ToList();
+
+            return Json(table, JsonRequestBehavior.AllowGet);
+            //return View(model.ToList());
+            //return View(db.Caws.ToList());
         }
 
         // GET: Caws/Details/5
@@ -44,7 +151,6 @@ namespace APT_ArchV03.Controllers
                 var navjobsquery = from nj in db.NavJobs
                                    where nj.Job_Code.Equals(cjitem.cawjob_jc)
                                    select nj;
-                //var query2 = db.NavJobs.Find(cjitem.cawjob_jc);
                 
                 var items = navjobsquery.Select(a => new SelectListItem
                 {
@@ -52,16 +158,10 @@ namespace APT_ArchV03.Controllers
                     Text = a.Job_Code + " - " + a.Job_Name
                 });
                 
-                //items1 = items.First();
                 items2.Add(new SelectListItem() { Text = items.First().Text, Value = items.First().Value });
             }
-
+                        
             
-            //var items = cawjobsquery.Select(a => new SelectListItem
-            //{
-            //    Value = a.cawjob_jc,
-            //    Text = a.cawjob_jc
-            //});
 
 
             ViewData["LstCawJobs"] = new SelectList(items2, "Value", "Text");

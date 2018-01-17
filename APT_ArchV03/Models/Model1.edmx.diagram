@@ -9,7 +9,7 @@
         <EntityTypeShape EntityType="Db_APT_ArchModel.CawJob" Width="1.5" PointX="8" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Db_APT_ArchModel.NavClient" Width="1.5" PointX="0.625" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="Db_APT_ArchModel.NavJob" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="Db_APT_ArchModel.NavResource" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Db_APT_ArchModel.NavResource" Width="1.5" PointX="0.625" PointY="3.375" IsExpanded="true" />
         <AssociationConnector Association="Db_APT_ArchModel.FK_caw_id" ManuallyRouted="false" />
         <AssociationConnector Association="Db_APT_ArchModel.FK_NavJobs_NavClients" ManuallyRouted="false" />
       </Diagram>

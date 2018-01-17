@@ -38,7 +38,8 @@
                 "transition": "all ease-out 0.4s"
             });
             //$('#caw_notes').removeAttr('style');
-            console.log('No Note');
+            //debugger
+            console.log(event.target);
         }
         
         
