@@ -41,7 +41,6 @@
                             <div class="col-md-10">
                                 @Html.DropDownList("lstYear", ViewData["lstYear"] as SelectListItem[], "--Select year--", htmlAttributes: new { @class = "form-control" })
 
-                                @*<input class="form-control" type="text" placeholder="Type year" id="inputYear" />*@
                             </div>
                         </div>
                         <div class="form-group">
@@ -49,9 +48,7 @@
                             <div class="col-md-10">
 
                                 @Html.DropDownList("lstClient", ViewData["lstClient"] as SelectListItem[], "--Select client--", htmlAttributes: new { @class = "form-control" })
-
-                                @*<input class="form-control" type="text"
-        placeholder="Type partner name" id="inputPartnerName" />*@
+                                                                
                             </div>
                         </div>
                         <div class="form-group">
@@ -59,8 +56,6 @@
                             <div class="col-md-10">
                                 @Html.DropDownList("lstJob", ViewData["lstJob"] as SelectListItem[], "--Select client--", htmlAttributes: new { @class = "form-control" })
                                 
-                                @*<input class="form-control" type="text"
-        placeholder="Type partner name" id="inputPartnerName" />*@
                             </div>
                         </div>
                         <div class="form-group">
@@ -68,8 +63,6 @@
                             <div class="col-md-10">
                                 @Html.DropDownList("lstPartner", ViewData["lstPartner"] as SelectListItem[], "--Select partner--", htmlAttributes: new { @class = "form-control" })
                                 
-                                @*<input class="form-control" type="text"
-                                    placeholder="Type partner name" id="inputPartnerName" />*@
                             </div>
                         </div>
                         <div class="form-group">
@@ -77,16 +70,13 @@
                             <div class="col-md-10">
                                 @Html.DropDownList("lstManager", ViewData["lstManager"] as SelectListItem[], "--Select manager--", htmlAttributes: new { @class = "form-control" })
 
-                                @*<input class="form-control" type="text"
-                                    placeholder="Type partner name" id="inputPartnerName" />*@
                             </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Office", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.DropDownList("lstOffice", ViewData["lstOffice"] as SelectListItem[], "--Select office--", htmlAttributes: new { @class = "form-control" })
-                                @*<input class="form-control" type="text"
-                                    placeholder="Type partner name" id="inputPartnerName" />*@
+                                
                             </div>
                         </div>
                         <div class="form-group">
@@ -94,8 +84,6 @@
                             <div class="col-md-10">
                                 @Html.DropDownList("lstStatus", ViewData["lstStatus"] as SelectListItem[], "--Select status--", htmlAttributes: new { @class = "form-control" })
 
-                                @*<input class="form-control" type="text"
-        placeholder="Type partner name" id="inputPartnerName" />*@
                             </div>
                         </div>
 
@@ -133,28 +121,9 @@
                     @Html.DisplayNameFor(model => model.caw_office)
                 </th>
                 <th>
-                    @*@Html.DisplayNameFor(model => model.caw_stdate)*@
                     Year
                 </th>
-                @*<th>
-                        @Html.DisplayNameFor(model => model.caw_reldate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.caw_dldate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.caw_archdate)
-                    </th>*@
-
-                @*<th>
-                        @Html.DisplayNameFor(model => model.caw_status)
-                    </th>*@
-                @*<th>
-                        @Html.DisplayNameFor(model => model.caw_crdate)
-                    </th>*@
-                @*<th>
-                        @Html.DisplayNameFor(model => model.caw_usrcreator)
-                    </th>*@
+                
                 <th></th>
             </tr>
         </thead>
@@ -166,7 +135,6 @@
 
                     <td id="tbldtcawname">
 
-                        @*@Html.ActionLink(item.caw_name, "Details", new { id = item.caw_id })*@
                         @Html.DisplayFor(modelItem => item.caw_name)
                     </td>
                     <td id="tbldtcawclient">
@@ -181,47 +149,15 @@
                     <td id="tbldtcawoffice">
                         @Html.DisplayFor(modelItem => item.caw_office)
                     </td>
-                    <td id="tbldtcawyear">
-                        @*@Html.DisplayFor(modelItem => item.caw_stdate)*@
-                        @*@Html.Raw(DateTime.Parse(item.caw_stdate.ToString()).Year)*@
+                    <td id="tbldtcawyear">                        
                         @Html.Raw(item.caw_stdate.Value.Year.ToString())
                     </td>
-                    @*<td>
-                            @Html.DisplayFor(modelItem => item.caw_reldate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.caw_dldate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.caw_archdate)
-                        </td>*@
-
-
 
                     <td id="tbldtcawstatus">
 
-                        @*@Html.DisplayFor(modelItem => item.caw_status)*@
-                        @*@Html.Raw("<div class=\"stage1\"></div>")*@
                         <div class="@(item.caw_status == 1 ? "stage stage1" : ( item.caw_status == 2 ? "stage stage2" : "stage stage3" ) )"></div>
 
                     </td>
-
-
-                    @*<td>
-                            @Html.DisplayFor(modelItem => item.caw_crdate)
-                        </td>*@
-
-
-                    @*<td>
-                            @Html.DisplayFor(modelItem => item.caw_usrcreator)
-                        </td>*@
-
-
-                    @*<td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.caw_id }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.caw_id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.caw_id })
-                        </td>*@
 
 
                 </tr>

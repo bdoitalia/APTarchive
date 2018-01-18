@@ -4,16 +4,19 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Db_APT_ArchModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Db_APT_ArchModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Caw">
           <Key>
             <PropertyRef Name="caw_id" />
           </Key>
           <Property Name="caw_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="caw_name" Type="nvarchar" MaxLength="100" />
-          <Property Name="caw_client" Type="nvarchar" MaxLength="50" />
+          <Property Name="caw_client" Type="nvarchar" MaxLength="100" />
+          <Property Name="caw_client_code" Type="nvarchar" MaxLength="50" />
           <Property Name="caw_partner" Type="nvarchar" MaxLength="50" />
+          <Property Name="caw_partner_code" Type="nvarchar" MaxLength="50" />
           <Property Name="caw_manager" Type="nvarchar" MaxLength="50" />
+          <Property Name="caw_manager_code" Type="nvarchar" MaxLength="50" />
           <Property Name="caw_office" Type="nvarchar" MaxLength="50" />
           <Property Name="caw_stdate" Type="date" />
           <Property Name="caw_reldate" Type="date" />
@@ -22,8 +25,9 @@
           <Property Name="caw_fname" Type="nvarchar" MaxLength="255" />
           <Property Name="caw_notes" Type="text" />
           <Property Name="caw_status" Type="int" />
-          <Property Name="caw_crdate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="caw_crdate" Type="datetime2" Precision="7" />
           <Property Name="caw_usrcreator" Type="nvarchar" MaxLength="100" />
+          <Property Name="caw_usrcreator_code" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CawJob">
           <Key>
@@ -117,8 +121,7 @@
             <End Role="NavJobs" EntitySet="NavJobs" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Db_APT_ArchModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -128,7 +131,7 @@
           </Key>
           <Property Name="caw_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="caw_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="caw_client" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="caw_client" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="caw_partner" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="caw_manager" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="caw_office" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -139,9 +142,13 @@
           <Property Name="caw_fname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="caw_notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="caw_status" Type="Int32" />
-          <Property Name="caw_crdate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="caw_crdate" Type="DateTime" Precision="7" />
           <Property Name="caw_usrcreator" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CawJobs" Relationship="Self.FK_caw_id" FromRole="Caw" ToRole="CawJob" />
+          <Property Name="caw_client_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="caw_partner_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="caw_manager_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="caw_usrcreator_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CawJob">
           <Key>
@@ -247,6 +254,10 @@
           <EntitySetMapping Name="Caws">
             <EntityTypeMapping TypeName="Db_APT_ArchModel.Caw">
               <MappingFragment StoreEntitySet="Caw">
+                <ScalarProperty Name="caw_usrcreator_code" ColumnName="caw_usrcreator_code" />
+                <ScalarProperty Name="caw_manager_code" ColumnName="caw_manager_code" />
+                <ScalarProperty Name="caw_partner_code" ColumnName="caw_partner_code" />
+                <ScalarProperty Name="caw_client_code" ColumnName="caw_client_code" />
                 <ScalarProperty Name="caw_id" ColumnName="caw_id" />
                 <ScalarProperty Name="caw_name" ColumnName="caw_name" />
                 <ScalarProperty Name="caw_client" ColumnName="caw_client" />

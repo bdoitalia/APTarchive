@@ -33,29 +33,21 @@
         <div class="form-group">
             @Html.LabelFor(model => model.caw_client, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @*@Html.DropDownList("Client", ViewData["Client"] as SelectListItem[], "--Select Client--", htmlAttributes: new { @class = "form-control" })*@
                 @Html.EditorFor(model => model.caw_client, new { htmlAttributes = new { @class = "form-control", placeholder = "Type client ID or name" } })
             </div>
         </div>
 
         <div class="form-group">
-            @*<div class="col-xs-12" style="padding:0px">*@
             @Html.LabelFor(model => model.CawJobs, htmlAttributes: new { @class = "control-label col-md-2" })
-            @*</div>*@
             <div class="col-md-10">
-                @*<div class="col-xs-5">*@
                 @Html.ListBox("LstNavJobs", new SelectList(string.Empty, "Value", "Text"), htmlAttributes: new { @class = "form-control", disabled = "disabled" })
 
                 <input id="BtnAddJob" type="button" value="Add" class="btn vertical disabled" />
                 <input id="BtnRemoveJob" type="button" value="Remove" class="btn vertical disabled" />
 
                 @Html.ListBox("LstCawJobs", new SelectList(string.Empty, "Value", "Text"), htmlAttributes: new { @class = "form-control", required = "required", title = "Please, add some jobs to this caw", disabled = "disabled" })
-                @*@Html.ListBox("LstCawJobs", new SelectList(string.Empty, "Value", "Text"), htmlAttributes: new { @class = "form-control", required = "required" })*@
                 @Html.ValidationMessage("LstCawJobs", "", new { @class = "text-danger" })
-                @*@if (!ViewData.ModelState.IsValid)
-                    {
-                        <span class="text-danger">@ViewData.ModelState["LstCawJobs"].Errors[0].ErrorMessage</span>
-                    }*@
+                
 
             </div>
         </div>

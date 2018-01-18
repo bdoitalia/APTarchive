@@ -73,11 +73,12 @@ namespace APT_ArchV03.Models
 
         [Display(Name = "Created by")]
         public string caw_usrcreator { get; set; }
+        public string caw_client_code { get; set; }
+        public string caw_partner_code { get; set; }
+        public string caw_manager_code { get; set; }
+        public string caw_usrcreator_code { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        [Display(Name = "CawJob")]
         public virtual ICollection<CawJob> CawJobs { get; set; }
     }
-
-    
 }

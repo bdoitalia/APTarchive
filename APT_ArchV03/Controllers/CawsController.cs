@@ -200,7 +200,7 @@ namespace APT_ArchV03.Controllers
         {
             string lstcawjobs = Request[key: "LstCawJobs"];
             string tmpclnt = Request[key: "caw_client"];
-            tmpclnt = tmpclnt.Substring(0,(tmpclnt.IndexOf(" - ") - 1 ));
+            tmpclnt = tmpclnt.Substring(0,(tmpclnt.IndexOf(" - ") ));
 
             if (lstcawjobs is null)
             {
@@ -240,11 +240,17 @@ namespace APT_ArchV03.Controllers
                 }
 
                 caw.caw_client = clntquery.First().Client_Name;
-                //caw.caw_client = tmpclnt;
+                caw.caw_client_code = tmpclnt;
+
                 caw.caw_partner = Request[key: "Partner"];
+                caw.caw_partner_code = GetSamAccount(caw.caw_partner);
+
                 caw.caw_manager = mgrquery.First().Resource_Name;
+                caw.caw_manager_code = tmpmgr;
+
                 caw.caw_office = Request[key: "Office"];
                 caw.caw_usrcreator = GetResourceName(User.Identity.Name);
+                caw.caw_usrcreator_code = User.Identity.Name;
                 caw.caw_status = 1;
                 caw.caw_crdate = DateTime.Now;
                 db.Caws.Add(caw);
@@ -344,6 +350,19 @@ namespace APT_ArchV03.Controllers
 
 
             return item;
+        }
+
+        public string GetSamAccount(string resourcename)
+        {
+
+            var navresourcequery = from res in db.NavResources
+                                   where res.Resource_Name.Equals(resourcename)
+                                   select res;
+            string item = navresourcequery.First().User_name;
+            string samaccount = item.Substring((item.IndexOf("\\")) + 1);
+
+
+            return samaccount;
         }
 
 
