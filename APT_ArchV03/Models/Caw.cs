@@ -23,55 +23,38 @@ namespace APT_ArchV03.Models
         }
     
         public int caw_id { get; set; }
-        [Required]
-        [Display(Name = "Name")]
+
         public string caw_name { get; set; }
 
-        [Display(Name = "Client")]
+        
         public string caw_client { get; set; }
 
-        [Display(Name = "Partner")]
         public string caw_partner { get; set; }
 
-        [Display(Name = "Manager")]
         public string caw_manager { get; set; }
 
-        [Display(Name = "Office")]
         public string caw_office { get; set; }
 
-        [Required]
-        [Display(Name = "Statement date")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        
         public Nullable<System.DateTime> caw_stdate { get; set; }
 
-        [Display(Name = "Report date")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        
         public Nullable<System.DateTime> caw_reldate { get; set; }
 
-        [Display(Name = "Delivery date")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        
         public Nullable<System.DateTime> caw_dldate { get; set; }
 
-        [Display(Name = "Arch date")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        
         public Nullable<System.DateTime> caw_archdate { get; set; }
 
-        [Display(Name = "Filename")]
         public string caw_fname { get; set; }
 
-        [Display(Name = "Notes")]
         public string caw_notes { get; set; }
 
-        [Display(Name = "Status")]
         public Nullable<int> caw_status { get; set; }
 
         public System.DateTime caw_crdate { get; set; }
 
-        [Display(Name = "Created by")]
         public string caw_usrcreator { get; set; }
         public string caw_client_code { get; set; }
         public string caw_partner_code { get; set; }
