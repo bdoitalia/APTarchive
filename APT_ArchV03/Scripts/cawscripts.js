@@ -30,7 +30,7 @@
                 "transition": "all ease-in 0.4s"
             });
             //$('#caw_notes').focus(function () { $('#caw_notes').css("max-width", 500) });
-            console.log('Note');
+            //console.log('Note');
         } else {
             $('#caw_notes').css({
                 "max-width": 280,
@@ -39,7 +39,7 @@
             });
             //$('#caw_notes').removeAttr('style');
             //debugger
-            console.log(event.target);
+            //console.log(event.target);
         }
         
         
@@ -52,10 +52,10 @@
             var ChooseFrom = ID == "BtnAddJob" ? "#LstNavJobs" : "#LstCawJobs";
             var moveTo = ID == "BtnAddJob" ? "#LstCawJobs" : "#LstNavJobs";
             var SelectData = $(ChooseFrom + " :selected").toArray();
-            console.log('ID:' + ID);
-            console.log(ChooseFrom);
-            console.log(moveTo);
-            console.log(SelectData);
+            //console.log('ID:' + ID);
+            //console.log(ChooseFrom);
+            //console.log(moveTo);
+            //console.log(SelectData);
             $(moveTo).append(SelectData);
             SelectData.remove;            
         });

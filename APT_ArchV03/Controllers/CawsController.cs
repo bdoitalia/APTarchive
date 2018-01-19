@@ -161,11 +161,15 @@ namespace APT_ArchV03.Controllers
                 
                 items2.Add(new SelectListItem() { Text = items.First().Text, Value = items.First().Value });
             }
-                        
-            
+
+            var items4 = caw.CawJobs.Select(x => new SelectListItem {
+                Value = x.cawjob_id.ToString(),
+                Text = x.cawjob_jc + " - " + x.cawjob_jn
+            });
 
 
             ViewData["LstCawJobs"] = new SelectList(items2, "Value", "Text");
+            ViewData["LstCawJobs1"] = items4;
             return View(caw);
         }
 
@@ -192,23 +196,18 @@ namespace APT_ArchV03.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "caw_id,caw_name,caw_client,caw_partner,caw_manager,caw_office,caw_stdate,caw_reldate,caw_dldate,caw_archdate,caw_fname,caw_notes,caw_status,caw_crdate,caw_usrcreator")] Caw caw)
-        //public ActionResult Create(Caw caw, FormCollection formCollection)
+        [ValidateAntiForgeryToken]        
         public ActionResult Create([Bind(Include = "caw_name,caw_stdate,caw_notes")] Caw caw)
-        //public ActionResult Create(Caw caw)
         {
             string lstcawjobs = Request[key: "LstCawJobs"];
             string tmpclnt = Request[key: "caw_client"];
-            tmpclnt = tmpclnt.Substring(0,(tmpclnt.IndexOf(" - ") - 1 ));
+            tmpclnt = tmpclnt.Substring(0,(tmpclnt.IndexOf(" - ") ));
 
             if (lstcawjobs is null)
             {
                 ModelState.AddModelError("LstCawJobs", "Add Jobs");
-            }
+            }            
             
-            
-            //var tmpjobs
             if (ModelState.IsValid)
             {
                 //string name = Request[key: "Clients"];
@@ -232,19 +231,28 @@ namespace APT_ArchV03.Controllers
 
                 foreach (string tmpcawjob in tmpcawjobs)
                 {
-                    
+                    string tmpcawjob_jc = tmpcawjob.Substring(0,tmpcawjob.IndexOf(" - "));
+                    string tmpcawjob_jn = tmpcawjob.Substring(tmpcawjob.IndexOf(" - ") + 3 );
+
                     var cawJob = new CawJob();
-                    cawJob.cawjob_jc = tmpcawjob;
+                    cawJob.cawjob_jc = tmpcawjob_jc;
+                    cawJob.cawjob_jn = tmpcawjob_jn;
                     caw.CawJobs.Add(cawJob);                    
 
                 }
 
                 caw.caw_client = clntquery.First().Client_Name;
-                //caw.caw_client = tmpclnt;
+                caw.caw_client_code = tmpclnt;
+
                 caw.caw_partner = Request[key: "Partner"];
+                caw.caw_partner_code = GetSamAccount(caw.caw_partner);
+
                 caw.caw_manager = mgrquery.First().Resource_Name;
+                caw.caw_manager_code = tmpmgr;
+
                 caw.caw_office = Request[key: "Office"];
                 caw.caw_usrcreator = GetResourceName(User.Identity.Name);
+                caw.caw_usrcreator_code = User.Identity.Name;
                 caw.caw_status = 1;
                 caw.caw_crdate = DateTime.Now;
                 db.Caws.Add(caw);
@@ -346,6 +354,19 @@ namespace APT_ArchV03.Controllers
             return item;
         }
 
+        public string GetSamAccount(string resourcename)
+        {
+
+            var navresourcequery = from res in db.NavResources
+                                   where res.Resource_Name.Equals(resourcename)
+                                   select res;
+            string item = navresourcequery.First().User_name;
+            string samaccount = item.Substring((item.IndexOf("\\")) + 1);
+
+
+            return samaccount;
+        }
+
 
         /*********Client List*********/
 
@@ -399,7 +420,7 @@ namespace APT_ArchV03.Controllers
             //var items = new SelectList(jobsquery, "Job_Code", "Job_Name");
             var items = jobsquery.Select(a => new SelectListItem
             {
-                Value = a.Job_Code,
+                Value = a.Job_Code + separator + a.Job_Name,
                 Text = a.Job_Code + separator + a.Job_Name
             });
 

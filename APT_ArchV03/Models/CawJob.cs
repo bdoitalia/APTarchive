@@ -17,6 +17,7 @@ namespace APT_ArchV03.Models
         public int cawjob_id { get; set; }
         public int caw_id { get; set; }
         public string cawjob_jc { get; set; }
+        public string cawjob_jn { get; set; }
     
         public virtual Caw Caw { get; set; }
     }
