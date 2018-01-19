@@ -11,9 +11,7 @@ namespace APT_ArchV03.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
-
+    
     public partial class Caw
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,38 +21,19 @@ namespace APT_ArchV03.Models
         }
     
         public int caw_id { get; set; }
-
         public string caw_name { get; set; }
-
-        
         public string caw_client { get; set; }
-
         public string caw_partner { get; set; }
-
         public string caw_manager { get; set; }
-
         public string caw_office { get; set; }
-
-        
         public Nullable<System.DateTime> caw_stdate { get; set; }
-
-        
         public Nullable<System.DateTime> caw_reldate { get; set; }
-
-        
         public Nullable<System.DateTime> caw_dldate { get; set; }
-
-        
         public Nullable<System.DateTime> caw_archdate { get; set; }
-
         public string caw_fname { get; set; }
-
         public string caw_notes { get; set; }
-
         public Nullable<int> caw_status { get; set; }
-
-        public System.DateTime caw_crdate { get; set; }
-
+        public Nullable<System.DateTime> caw_crdate { get; set; }
         public string caw_usrcreator { get; set; }
         public string caw_client_code { get; set; }
         public string caw_partner_code { get; set; }

@@ -36,6 +36,7 @@
           <Property Name="cawjob_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="caw_id" Type="int" Nullable="false" />
           <Property Name="cawjob_jc" Type="nvarchar" MaxLength="50" />
+          <Property Name="cawjob_jn" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="NavClients">
           <Key>
@@ -158,6 +159,7 @@
           <Property Name="caw_id" Type="Int32" Nullable="false" />
           <Property Name="cawjob_jc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Caw" Relationship="Self.FK_caw_id" FromRole="CawJob" ToRole="Caw" />
+          <Property Name="cawjob_jn" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="NavClient">
           <Key>
@@ -279,6 +281,7 @@
           <EntitySetMapping Name="CawJobs">
             <EntityTypeMapping TypeName="Db_APT_ArchModel.CawJob">
               <MappingFragment StoreEntitySet="CawJob">
+                <ScalarProperty Name="cawjob_jn" ColumnName="cawjob_jn" />
                 <ScalarProperty Name="cawjob_id" ColumnName="cawjob_id" />
                 <ScalarProperty Name="caw_id" ColumnName="caw_id" />
                 <ScalarProperty Name="cawjob_jc" ColumnName="cawjob_jc" />

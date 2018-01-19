@@ -161,11 +161,15 @@ namespace APT_ArchV03.Controllers
                 
                 items2.Add(new SelectListItem() { Text = items.First().Text, Value = items.First().Value });
             }
-                        
-            
+
+            var items4 = caw.CawJobs.Select(x => new SelectListItem {
+                Value = x.cawjob_id.ToString(),
+                Text = x.cawjob_jc + " - " + x.cawjob_jn
+            });
 
 
             ViewData["LstCawJobs"] = new SelectList(items2, "Value", "Text");
+            ViewData["LstCawJobs1"] = items4;
             return View(caw);
         }
 
@@ -192,11 +196,8 @@ namespace APT_ArchV03.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "caw_id,caw_name,caw_client,caw_partner,caw_manager,caw_office,caw_stdate,caw_reldate,caw_dldate,caw_archdate,caw_fname,caw_notes,caw_status,caw_crdate,caw_usrcreator")] Caw caw)
-        //public ActionResult Create(Caw caw, FormCollection formCollection)
+        [ValidateAntiForgeryToken]        
         public ActionResult Create([Bind(Include = "caw_name,caw_stdate,caw_notes")] Caw caw)
-        //public ActionResult Create(Caw caw)
         {
             string lstcawjobs = Request[key: "LstCawJobs"];
             string tmpclnt = Request[key: "caw_client"];
@@ -205,10 +206,8 @@ namespace APT_ArchV03.Controllers
             if (lstcawjobs is null)
             {
                 ModelState.AddModelError("LstCawJobs", "Add Jobs");
-            }
+            }            
             
-            
-            //var tmpjobs
             if (ModelState.IsValid)
             {
                 //string name = Request[key: "Clients"];
@@ -232,9 +231,12 @@ namespace APT_ArchV03.Controllers
 
                 foreach (string tmpcawjob in tmpcawjobs)
                 {
-                    
+                    string tmpcawjob_jc = tmpcawjob.Substring(0,tmpcawjob.IndexOf(" - "));
+                    string tmpcawjob_jn = tmpcawjob.Substring(tmpcawjob.IndexOf(" - ") + 3 );
+
                     var cawJob = new CawJob();
-                    cawJob.cawjob_jc = tmpcawjob;
+                    cawJob.cawjob_jc = tmpcawjob_jc;
+                    cawJob.cawjob_jn = tmpcawjob_jn;
                     caw.CawJobs.Add(cawJob);                    
 
                 }
@@ -418,7 +420,7 @@ namespace APT_ArchV03.Controllers
             //var items = new SelectList(jobsquery, "Job_Code", "Job_Name");
             var items = jobsquery.Select(a => new SelectListItem
             {
-                Value = a.Job_Code,
+                Value = a.Job_Code + separator + a.Job_Name,
                 Text = a.Job_Code + separator + a.Job_Name
             });
 
