@@ -1,0 +1,51 @@
+﻿@model APT_ArchV03.Models.Caw
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Upload File</h2>
+
+@using (Html.BeginForm("Upload", "Upload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" />
+    <br />
+    <input type="submit" value="Upload" onclick="move()" />
+}
+
+<h2>@ViewBag.Msg</h2>
+
+<div id="myProgress">
+    <div id="myBar"></div>
+</div>
+
+<style>
+
+    #myProgress {
+        width: 100%;
+        background-color: grey;
+    }
+
+    #myBar {
+        width: 1%;
+        height: 30px;
+        background-color: green;
+    }
+</style>
+
+<script>
+
+    function move(file) {
+        var elem = document.getElementById("myBar");
+        var width = 1;
+        var id = setInterval(frame, 20);
+        function frame() {
+            if (width >= 100) {
+                clearInterval(id);
+            } else {
+                width++;
+                elem.style.width = width + '%';
+            }
+        }
+    }
+
+</script>

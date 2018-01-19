@@ -15,7 +15,7 @@
             @Html.DisplayNameFor(model => model.caw_name)
         </dt>
 
-        <dd>
+        <dd class="form-horizontal">
             @Html.DisplayFor(model => model.caw_name)
         </dd>
 
@@ -26,6 +26,15 @@
         <dd>
             @Html.DisplayFor(model => model.caw_client)
         </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CawJobs)
+        </dt>
+
+        <dd>
+            @Html.ListBox("LstCawJobs", ViewData["LstCawJobs"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
+        </dd>
+
 
         <dt>
             @Html.DisplayNameFor(model => model.caw_partner)
@@ -64,7 +73,8 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.caw_reldate)
+            @Html.EditorFor(model => model.caw_reldate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.caw_reldate, "", new { @class = "text-danger" })
         </dd>
 
         <dt>
@@ -99,32 +109,16 @@
             @Html.DisplayFor(model => model.caw_notes)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_status)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_status)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_crdate)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_crdate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_usrcreator)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.caw_usrcreator)
-            @Html.ListBox("LstCawJobs", ViewData["LstCawJobs"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
-        </dd>
 
     </dl>
+
+    @Html.Partial("_Upload")
+
+    <h2>@ViewBag.Msg</h2>
+
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.caw_id }) |
