@@ -1,133 +1,210 @@
 ﻿@model APT_ArchV03.Models.Caw
+@using APT_ArchV03.Models
+@Styles.Render("~/Content/jQuery-File-Upload")
+@Styles.Render("~/Content/caw")
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = Model.caw_name.ToString() + " Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>@Model.caw_name@*.Replace(Model.caw_name, Model.caw_name.Substring(0,5) + "...")*@</h2>
 
 <div>
-    <h4>Caw</h4>
+    <h4 style="display: inline-flex;">Details</h4>
+    <span id="statusflag" style="display: inline-flex;" class="pull-right @(Model.caw_status == 1 ? "stage stage1" : (Model.caw_status == 2 ? "stage stage2" : "stage stage3") )"></span>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_name)
-        </dt>
+    <div id="accordion">
+        <h4>Opening information</h4>
+        <div>
+            <ul class="list-group borderless">
+                <dl class="dl-horizontal">
+                    <li class="list-group-item">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.caw_name)
+                    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_name)
-        </dd>
+                    <dd>
+                        @Html.DisplayFor(model => model.caw_name)
+                    </dd>
+                    </li>
+                    <li class="list-group-item">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.caw_client)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_client)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.caw_client)
+                    </dd>
+                    </li>
+                    <li class="list-group-item">
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_client)
-        </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CawJobs)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_partner)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.caw_client)
+                    </dd>
+                    </li>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_partner)
-        </dd>
+                    <li class="list-group-item">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.caw_partner)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_manager)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.caw_partner)
+                    </dd>
+                    </li>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_manager)
-        </dd>
+                    <li class="list-group-item">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.caw_manager)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_office)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.caw_manager)
+                    </dd>
+                    </li>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_office)
-        </dd>
+                    <li class="list-group-item">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.caw_office)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_stdate)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.caw_office)
+                    </dd>
+                    </li>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_stdate)
-        </dd>
+                    <li class="list-group-item">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.caw_stdate)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_reldate)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.caw_stdate)
+                    </dd>
+                    </li>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_reldate)
-        </dd>
+                    <li class="list-group-item">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.caw_notes)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_dldate)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.caw_notes)
+                    </dd>
+                    </li>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_dldate)
-        </dd>
+                    @*
+                        <dd>
+                            @Html.DisplayFor(model => model.caw_usrcreator)
+                            @Html.ListBox("LstCawJobs", ViewData["LstCawJobs"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
+                            @Html.ListBox("LstCawJobs1", ViewData["LstCawJobs1"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
+                        </dd>*@
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_archdate)
-        </dt>
+                </dl>
+            </ul>
+        </div>
+        <h4>Reporting information</h4>
+        <div>
+            <ul class="list-group borderless">
+                <dl class="dl-horizontal">
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_archdate)
-        </dd>
+                    <li class="list-group-item">
+                    <dt style="padding-top: 6px;">
+                        @Html.DisplayNameFor(model => model.caw_reldate)
+                    </dt>
+                    <dd>
+                        @Html.EditorFor(model => model.caw_reldate, new { htmlAttributes = new { @class = "form-control", required = "required", title = "Partner name is required" } })
+                        @Html.ValidationMessageFor(model => model.caw_reldate, "", new { @class = "text-danger" })
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_fname)
-        </dt>
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_fname)
-        </dd>
+                    </li>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_notes)
-        </dt>
+                </dl>
+                <button id="btnToPhase2" class="btn btn-default pull-right">Confirm</button>
+            </ul>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_notes)
-        </dd>
+        </div>
+        <h4>Closing information</h4>
+        <div>
+            <script>
+                var $form = null;
+                $(function () {
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_status)
-        </dt>
+                    $form = $('#fileupload').fileupload({
+                        dataType: 'json'
+                    });
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_status)
-        </dd>
+                });
+                $('#fileupload').addClass('fileupload-processing');
+            </script>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_crdate)
-        </dt>
+            @Html.Partial("_Files")
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_crdate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_usrcreator)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.caw_usrcreator)
-            @Html.ListBox("LstCawJobs", ViewData["LstCawJobs"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
-            @Html.ListBox("LstCawJobs1", ViewData["LstCawJobs1"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
-        </dd>
-
-    </dl>
+        </div>
+    </div>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.caw_id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+
+<script>
+
+
+
+    $(document).ready(function () {
+
+
+
+        $('#accordion').accordion({
+            header: "h4",
+            icons: { "header": "ui-icon-caret-1-s", "activeHeader": "ui-icon-caret-1-n" },
+            heightStyle: "content",
+            active: @Model.caw_status
+        });
+
+        $(document).on('click', '#btnToPhase2', function () {
+            
+            $.ajax({
+                type: 'POST',
+                //contentType: "application/json",
+                //processData: false,
+                url: '/Caws/PostReportDate',
+
+                dataType: 'json',
+
+                data: {
+                    id: @Model.caw_id,
+                    reldate: $('#caw_reldate').val()                    
+                },
+
+
+                success: function (response) {
+
+                    $('#btnToPhase2').addClass("disabled");
+                    $('#caw_reldate').attr("disabled", "disabled")
+                    $('#statusflag').removeClass('stage1').addClass('stage2');
+                    $('#accordion').accordion({ active: 3 });
+                    alert(response.responseText);
+                                        
+                },
+                error: function (response) {
+                    alert('There was a problem when trying to submit the report date. ' + response.responseText);
+                }
+            });
+
+        });
+
+
+    });
+</script>
+
+
+@Scripts.Render("~/bundles/jQuery-File-Upload")

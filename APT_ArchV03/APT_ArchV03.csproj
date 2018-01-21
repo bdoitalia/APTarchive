@@ -59,6 +59,12 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -161,11 +167,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CawsController.cs" />
+    <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\FilesHelper.cs" />
+    <Compile Include="Helpers\ImageHandler.cs" />
     <Compile Include="Models\Caw.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -173,6 +182,7 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Caw.Metadata.cs" />
+    <Compile Include="Models\FilesViewModel.cs" />
     <Compile Include="Models\ProductSearch.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
@@ -199,10 +209,361 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Backload\Client\blueimp\blob\js\canvas-to-blob.js" />
+    <Content Include="Backload\Client\blueimp\blob\js\canvas-to-blob.min.js" />
+    <Content Include="Backload\Client\blueimp\bundles\css\bundles.txt" />
+    <Content Include="Backload\Client\blueimp\bundles\css\debug\jquery.fileupload.bundle.css" />
+    <Content Include="Backload\Client\blueimp\bundles\css\jquery.fileupload.bundle.min.css" />
+    <Content Include="Backload\Client\blueimp\bundles\img\loading.gif" />
+    <Content Include="Backload\Client\blueimp\bundles\img\progressbar.gif" />
+    <Content Include="Backload\Client\blueimp\bundles\js\bundles.txt" />
+    <Content Include="Backload\Client\blueimp\bundles\js\debug\jquery.fileupload.angularjs.js" />
+    <Content Include="Backload\Client\blueimp\bundles\js\debug\jquery.fileupload.basic.js" />
+    <Content Include="Backload\Client\blueimp\bundles\js\debug\jquery.fileupload.basicplus.js" />
+    <Content Include="Backload\Client\blueimp\bundles\js\debug\jquery.fileupload.basicplusui.js" />
+    <Content Include="Backload\Client\blueimp\bundles\js\debug\jquery.fileupload.jqueryui.js" />
+    <Content Include="Backload\Client\blueimp\bundles\js\jquery.fileupload.angularjs.min.js" />
+    <Content Include="Backload\Client\blueimp\bundles\js\jquery.fileupload.basic.min.js" />
+    <Content Include="Backload\Client\blueimp\bundles\js\jquery.fileupload.basicplus.min.js" />
+    <Content Include="Backload\Client\blueimp\bundles\js\jquery.fileupload.basicplusui.min.js" />
+    <Content Include="Backload\Client\blueimp\bundles\js\jquery.fileupload.jqueryui.min.js" />
+    <Content Include="Backload\Client\blueimp\bundles\readme.txt" />
+    <Content Include="Backload\Client\blueimp\fileupload\cors\postmessage.html" />
+    <Content Include="Backload\Client\blueimp\fileupload\cors\result.html" />
+    <Content Include="Backload\Client\blueimp\fileupload\css\jquery.fileupload-noscript.css" />
+    <Content Include="Backload\Client\blueimp\fileupload\css\jquery.fileupload-ui-noscript.css" />
+    <Content Include="Backload\Client\blueimp\fileupload\css\jquery.fileupload-ui.css" />
+    <Content Include="Backload\Client\blueimp\fileupload\css\jquery.fileupload.css" />
+    <Content Include="Backload\Client\blueimp\fileupload\img\loading.gif" />
+    <Content Include="Backload\Client\blueimp\fileupload\img\progressbar.gif" />
+    <Content Include="Backload\Client\blueimp\fileupload\js\cors\jquery.postmessage-transport.js" />
+    <Content Include="Backload\Client\blueimp\fileupload\js\cors\jquery.xdr-transport.js" />
+    <Content Include="Backload\Client\blueimp\fileupload\js\jquery.fileupload-angular.js" />
+    <Content Include="Backload\Client\blueimp\fileupload\js\jquery.fileupload-audio.js" />
+    <Content Include="Backload\Client\blueimp\fileupload\js\jquery.fileupload-image.js" />
+    <Content Include="Backload\Client\blueimp\fileupload\js\jquery.fileupload-jquery-ui.js" />
+    <Content Include="Backload\Client\blueimp\fileupload\js\jquery.fileupload-process.js" />
+    <Content Include="Backload\Client\blueimp\fileupload\js\jquery.fileupload-ui.js" />
+    <Content Include="Backload\Client\blueimp\fileupload\js\jquery.fileupload-validate.js" />
+    <Content Include="Backload\Client\blueimp\fileupload\js\jquery.fileupload-video.js" />
+    <Content Include="Backload\Client\blueimp\fileupload\js\jquery.fileupload.js" />
+    <Content Include="Backload\Client\blueimp\fileupload\js\jquery.iframe-transport.js" />
+    <Content Include="Backload\Client\blueimp\fileupload\js\themes\jquery.fileupload-themes.js" />
+    <Content Include="Backload\Client\blueimp\fileupload\js\vendor\jquery.ui.widget.js" />
+    <Content Include="Backload\Client\blueimp\gallery\css\blueimp-gallery-indicator.css" />
+    <Content Include="Backload\Client\blueimp\gallery\css\blueimp-gallery-video.css" />
+    <Content Include="Backload\Client\blueimp\gallery\css\blueimp-gallery.css" />
+    <Content Include="Backload\Client\blueimp\gallery\css\blueimp-gallery.min.css" />
+    <Content Include="Backload\Client\blueimp\gallery\img\error.png" />
+    <Content Include="Backload\Client\blueimp\gallery\img\error.svg" />
+    <Content Include="Backload\Client\blueimp\gallery\img\loading.gif" />
+    <Content Include="Backload\Client\blueimp\gallery\img\play-pause.png" />
+    <Content Include="Backload\Client\blueimp\gallery\img\play-pause.svg" />
+    <Content Include="Backload\Client\blueimp\gallery\img\video-play.png" />
+    <Content Include="Backload\Client\blueimp\gallery\img\video-play.svg" />
+    <Content Include="Backload\Client\blueimp\gallery\js\blueimp-gallery-fullscreen.js" />
+    <Content Include="Backload\Client\blueimp\gallery\js\blueimp-gallery-indicator.js" />
+    <Content Include="Backload\Client\blueimp\gallery\js\blueimp-gallery-video.js" />
+    <Content Include="Backload\Client\blueimp\gallery\js\blueimp-gallery-vimeo.js" />
+    <Content Include="Backload\Client\blueimp\gallery\js\blueimp-gallery-youtube.js" />
+    <Content Include="Backload\Client\blueimp\gallery\js\blueimp-gallery.js" />
+    <Content Include="Backload\Client\blueimp\gallery\js\blueimp-gallery.min.js" />
+    <Content Include="Backload\Client\blueimp\gallery\js\blueimp-helper.js" />
+    <Content Include="Backload\Client\blueimp\gallery\js\jquery.blueimp-gallery.js" />
+    <Content Include="Backload\Client\blueimp\gallery\js\jquery.blueimp-gallery.min.js" />
+    <Content Include="Backload\Client\blueimp\loadimage\css\vendor\Jcrop.gif" />
+    <Content Include="Backload\Client\blueimp\loadimage\css\vendor\jquery.Jcrop.css" />
+    <Content Include="Backload\Client\blueimp\loadimage\js\load-image-exif-map.js" />
+    <Content Include="Backload\Client\blueimp\loadimage\js\load-image-exif.js" />
+    <Content Include="Backload\Client\blueimp\loadimage\js\load-image-ios.js" />
+    <Content Include="Backload\Client\blueimp\loadimage\js\load-image-meta.js" />
+    <Content Include="Backload\Client\blueimp\loadimage\js\load-image-orientation.js" />
+    <Content Include="Backload\Client\blueimp\loadimage\js\load-image.all.min.js" />
+    <Content Include="Backload\Client\blueimp\loadimage\js\load-image.js" />
+    <Content Include="Backload\Client\blueimp\loadimage\js\vendor\jquery.Jcrop.js" />
+    <Content Include="Backload\Client\blueimp\templates\js\tmpl.js" />
+    <Content Include="Backload\Client\blueimp\templates\js\tmpl.min.js" />
+    <Content Include="Content\blueimp-gallery2\css\blueimp-gallery-indicator.css" />
+    <Content Include="Content\blueimp-gallery2\css\blueimp-gallery-indicator.min.css" />
+    <Content Include="Content\blueimp-gallery2\css\blueimp-gallery-video.css" />
+    <Content Include="Content\blueimp-gallery2\css\blueimp-gallery-video.min.css" />
+    <Content Include="Content\blueimp-gallery2\css\blueimp-gallery.css" />
+    <Content Include="Content\blueimp-gallery2\css\blueimp-gallery.min.css" />
+    <Content Include="Content\blueimp-gallery2\img\error.png" />
+    <Content Include="Content\blueimp-gallery2\img\error.svg" />
+    <Content Include="Content\blueimp-gallery2\img\loading.gif" />
+    <Content Include="Content\blueimp-gallery2\img\play-pause.png" />
+    <Content Include="Content\blueimp-gallery2\img\play-pause.svg" />
+    <Content Include="Content\blueimp-gallery2\img\video-play.png" />
+    <Content Include="Content\blueimp-gallery2\img\video-play.svg" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Free-file-icons\16px\aac.png" />
+    <Content Include="Content\Free-file-icons\16px\ai.png" />
+    <Content Include="Content\Free-file-icons\16px\aiff.png" />
+    <Content Include="Content\Free-file-icons\16px\avi.png" />
+    <Content Include="Content\Free-file-icons\16px\bmp.png" />
+    <Content Include="Content\Free-file-icons\16px\c.png" />
+    <Content Include="Content\Free-file-icons\16px\cpp.png" />
+    <Content Include="Content\Free-file-icons\16px\css.png" />
+    <Content Include="Content\Free-file-icons\16px\dat.png" />
+    <Content Include="Content\Free-file-icons\16px\dmg.png" />
+    <Content Include="Content\Free-file-icons\16px\doc.png" />
+    <Content Include="Content\Free-file-icons\16px\dotx.png" />
+    <Content Include="Content\Free-file-icons\16px\dwg.png" />
+    <Content Include="Content\Free-file-icons\16px\dxf.png" />
+    <Content Include="Content\Free-file-icons\16px\eps.png" />
+    <Content Include="Content\Free-file-icons\16px\exe.png" />
+    <Content Include="Content\Free-file-icons\16px\flv.png" />
+    <Content Include="Content\Free-file-icons\16px\gif.png" />
+    <Content Include="Content\Free-file-icons\16px\h.png" />
+    <Content Include="Content\Free-file-icons\16px\hpp.png" />
+    <Content Include="Content\Free-file-icons\16px\html.png" />
+    <Content Include="Content\Free-file-icons\16px\ics.png" />
+    <Content Include="Content\Free-file-icons\16px\iso.png" />
+    <Content Include="Content\Free-file-icons\16px\java.png" />
+    <Content Include="Content\Free-file-icons\16px\jpg.png" />
+    <Content Include="Content\Free-file-icons\16px\js.png" />
+    <Content Include="Content\Free-file-icons\16px\key.png" />
+    <Content Include="Content\Free-file-icons\16px\less.png" />
+    <Content Include="Content\Free-file-icons\16px\mid.png" />
+    <Content Include="Content\Free-file-icons\16px\mp3.png" />
+    <Content Include="Content\Free-file-icons\16px\mp4.png" />
+    <Content Include="Content\Free-file-icons\16px\mpg.png" />
+    <Content Include="Content\Free-file-icons\16px\odf.png" />
+    <Content Include="Content\Free-file-icons\16px\ods.png" />
+    <Content Include="Content\Free-file-icons\16px\odt.png" />
+    <Content Include="Content\Free-file-icons\16px\otp.png" />
+    <Content Include="Content\Free-file-icons\16px\ots.png" />
+    <Content Include="Content\Free-file-icons\16px\ott.png" />
+    <Content Include="Content\Free-file-icons\16px\pdf.png" />
+    <Content Include="Content\Free-file-icons\16px\php.png" />
+    <Content Include="Content\Free-file-icons\16px\png.png" />
+    <Content Include="Content\Free-file-icons\16px\ppt.png" />
+    <Content Include="Content\Free-file-icons\16px\psd.png" />
+    <Content Include="Content\Free-file-icons\16px\py.png" />
+    <Content Include="Content\Free-file-icons\16px\qt.png" />
+    <Content Include="Content\Free-file-icons\16px\rar.png" />
+    <Content Include="Content\Free-file-icons\16px\rb.png" />
+    <Content Include="Content\Free-file-icons\16px\rtf.png" />
+    <Content Include="Content\Free-file-icons\16px\sass.png" />
+    <Content Include="Content\Free-file-icons\16px\scss.png" />
+    <Content Include="Content\Free-file-icons\16px\sql.png" />
+    <Content Include="Content\Free-file-icons\16px\tga.png" />
+    <Content Include="Content\Free-file-icons\16px\tgz.png" />
+    <Content Include="Content\Free-file-icons\16px\tiff.png" />
+    <Content Include="Content\Free-file-icons\16px\txt.png" />
+    <Content Include="Content\Free-file-icons\16px\wav.png" />
+    <Content Include="Content\Free-file-icons\16px\xls.png" />
+    <Content Include="Content\Free-file-icons\16px\xlsx.png" />
+    <Content Include="Content\Free-file-icons\16px\xml.png" />
+    <Content Include="Content\Free-file-icons\16px\yml.png" />
+    <Content Include="Content\Free-file-icons\16px\zip.png" />
+    <Content Include="Content\Free-file-icons\16px\_blank.png" />
+    <Content Include="Content\Free-file-icons\16px\_page.png" />
+    <Content Include="Content\Free-file-icons\32px\aac.png" />
+    <Content Include="Content\Free-file-icons\32px\ai.png" />
+    <Content Include="Content\Free-file-icons\32px\aiff.png" />
+    <Content Include="Content\Free-file-icons\32px\avi.png" />
+    <Content Include="Content\Free-file-icons\32px\bmp.png" />
+    <Content Include="Content\Free-file-icons\32px\c.png" />
+    <Content Include="Content\Free-file-icons\32px\cpp.png" />
+    <Content Include="Content\Free-file-icons\32px\css.png" />
+    <Content Include="Content\Free-file-icons\32px\dat.png" />
+    <Content Include="Content\Free-file-icons\32px\dmg.png" />
+    <Content Include="Content\Free-file-icons\32px\doc.png" />
+    <Content Include="Content\Free-file-icons\32px\dotx.png" />
+    <Content Include="Content\Free-file-icons\32px\dwg.png" />
+    <Content Include="Content\Free-file-icons\32px\dxf.png" />
+    <Content Include="Content\Free-file-icons\32px\eps.png" />
+    <Content Include="Content\Free-file-icons\32px\exe.png" />
+    <Content Include="Content\Free-file-icons\32px\flv.png" />
+    <Content Include="Content\Free-file-icons\32px\gif.png" />
+    <Content Include="Content\Free-file-icons\32px\h.png" />
+    <Content Include="Content\Free-file-icons\32px\hpp.png" />
+    <Content Include="Content\Free-file-icons\32px\html.png" />
+    <Content Include="Content\Free-file-icons\32px\ics.png" />
+    <Content Include="Content\Free-file-icons\32px\iso.png" />
+    <Content Include="Content\Free-file-icons\32px\java.png" />
+    <Content Include="Content\Free-file-icons\32px\jpg.png" />
+    <Content Include="Content\Free-file-icons\32px\js.png" />
+    <Content Include="Content\Free-file-icons\32px\key.png" />
+    <Content Include="Content\Free-file-icons\32px\less.png" />
+    <Content Include="Content\Free-file-icons\32px\mid.png" />
+    <Content Include="Content\Free-file-icons\32px\mp3.png" />
+    <Content Include="Content\Free-file-icons\32px\mp4.png" />
+    <Content Include="Content\Free-file-icons\32px\mpg.png" />
+    <Content Include="Content\Free-file-icons\32px\odf.png" />
+    <Content Include="Content\Free-file-icons\32px\ods.png" />
+    <Content Include="Content\Free-file-icons\32px\odt.png" />
+    <Content Include="Content\Free-file-icons\32px\otp.png" />
+    <Content Include="Content\Free-file-icons\32px\ots.png" />
+    <Content Include="Content\Free-file-icons\32px\ott.png" />
+    <Content Include="Content\Free-file-icons\32px\pdf.png" />
+    <Content Include="Content\Free-file-icons\32px\php.png" />
+    <Content Include="Content\Free-file-icons\32px\png.png" />
+    <Content Include="Content\Free-file-icons\32px\ppt.png" />
+    <Content Include="Content\Free-file-icons\32px\psd.png" />
+    <Content Include="Content\Free-file-icons\32px\py.png" />
+    <Content Include="Content\Free-file-icons\32px\qt.png" />
+    <Content Include="Content\Free-file-icons\32px\rar.png" />
+    <Content Include="Content\Free-file-icons\32px\rb.png" />
+    <Content Include="Content\Free-file-icons\32px\rtf.png" />
+    <Content Include="Content\Free-file-icons\32px\sass.png" />
+    <Content Include="Content\Free-file-icons\32px\scss.png" />
+    <Content Include="Content\Free-file-icons\32px\sql.png" />
+    <Content Include="Content\Free-file-icons\32px\tga.png" />
+    <Content Include="Content\Free-file-icons\32px\tgz.png" />
+    <Content Include="Content\Free-file-icons\32px\tiff.png" />
+    <Content Include="Content\Free-file-icons\32px\txt.png" />
+    <Content Include="Content\Free-file-icons\32px\wav.png" />
+    <Content Include="Content\Free-file-icons\32px\xls.png" />
+    <Content Include="Content\Free-file-icons\32px\xlsx.png" />
+    <Content Include="Content\Free-file-icons\32px\xml.png" />
+    <Content Include="Content\Free-file-icons\32px\yml.png" />
+    <Content Include="Content\Free-file-icons\32px\zip.png" />
+    <Content Include="Content\Free-file-icons\32px\_blank.png" />
+    <Content Include="Content\Free-file-icons\32px\_page.png" />
+    <Content Include="Content\Free-file-icons\48px\aac.png" />
+    <Content Include="Content\Free-file-icons\48px\ai.png" />
+    <Content Include="Content\Free-file-icons\48px\aiff.png" />
+    <Content Include="Content\Free-file-icons\48px\avi.png" />
+    <Content Include="Content\Free-file-icons\48px\bmp.png" />
+    <Content Include="Content\Free-file-icons\48px\c.png" />
+    <Content Include="Content\Free-file-icons\48px\cpp.png" />
+    <Content Include="Content\Free-file-icons\48px\css.png" />
+    <Content Include="Content\Free-file-icons\48px\dat.png" />
+    <Content Include="Content\Free-file-icons\48px\dmg.png" />
+    <Content Include="Content\Free-file-icons\48px\doc.png" />
+    <Content Include="Content\Free-file-icons\48px\dotx.png" />
+    <Content Include="Content\Free-file-icons\48px\dwg.png" />
+    <Content Include="Content\Free-file-icons\48px\dxf.png" />
+    <Content Include="Content\Free-file-icons\48px\eps.png" />
+    <Content Include="Content\Free-file-icons\48px\exe.png" />
+    <Content Include="Content\Free-file-icons\48px\flv.png" />
+    <Content Include="Content\Free-file-icons\48px\gif.png" />
+    <Content Include="Content\Free-file-icons\48px\h.png" />
+    <Content Include="Content\Free-file-icons\48px\hpp.png" />
+    <Content Include="Content\Free-file-icons\48px\html.png" />
+    <Content Include="Content\Free-file-icons\48px\ics.png" />
+    <Content Include="Content\Free-file-icons\48px\iso.png" />
+    <Content Include="Content\Free-file-icons\48px\java.png" />
+    <Content Include="Content\Free-file-icons\48px\jpg.png" />
+    <Content Include="Content\Free-file-icons\48px\js.png" />
+    <Content Include="Content\Free-file-icons\48px\key.png" />
+    <Content Include="Content\Free-file-icons\48px\less.png" />
+    <Content Include="Content\Free-file-icons\48px\mid.png" />
+    <Content Include="Content\Free-file-icons\48px\mp3.png" />
+    <Content Include="Content\Free-file-icons\48px\mp4.png" />
+    <Content Include="Content\Free-file-icons\48px\mpg.png" />
+    <Content Include="Content\Free-file-icons\48px\odf.png" />
+    <Content Include="Content\Free-file-icons\48px\ods.png" />
+    <Content Include="Content\Free-file-icons\48px\odt.png" />
+    <Content Include="Content\Free-file-icons\48px\otp.png" />
+    <Content Include="Content\Free-file-icons\48px\ots.png" />
+    <Content Include="Content\Free-file-icons\48px\ott.png" />
+    <Content Include="Content\Free-file-icons\48px\pdf.png" />
+    <Content Include="Content\Free-file-icons\48px\php.png" />
+    <Content Include="Content\Free-file-icons\48px\png.png" />
+    <Content Include="Content\Free-file-icons\48px\ppt.png" />
+    <Content Include="Content\Free-file-icons\48px\psd.png" />
+    <Content Include="Content\Free-file-icons\48px\py.png" />
+    <Content Include="Content\Free-file-icons\48px\qt.png" />
+    <Content Include="Content\Free-file-icons\48px\rar.png" />
+    <Content Include="Content\Free-file-icons\48px\rb.png" />
+    <Content Include="Content\Free-file-icons\48px\rtf.png" />
+    <Content Include="Content\Free-file-icons\48px\sass.png" />
+    <Content Include="Content\Free-file-icons\48px\scss.png" />
+    <Content Include="Content\Free-file-icons\48px\sql.png" />
+    <Content Include="Content\Free-file-icons\48px\tga.png" />
+    <Content Include="Content\Free-file-icons\48px\tgz.png" />
+    <Content Include="Content\Free-file-icons\48px\tiff.png" />
+    <Content Include="Content\Free-file-icons\48px\txt.png" />
+    <Content Include="Content\Free-file-icons\48px\wav.png" />
+    <Content Include="Content\Free-file-icons\48px\xls.png" />
+    <Content Include="Content\Free-file-icons\48px\xlsx.png" />
+    <Content Include="Content\Free-file-icons\48px\xml.png" />
+    <Content Include="Content\Free-file-icons\48px\yml.png" />
+    <Content Include="Content\Free-file-icons\48px\zip.png" />
+    <Content Include="Content\Free-file-icons\48px\_blank.png" />
+    <Content Include="Content\Free-file-icons\48px\_page.png" />
+    <Content Include="Content\Free-file-icons\512px\aac.png" />
+    <Content Include="Content\Free-file-icons\512px\ai.png" />
+    <Content Include="Content\Free-file-icons\512px\aiff.png" />
+    <Content Include="Content\Free-file-icons\512px\avi.png" />
+    <Content Include="Content\Free-file-icons\512px\bmp.png" />
+    <Content Include="Content\Free-file-icons\512px\c.png" />
+    <Content Include="Content\Free-file-icons\512px\cpp.png" />
+    <Content Include="Content\Free-file-icons\512px\css.png" />
+    <Content Include="Content\Free-file-icons\512px\dat.png" />
+    <Content Include="Content\Free-file-icons\512px\dmg.png" />
+    <Content Include="Content\Free-file-icons\512px\doc.png" />
+    <Content Include="Content\Free-file-icons\512px\dotx.png" />
+    <Content Include="Content\Free-file-icons\512px\dwg.png" />
+    <Content Include="Content\Free-file-icons\512px\dxf.png" />
+    <Content Include="Content\Free-file-icons\512px\eps.png" />
+    <Content Include="Content\Free-file-icons\512px\exe.png" />
+    <Content Include="Content\Free-file-icons\512px\flv.png" />
+    <Content Include="Content\Free-file-icons\512px\gif.png" />
+    <Content Include="Content\Free-file-icons\512px\h.png" />
+    <Content Include="Content\Free-file-icons\512px\hpp.png" />
+    <Content Include="Content\Free-file-icons\512px\html.png" />
+    <Content Include="Content\Free-file-icons\512px\ics.png" />
+    <Content Include="Content\Free-file-icons\512px\iso.png" />
+    <Content Include="Content\Free-file-icons\512px\java.png" />
+    <Content Include="Content\Free-file-icons\512px\jpg.png" />
+    <Content Include="Content\Free-file-icons\512px\js.png" />
+    <Content Include="Content\Free-file-icons\512px\key.png" />
+    <Content Include="Content\Free-file-icons\512px\less.png" />
+    <Content Include="Content\Free-file-icons\512px\mid.png" />
+    <Content Include="Content\Free-file-icons\512px\mp3.png" />
+    <Content Include="Content\Free-file-icons\512px\mp4.png" />
+    <Content Include="Content\Free-file-icons\512px\mpg.png" />
+    <Content Include="Content\Free-file-icons\512px\odf.png" />
+    <Content Include="Content\Free-file-icons\512px\ods.png" />
+    <Content Include="Content\Free-file-icons\512px\odt.png" />
+    <Content Include="Content\Free-file-icons\512px\otp.png" />
+    <Content Include="Content\Free-file-icons\512px\ots.png" />
+    <Content Include="Content\Free-file-icons\512px\ott.png" />
+    <Content Include="Content\Free-file-icons\512px\pdf.png" />
+    <Content Include="Content\Free-file-icons\512px\php.png" />
+    <Content Include="Content\Free-file-icons\512px\png.png" />
+    <Content Include="Content\Free-file-icons\512px\ppt.png" />
+    <Content Include="Content\Free-file-icons\512px\psd.png" />
+    <Content Include="Content\Free-file-icons\512px\py.png" />
+    <Content Include="Content\Free-file-icons\512px\qt.png" />
+    <Content Include="Content\Free-file-icons\512px\rar.png" />
+    <Content Include="Content\Free-file-icons\512px\rb.png" />
+    <Content Include="Content\Free-file-icons\512px\rtf.png" />
+    <Content Include="Content\Free-file-icons\512px\sass.png" />
+    <Content Include="Content\Free-file-icons\512px\scss.png" />
+    <Content Include="Content\Free-file-icons\512px\sql.png" />
+    <Content Include="Content\Free-file-icons\512px\tga.png" />
+    <Content Include="Content\Free-file-icons\512px\tgz.png" />
+    <Content Include="Content\Free-file-icons\512px\tiff.png" />
+    <Content Include="Content\Free-file-icons\512px\txt.png" />
+    <Content Include="Content\Free-file-icons\512px\wav.png" />
+    <Content Include="Content\Free-file-icons\512px\xls.png" />
+    <Content Include="Content\Free-file-icons\512px\xlsx.png" />
+    <Content Include="Content\Free-file-icons\512px\xml.png" />
+    <Content Include="Content\Free-file-icons\512px\yml.png" />
+    <Content Include="Content\Free-file-icons\512px\zip.png" />
+    <Content Include="Content\Free-file-icons\512px\_blank.png" />
+    <Content Include="Content\Free-file-icons\512px\_page.png" />
+    <Content Include="Content\Free-file-icons\icons.png" />
+    <Content Include="Content\jQuery.FileUpload\css\jquery.fileupload-noscript.css" />
+    <Content Include="Content\jQuery.FileUpload\css\jquery.fileupload-ui-noscript.css" />
+    <Content Include="Content\jQuery.FileUpload\css\jquery.fileupload-ui.css" />
+    <Content Include="Content\jQuery.FileUpload\css\jquery.fileupload.css" />
+    <Content Include="Content\jQuery.FileUpload\img\loading.gif" />
+    <Content Include="Content\jQuery.FileUpload\img\progressbar.gif" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -247,6 +608,8 @@
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
+    <Content Include="Files\somefiles\100px-BDO_Deutsche_Warentreuhand_Logo.svg.jpg" />
+    <Content Include="Files\somefiles\thumbs\100px-BDO_Deutsche_Warentreuhand_Logo.svg80x80.jpg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -260,6 +623,23 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-fullscreen.js" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-fullscreen.min.js" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-indicator.js" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-indicator.min.js" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-video.js" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-video.min.js" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-vimeo.js" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-vimeo.min.js" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-youtube.js" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-youtube.min.js" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery.js" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery.min.js" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-helper.js" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-helper.min.js" />
+    <Content Include="Scripts\blueimp-gallery2\js\jquery.blueimp-gallery.js" />
+    <Content Include="Scripts\blueimp-gallery2\js\jquery.blueimp-gallery.min.js" />
+    <Content Include="Scripts\bootstrap-sortable.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -272,6 +652,27 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Backload\Client\blueimp\templates\package.json" />
+    <Content Include="Backload\Client\blueimp\loadimage\package.json" />
+    <Content Include="Backload\Client\blueimp\gallery\package.json" />
+    <Content Include="Backload\Client\blueimp\gallery\css\blueimp-gallery.less" />
+    <Content Include="Backload\Client\blueimp\fileupload\package.json" />
+    <Content Include="Backload\Client\blueimp\blob\package.json" />
+    <Content Include="Content\Free-file-icons\icons.ai" />
+    <Content Include="Content\Free-file-icons\icons.pdf" />
+    <Content Include="Content\Free-file-icons\LICENSE" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-fullscreen.min.js.map" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-indicator.min.js.map" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-video.min.js.map" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-vimeo.min.js.map" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-youtube.min.js.map" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery.min.js.map" />
+    <Content Include="Scripts\blueimp-gallery2\js\blueimp-helper.min.js.map" />
+    <Content Include="Scripts\blueimp-gallery2\js\jquery.blueimp-gallery.min.js.map" />
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
     <Content Include="Scripts\cawscripts.js" />
     <Content Include="Scripts\combobox.js" />
@@ -281,6 +682,22 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jQuery.FileUpload\canvas-to-blob.min.js" />
+    <Content Include="Scripts\jQuery.FileUpload\cors\jquery.postmessage-transport.js" />
+    <Content Include="Scripts\jQuery.FileUpload\cors\jquery.xdr-transport.js" />
+    <Content Include="Scripts\jQuery.FileUpload\jquery.fileupload-angular.js" />
+    <Content Include="Scripts\jQuery.FileUpload\jquery.fileupload-audio.js" />
+    <Content Include="Scripts\jQuery.FileUpload\jquery.fileupload-image.js" />
+    <Content Include="Scripts\jQuery.FileUpload\jquery.fileupload-jquery-ui.js" />
+    <Content Include="Scripts\jQuery.FileUpload\jquery.fileupload-process.js" />
+    <Content Include="Scripts\jQuery.FileUpload\jquery.fileupload-ui.js" />
+    <Content Include="Scripts\jQuery.FileUpload\jquery.fileupload-validate.js" />
+    <Content Include="Scripts\jQuery.FileUpload\jquery.fileupload-video.js" />
+    <Content Include="Scripts\jQuery.FileUpload\jquery.fileupload.js" />
+    <Content Include="Scripts\jQuery.FileUpload\jquery.iframe-transport.js" />
+    <Content Include="Scripts\jQuery.FileUpload\load-image.all.min.js" />
+    <Content Include="Scripts\jQuery.FileUpload\tmpl.min.js" />
+    <Content Include="Scripts\jQuery.FileUpload\vendor\jquery.ui.widget.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -309,6 +726,10 @@
     <Content Include="Views\Caws\Index.cshtml" />
     <Content Include="Views\Upload\Upload.cshtml" />
     <Content Include="Views\Caws\_Upload.cshtml" />
+    <Content Include="Views\Shared\_Files.cshtml" />
+    <Content Include="Views\FileUpload\Edit.cshtml" />
+    <Content Include="Views\FileUpload\Index.cshtml" />
+    <Content Include="Views\FileUpload\Show.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -362,6 +783,11 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

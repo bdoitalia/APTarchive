@@ -34,3 +34,6 @@ a[data-title="drpbutton"][disabled="disabled"] {
 .ui-menu {
     z-index: 30000 !important;
 }
+.borderless .list-group-item {
+    border: none !important;
+}

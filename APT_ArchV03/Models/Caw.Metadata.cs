@@ -59,8 +59,6 @@ namespace APT_ArchV03.Models
         [Display(Name = "Status")]
         public object caw_status;
 
-        public object caw_crdate;
-
         [Display(Name = "Created by")]
         public object caw_usrcreator;
 

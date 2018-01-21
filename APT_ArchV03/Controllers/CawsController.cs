@@ -19,6 +19,7 @@ namespace APT_ArchV03.Controllers
         private Db_APT_ArchEntities db = new Db_APT_ArchEntities();
 
         // GET: Caws
+        //[Authorize(Roles = @"BDOITALIA\Administrators")]
         public ActionResult Index(ProductSearchModel searchModel)
         {
             var business = new ProductBusinessLogic();
@@ -167,7 +168,7 @@ namespace APT_ArchV03.Controllers
                 Text = x.cawjob_jc + " - " + x.cawjob_jn
             });
 
-
+            TempData["cawdata"] = caw;
             ViewData["LstCawJobs"] = new SelectList(items2, "Value", "Text");
             ViewData["LstCawJobs1"] = items4;
             return View(caw);
@@ -514,6 +515,49 @@ namespace APT_ArchV03.Controllers
             }).Distinct();
 
             return Json(items);
+        }
+        /****************************/
+
+        /*********PostReportDate*********/
+        [HttpPost]
+        public JsonResult PostReportDate(int id, string reldate)
+        {
+            if (id == null)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { success = false, responseText = "ID is null" }, JsonRequestBehavior.AllowGet);
+            }
+            Caw caw = db.Caws.Find(id);
+            if (caw == null)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { success = false, responseText = "ID is not valid" }, JsonRequestBehavior.AllowGet);
+            }
+            if (caw.caw_status != 1)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { success = false, responseText = "Invalid stage" }, JsonRequestBehavior.AllowGet);
+            }
+            DateTime temp;
+            //Validate request
+            if (DateTime.TryParse(reldate.ToString(), out temp))
+            {
+                caw.caw_reldate = temp;
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { success = false, responseText = "Action not supported" }, JsonRequestBehavior.AllowGet);
+            }
+
+            caw.caw_dldate = caw.caw_reldate.Value.AddDays(60);
+            caw.caw_status = 2;
+
+            db.Entry(caw).State = EntityState.Modified;
+            db.SaveChanges();
+
+            Response.StatusCode = (int)HttpStatusCode.OK;
+            return Json(new { success = true, responseText = "Report date submitted successfully" }, JsonRequestBehavior.AllowGet);
         }
         /****************************/
 
