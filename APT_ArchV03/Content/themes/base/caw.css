@@ -37,3 +37,6 @@ a[data-title="drpbutton"][disabled="disabled"] {
 .borderless .list-group-item {
     border: none !important;
 }
+.icon-groove {
+    content: url(/Content/themes/base/images/groove_48x48.png)
+}

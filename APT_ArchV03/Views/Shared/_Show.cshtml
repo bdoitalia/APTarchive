@@ -1,13 +1,12 @@
-﻿@model APT_ArchV03.Models.FilesViewModel
+﻿@using APT_ArchV03.Models
 @using APT_ArchV03.Helpers
-
 
 @{
     ViewBag.Title = "Show";
+    FilesViewModel filesViewModel = new FilesViewModel();
 }
 <!-- blueimp File Upload & Gallery styles -->
 @Styles.Render("~/Content/jQuery-File-Upload")
-
 <h2>Show</h2>
 <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
     <div class="slides"></div>
@@ -19,15 +18,14 @@
     <ol class="indicator"></ol>
 </div>
 <div id="links">
-
-    @if (@Model.Files != null && @Model.Files.Length!=0)
+    @if (@filesViewModel.Files != null && @filesViewModel.Files.Length != 0)
     {
-        foreach (ViewDataUploadFilesResult file in @Model.Files)
+        foreach (ViewDataUploadFilesResult file in filesViewModel.Files)
         {
 
             if (file.type.Equals("video/mp4"))
             {
-             
+
                 <a href="@file.url" title="@file.name" type="video/mp4" data-description="This is a movie."><img src="@file.thumbnailUrl" alt="@file.name"></a>
 
 
@@ -41,7 +39,7 @@
     }
     else
     {
-<p>No files</p>
+        <p>No files</p>
     }
     <!--Your files goes here-->
 </div>

@@ -9,3 +9,6 @@
 .navbar-inverse .navbar-brand {
     color: white;
 }
+#btnclearfilters {
+    outline: none;
+}

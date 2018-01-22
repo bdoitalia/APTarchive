@@ -290,6 +290,7 @@
     <Content Include="Backload\Client\blueimp\loadimage\js\vendor\jquery.Jcrop.js" />
     <Content Include="Backload\Client\blueimp\templates\js\tmpl.js" />
     <Content Include="Backload\Client\blueimp\templates\js\tmpl.min.js" />
+    <Content Include="bdofavicon.ico" />
     <Content Include="Content\blueimp-gallery2\css\blueimp-gallery-indicator.css" />
     <Content Include="Content\blueimp-gallery2\css\blueimp-gallery-indicator.min.css" />
     <Content Include="Content\blueimp-gallery2\css\blueimp-gallery-video.css" />
@@ -574,6 +575,7 @@
     <Content Include="Content\themes\base\datepicker.css" />
     <Content Include="Content\themes\base\dialog.css" />
     <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\groove_48x48.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -607,7 +609,6 @@
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\style.css" />
-    <Content Include="favicon.ico" />
     <Content Include="Files\somefiles\100px-BDO_Deutsche_Warentreuhand_Logo.svg.jpg" />
     <Content Include="Files\somefiles\thumbs\100px-BDO_Deutsche_Warentreuhand_Logo.svg80x80.jpg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -661,6 +662,8 @@
     <Content Include="Content\Free-file-icons\icons.ai" />
     <Content Include="Content\Free-file-icons\icons.pdf" />
     <Content Include="Content\Free-file-icons\LICENSE" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -730,6 +733,7 @@
     <Content Include="Views\FileUpload\Edit.cshtml" />
     <Content Include="Views\FileUpload\Index.cshtml" />
     <Content Include="Views\FileUpload\Show.cshtml" />
+    <Content Include="Views\Shared\_Show.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

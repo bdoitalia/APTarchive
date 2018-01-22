@@ -114,38 +114,102 @@
                 <dl class="dl-horizontal">
 
                     <li class="list-group-item">
-                    <dt style="padding-top: 6px;">
+                    <dt style="@(Model.caw_status ==1 ? "padding-top: 6px;" : "" )">
                         @Html.DisplayNameFor(model => model.caw_reldate)
                     </dt>
                     <dd>
-                        @Html.EditorFor(model => model.caw_reldate, new { htmlAttributes = new { @class = "form-control", required = "required", title = "Partner name is required" } })
-                        @Html.ValidationMessageFor(model => model.caw_reldate, "", new { @class = "text-danger" })
+                        @if (Model.caw_status == 1)
+                        {
+                            @Html.EditorFor(model => model.caw_reldate, new { htmlAttributes = new { @class = "form-control", required = "required", title = "Report date is required" } })
+                            @Html.ValidationMessageFor(model => model.caw_reldate, "", new { @class = "text-danger" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.caw_reldate);
+                        }
 
                     </dd>
 
                     </li>
-
                 </dl>
-                <button id="btnToPhase2" class="btn btn-default pull-right">Confirm</button>
             </ul>
+            <button id="btnToPhase2" class="btn btn-default pull-right" @(Model.caw_status == 1 ? "" : "disabled")>Submit</button>
 
         </div>
         <h4>Closing information</h4>
         <div>
-            <script>
-                var $form = null;
-                $(function () {
+            @if (Model.caw_status == 2)
+            {
+                <script>
+                    var $form = null;
+                    $(function () {
 
-                    $form = $('#fileupload').fileupload({
-                        dataType: 'json'
+                        $form = $('#fileupload').fileupload({
+                            dataType: 'json'
+                        });
+
                     });
+                    $('#fileupload').addClass('fileupload-processing');
+                </script>
 
-                });
-                $('#fileupload').addClass('fileupload-processing');
-            </script>
+                <ul class="list-group borderless">
+                    <dl class="dl-horizontal">
 
-            @Html.Partial("_Files")
+                        <li class="list-group-item">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.caw_dldate)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.caw_dldate)
+                        </dd>
+                        </li>
 
+                        <li class="list-group-item">
+                        <dt style="padding-top: 6px;">
+                            @Html.DisplayNameFor(model => model.caw_archdate)
+                        </dt>
+                        <dd>
+                            @Html.EditorFor(model => model.caw_archdate, new { htmlAttributes = new { @class = "form-control", required = "required", title = "Archiving date is required" } })
+                            @Html.ValidationMessageFor(model => model.caw_archdate, "", new { @class = "text-danger" })
+                        </dd>
+                        </li>
+                    </dl>
+                </ul>
+                <hr />
+
+
+                @Html.Partial("_Files")
+                <button id="btnArchive" class="btn btn-default pull-right" disabled>Archive</button>
+            }
+            @if (Model.caw_status == 1)
+            {
+                <p class="text-danger">Current APT stage prevents to show any value on this section.</p>
+            }
+            @if (Model.caw_status == 3)
+            {
+                @*@Html.Partial("_Show")*@
+                <h3>Uploaded Files</h3>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <span class="icon-groove"></span>
+                        </div>
+                        <div class="col-md-10">
+                            @*<script>
+                                $(document).ready(function () {
+                                    setTimeout(disableaccordion, 3000)
+                                });
+                                function disableaccordion() {
+                                    $('#accordion').accordion("disable");
+                                }
+                            </script>*@
+                            @Html.DisplayFor(model => model.caw_fname)
+                        </div>
+
+                    </div>
+
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -161,8 +225,7 @@
 
     $(document).ready(function () {
 
-
-
+        
         $('#accordion').accordion({
             header: "h4",
             icons: { "header": "ui-icon-caret-1-s", "activeHeader": "ui-icon-caret-1-n" },
@@ -171,7 +234,7 @@
         });
 
         $(document).on('click', '#btnToPhase2', function () {
-            
+
             $.ajax({
                 type: 'POST',
                 //contentType: "application/json",
@@ -182,18 +245,19 @@
 
                 data: {
                     id: @Model.caw_id,
-                    reldate: $('#caw_reldate').val()                    
+                    reldate: $('#caw_reldate').val()
                 },
 
 
                 success: function (response) {
 
-                    $('#btnToPhase2').addClass("disabled");
-                    $('#caw_reldate').attr("disabled", "disabled")
-                    $('#statusflag').removeClass('stage1').addClass('stage2');
-                    $('#accordion').accordion({ active: 3 });
+                    //$('#btnToPhase2').addClass("disabled");
+                    //$('#caw_reldate').attr("disabled", "disabled")
+                    //$('#statusflag').removeClass('stage1').addClass('stage2');
+                    //$('#accordion').accordion({ active: 3 });
                     alert(response.responseText);
-                                        
+                    location.reload();
+
                 },
                 error: function (response) {
                     alert('There was a problem when trying to submit the report date. ' + response.responseText);
@@ -202,6 +266,12 @@
 
         });
 
+
+
+    });
+    $(document).on('click', 'button.btn.start', function () {
+        console.log("File uploaded no bind");
+        //$('#btnArchive').removeAttr("disabled");
 
     });
 </script>
