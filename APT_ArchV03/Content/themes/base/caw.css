@@ -34,8 +34,9 @@ a[data-title="drpbutton"][disabled="disabled"] {
 .ui-menu {
     z-index: 30000 !important;
 }
-.icon-apt {
-    content: url(/Content/img/apt.png);
-    max-width: 250px;
-    max-height: 200px;
+.borderless .list-group-item {
+    border: none !important;
+}
+.icon-groove {
+    content: url(/Content/themes/base/images/groove_48x48.png)
 }

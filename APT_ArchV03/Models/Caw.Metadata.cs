@@ -45,7 +45,7 @@ namespace APT_ArchV03.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public object caw_dldate;
 
-        [Display(Name = "Arch date")]
+        [Display(Name = "Archiving date")]
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public object caw_archdate;
@@ -58,8 +58,6 @@ namespace APT_ArchV03.Models
 
         [Display(Name = "Status")]
         public object caw_status;
-
-        public object caw_crdate;
 
         [Display(Name = "Created by")]
         public object caw_usrcreator;

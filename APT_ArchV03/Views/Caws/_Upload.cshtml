@@ -1,6 +1,9 @@
 ﻿@model APT_ArchV03.Models.Caw
+@*@using APT_ArchV03.Models*@
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Upload";
+    //Caw caw = this.ViewData.Contains("caw") ? (Caw)this.ViewData["caw"] : null;
+    var caw = ViewData["caw"]; 
 }
 
 <h2>Upload File</h2>

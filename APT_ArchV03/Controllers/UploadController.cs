@@ -14,16 +14,16 @@ namespace APT_ArchV03.Controllers
     public class UploadController : Controller
     {
         // GET: Upload
-        public ActionResult Index()
-        {
-            return View();
-        }
-        
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
+
+        //[ChildActionOnly]
         public ActionResult Upload(HttpPostedFileBase file, Caw caw)
         {
-
+            caw = (Caw)TempData["cawdata"];
             string allowedExtensions = ".gsa";
-
 
             if (file != null && file.ContentLength > 0)
             {
@@ -44,7 +44,7 @@ namespace APT_ArchV03.Controllers
             {
                 ViewBag.Msg = "Uploaded Failed";
             }
-            return View(caw);
+            return PartialView(caw);
 
 
 
