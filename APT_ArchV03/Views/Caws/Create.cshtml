@@ -10,7 +10,24 @@
 }
 
 
-<h2>Create</h2>
+<div class="nav navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="@Url.Action("Index", "Home")" class="navbar-brand">
+                <img src="~/Content/img/logo.png" class="logo" title="title" alt="additional title" />
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+
 
 
 @using (Html.BeginForm("Create", "Caws", FormMethod.Post, new { @id = "cawcreateform" }))
@@ -19,7 +36,7 @@
 
 
     <div class="form-horizontal">
-        <h4>Caw</h4>
+        <h4>Inserisci dati del CAW</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -48,7 +65,7 @@
 
                 @Html.ListBox("LstCawJobs", new SelectList(string.Empty, "Value", "Text"), htmlAttributes: new { @class = "form-control", required = "required", title = "Please, add some jobs to this caw", disabled = "disabled" })
                 @Html.ValidationMessage("LstCawJobs", "", new { @class = "text-danger" })
-                
+
 
             </div>
         </div>
@@ -87,29 +104,30 @@
         <div class="form-group">
             @Html.LabelFor(model => model.caw_notes, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.caw_notes, htmlAttributes : new { @class = "form-control" })
+                @Html.TextAreaFor(model => model.caw_notes, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.caw_notes, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" onclick="selectDeselect('LstCawJobs', true)" />
+                <input type="submit" value="Create" class="btn btn-default pull-right" onclick="selectDeselect('LstCawJobs', true)" />
+                <input type="button" value="Back" class="btn btn-default pull-right" onclick="location.href='@Url.Action("Index","Caws")'" />
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+@*<div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    
+
     @Scripts.Render("~/bundles/cawscripts")
     @Scripts.Render("~/bundles/combobox")
-    
+
     @Styles.Render("~/Content/caw")
 
 }
@@ -118,7 +136,7 @@
 
     $(document).ready(function () {
 
-        
+
 
 
         function PostAjax (datasource , iddatatarget, urltarget) {
@@ -292,16 +310,19 @@
     .custom-combobox-input {
         margin: 0;
         padding: 5px 10px;
-        background: none!important;
+        background: none !important;
     }
+
     .ui-state-active .ui-icon, .ui-button:active .ui-icon {
-        background: none!important;
+        background: none !important;
     }
+
     .ui-icon {
         width: 2px;
         height: 2px;
-        background: none!important;
+        background: none !important;
     }
+
     a.btncombo, a.btncombo:hover, span a.btncombo:active, a.btncombo:focus {
         border: none;
         background: none;
@@ -309,9 +330,11 @@
         border-radius: 4px;
         padding: 0;
     }
-    a.btncombo:focus {
-        outline: none !important;
-    }
+
+        a.btncombo:focus {
+            outline: none !important;
+        }
+
         a.btncombo span {
             display: inline-block;
             width: 0;
@@ -323,12 +346,9 @@
             border-right: 4px solid transparent;
             border-left: 4px solid transparent;
         }
+
     .custom-combobox a.btncombo span {
         margin-left: 0;
         margin-top: 0;
     }
-
-    
-
-
 </style>

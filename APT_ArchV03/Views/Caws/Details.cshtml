@@ -5,129 +5,155 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<div class="nav navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="@Url.Action("Index", "Home")" class="navbar-brand">
+                <img src="~/Content/img/logo.png" class="logo" title="title" alt="additional title" />
+            </a>
+        </div>
+    </div>
+</div>
+
+
 
 <div>
-    <h4>Caw</h4>
+    <h4>Inserisci infomazioni aggiuntive</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_name)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_name)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.caw_name)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_client)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.caw_name)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_client)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.caw_client)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_partner)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.caw_client)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_partner)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CawJobs)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_manager)
-        </dt>
+            <dd>
+                @Html.ListBox("LstCawJobs", ViewData["LstCawJobs"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_manager)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_office)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.caw_partner)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_office)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.caw_partner)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_stdate)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.caw_manager)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_stdate)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.caw_manager)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_reldate)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.caw_office)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_reldate)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.caw_office)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_dldate)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.caw_stdate)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_dldate)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.caw_stdate)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_archdate)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.caw_reldate)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_archdate)
-        </dd>
+            <dd>
+                @Html.EditorFor(model => model.caw_reldate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.caw_reldate, "", new { @class = "text-danger" })
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_fname)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.caw_dldate)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_fname)
-        </dd>
+            <dd>
+                @Html.EditorFor(model => model.caw_dldate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.caw_dldate, "", new { @class = "text-danger" })
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_notes)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.caw_archdate)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_notes)
-        </dd>
+            <dd>
+                @Html.EditorFor(model => model.caw_archdate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.caw_archdate, "", new { @class = "text-danger" })
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_status)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.caw_fname)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_status)
-        </dd>
+            <dd>
+                @Html.EditorFor(model => model.caw_fname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.caw_fname, "", new { @class = "text-danger" })
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_crdate)
-        </dt>
+            @*   <dt>
+                    @Html.DisplayNameFor(model => model.caw_notes)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_crdate)
-        </dd>
+                <dd>
+                    @Html.TextAreaFor(model => model.caw_notes, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.caw_notes, "", new { @class = "text-danger" })
+                </dd> *@
 
-        <dt>
-            @Html.DisplayNameFor(model => model.caw_usrcreator)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.caw_usrcreator)
-            @Html.ListBox("LstCawJobs", ViewData["LstCawJobs"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
-            @Html.ListBox("LstCawJobs1", ViewData["LstCawJobs1"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
-        </dd>
+            @* <dd>
 
-    </dl>
+                @Html.ListBox("LstCawJobs", ViewData["LstCawJobs"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
+                @Html.ListBox("LstCawJobs1", ViewData["LstCawJobs1"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
+                </dd>*@
+
+        </dl>
+
+
+    </div>
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
 </div>
+
+
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.caw_id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
