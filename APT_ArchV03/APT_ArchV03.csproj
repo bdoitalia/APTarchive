@@ -559,6 +559,8 @@
     <Content Include="Content\Free-file-icons\512px\_blank.png" />
     <Content Include="Content\Free-file-icons\512px\_page.png" />
     <Content Include="Content\Free-file-icons\icons.png" />
+    <Content Include="Content\images\apt.png" />
+    <Content Include="Content\images\cartaceo.png" />
     <Content Include="Content\jQuery.FileUpload\css\jquery.fileupload-noscript.css" />
     <Content Include="Content\jQuery.FileUpload\css\jquery.fileupload-ui-noscript.css" />
     <Content Include="Content\jQuery.FileUpload\css\jquery.fileupload-ui.css" />

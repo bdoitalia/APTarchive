@@ -9,6 +9,145 @@
 .navbar-inverse .navbar-brand {
     color: white;
 }
+
 #btnclearfilters {
     outline: none;
+}
+
+header {
+    background: -moz-linear-gradient(90deg,#f9f9f9 0,#fdfdfd 100%);
+    background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fdfdfd),color-stop(100%,#f9f9f9));
+    background: -webkit-linear-gradient(90deg,#f9f9f9 0,#fdfdfd 100%);
+    background: -o-linear-gradient(90deg,#f9f9f9 0,#fdfdfd 100%);
+    background: -ms-linear-gradient(90deg,#f9f9f9 0,#fdfdfd 100%);
+    background: linear-gradient(0deg,#f9f9f9 0,#fdfdfd 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fdfdfd',endColorstr='#f9f9f9',GradientType=0);
+    border-bottom: 2px solid #ececec;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 9000;
+}
+
+#login-bar {
+    background: #323232;
+    color: #fff;
+    font-size: .929em;
+    line-height: 1.538em;
+    padding: 12px 0;
+}
+header .container {
+    max-width: none;
+}
+#login-bar #secondary-nav {
+    padding-right: 11px;
+}
+#secondary-nav {
+    min-height: 21px;
+}
+
+.align-right {
+    text-align: right;
+}
+
+#logoLink {
+    height: 68px;
+    width: 218px;
+    display: block;
+}
+
+#logo {
+    margin-top: 14px;
+    min-width: 221px;
+    max-width: 221px;
+    display: table-row;
+    height: 68px;
+    vertical-align: middle;
+}
+
+#bdo-logo-holder {
+    display: table-cell;
+    vertical-align: middle;
+    height: 68px;
+}
+
+#logo #Laag_1 {
+    height: 36px;
+    margin-top: 8px;
+    margin-left: -8px;
+}
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+#mfname-holder {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+    #mfname-holder #mfname {
+        color: #ed1a3b;
+        display: inline-block;
+        padding: 5px 0;
+        line-height: 15px;
+        max-width: 115px;
+        min-width: 115px;
+        vertical-align: middle;
+        text-align: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+.navbar-toggle {
+    background-color: #323232;
+    border: 1px solid #323232;
+    outline: none;
+    margin-top: 15px;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+    background-color: #323232;
+    border: 1px solid #323232;
+    outline:auto;
+}
+.navbar-toggle .icon-bar {
+    background-color: #fff;
+}
+.navbar-brand {
+    padding: 0px 15px;
+}
+.navbar {
+    margin-bottom: 0px;
+    border: none;
+}
+.navbar-default .navbar-nav > li > a {
+    color: #333;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.navbar ul.navbar-nav > li {
+    border-left: 1px solid #e0e0e0;
+    border-bottom: 2px solid transparent;
+}
+@media (min-width: 768px) {
+    .navbar-nav > li > a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .navbar-default .navbar-nav > li > a {
+        line-height: 46px;
+    }
+    .navbar-default .navbar-nav > li:hover {
+        background: #f2f2f2;
+        border-bottom-color: #ed1a3b;
+    }
+}
+@media (max-width: 767px) {
+    #login-bar {
+        display: none;
+    }
 }

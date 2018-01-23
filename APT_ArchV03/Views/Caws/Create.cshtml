@@ -10,42 +10,15 @@
 }
 
 
-<div class="nav navbar-default">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="@Url.Action("Index", "Home")" class="navbar-brand">
-                <img src="~/Content/img/logo.png" class="logo" title="title" alt="additional title" />
-            </a>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
 @using (Html.BeginForm("Create", "Caws", FormMethod.Post, new { @id = "cawcreateform" }))
 {
     @Html.AntiForgeryToken()
 
 
     <div class="form-horizontal">
-        <h4>Inserisci dati del CAW</h4>
+        <h4>Enter CAW data</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.caw_name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.caw_name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter caw name here" } })
-                @Html.ValidationMessageFor(model => model.caw_name, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.caw_client, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -100,6 +73,13 @@
             </div>
         </div>
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.caw_name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.caw_name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter caw name here" } })
+                @Html.ValidationMessageFor(model => model.caw_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.caw_notes, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -110,7 +90,7 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-12 actionbtn">
                 <input type="submit" value="Create" class="btn btn-default pull-right" onclick="selectDeselect('LstCawJobs', true)" />
                 <input type="button" value="Back" class="btn btn-default pull-right" onclick="location.href='@Url.Action("Index","Caws")'" />
             </div>

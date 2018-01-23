@@ -4,37 +4,73 @@
 
 @Styles.Render("~/Content/caw")
 
-<div class="nav navbar-default">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="@Url.Action("Index", "Home")" class="navbar-brand">
-                <img src="~/Content/img/logo.png" class="logo" title="title" alt="additional title" />
+<div id="home-btn-container" class="row">
+    <div class="col-md-6 btn-container">
+        <div class="col-md-12">
+            <a id="btn-legacy-apt" href="http://archivio.bdo.it/" class="col-md-8 thumbnail">
             </a>
+            <h4 class="btn-text col-md-8">Archivio Cartaceo</h4>
         </div>
     </div>
-</div>
 
-
-
-
-
-
-
-
-<div class="row">
-    <div class="col-md-6">
-        <h2 class="titlecartaceo">Archivio Cartaceo</h2>
-        <p><a href="http://archivio.bdo.it/"> <img src="~/Content/img/cartaceo.png" class="imgcartaceo" /></a></p>
+    <div class="col-md-6 btn-container">
+        <div class="col-md-12">
+            <a id="btn-new-apt" href="@Url.Action("Index","Caws")" class="col-md-8 thumbnail">
+            </a>
+            <h4 class="btn-text col-md-8">APT Management</h4>
+        </div>
     </div>
-    <div class="col-md-6">
-        <h2 class="titleapt">Archivio APT</h2>
-        <p><span type="button" onclick="location.href='@Url.Action("Index","Caws")'" class="icon-apt"></span></p>
-    </div>
+
+    
 
 
 </div>
+<style>
+    .navbar {
+        display: none;
+    }
+
+    #home-btn-container .btn-container > a {
+        float: none;
+        margin: 0 auto;
+        display: block;
+        max-width: 300px;
+    }
+
+    #home-btn-container .btn-container {
+        padding: 15px 10px;
+        overflow: hidden;
+    }
+    .btn-img {
+        max-width: 300px;
+        float: none;
+        margin: 0 auto;
+    }
+    .btn-text {
+        text-align: center;
+        float: none;
+        margin: 0 auto;
+        padding-top: 10px;
+    }
+    #btn-legacy-apt {
+        content: url(/Content/images/cartaceo.png);
+        max-width: 250px;
+        float: none;
+        margin: 0 auto;
+    }
+
+    #btn-new-apt {
+        content: url(/Content/images/apt.png);
+        max-width: 250px;
+        float: none;
+        margin: 0 auto;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#home-btn-container').css("margin-top", $(window).height() / 2 - $('#home-btn-container').height() / 2 - 45 - 75);
+        $(window).on('resize', function () {
+            $('#home-btn-container').css("margin-top", $(window).height() / 2 - $('#home-btn-container').height() / 2 - 45 - 75);
+        });
+    });
+</script>
