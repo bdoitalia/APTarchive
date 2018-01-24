@@ -20,7 +20,7 @@ namespace APT_ArchV03.Controllers
 
         // GET: Caws
         //[Authorize(Roles = @"BDOITALIA\Administrators")]
-        public ActionResult Index(ProductSearchModel searchModel)
+        public ActionResult List(ProductSearchModel searchModel)
         {
             var business = new ProductBusinessLogic();
             var model = business.GetProducts(searchModel);

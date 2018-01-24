@@ -16,89 +16,84 @@
 
 <div class="container nopadding">
 
-    
 
-    <div id="btn-container" class="row">      
-        <button id="btnclearfilters" class="disabled pull-right btn btn-link">Clear</button>
-        <button id="btnpopupfilters" class="pull-right btn btn-primary">Filter</button>
 
-    </div>
+    <div id="btn-container" class="row">
+        @*<button id="btnclearfilters" class="disabled pull-right btn btn-link">Clear</button>
+        <button id="btnpopupfilters" class="pull-right btn btn-primary">Filter</button>*@
+        <div id="block-filter">
+            <button id="btnclearfilters" class="disabled pull-right btn btn-link"><span class="glyphicon glyphicon-remove"></span></button>
+            <div class="filter-title">
+                <span>Filters</span>
+            </div>
+            @*<button class="filter-title btn btn-link">Filters</button>*@
+            <div data-role="content" class="filter-content">
+                <div class="filter-content-container">
+                    <div class="form-group col-md-6">
+                        @Html.Label("Year", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-12">
+                            @Html.DropDownList("lstYear", ViewData["lstYear"] as SelectListItem[], "--Select year--", htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
 
-    <div class="modal fade" tabindex="-1" id="loginModal"
-         data-keyboard="false" data-backdrop="static">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                        ×
-                    </button>
-                    <h4 class="modal-title">Filters</h4>
+                    <div class="form-group col-md-6">
+                        @Html.Label("Client", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-12">
+                            @Html.DropDownList("lstClient", ViewData["lstClient"] as SelectListItem[], "--Select client--", htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        @Html.Label("Job", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-12">
+                            @Html.DropDownList("lstJob", ViewData["lstJob"] as SelectListItem[], "--Select client--", htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        @Html.Label("Partner", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-12">
+                            @Html.DropDownList("lstPartner", ViewData["lstPartner"] as SelectListItem[], "--Select partner--", htmlAttributes: new { @class = "form-control" })
+
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        @Html.Label("Manager", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-12">
+                            @Html.DropDownList("lstManager", ViewData["lstManager"] as SelectListItem[], "--Select manager--", htmlAttributes: new { @class = "form-control" })
+
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        @Html.Label("Office", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-12">
+                            @Html.DropDownList("lstOffice", ViewData["lstOffice"] as SelectListItem[], "--Select office--", htmlAttributes: new { @class = "form-control" })
+
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-12">
+                            @Html.DropDownList("lstStatus", ViewData["lstStatus"] as SelectListItem[], "--Select status--", htmlAttributes: new { @class = "form-control" })
+
+                        </div>
+                    </div>
+                    <div class="form-group col-md-10 pull-right">
+                        <button id="btnclearfilters" class="disabled pull-right btn btn-link">Clear</button>
+                        <button type="submit" id="btnApplyfilter" class="pull-right btn btn-link">Apply</button>
+                    </div>
                 </div>
-                <div class="modal-body form-horizontal">
-                    <form>
-                        <div class="form-group">
-                            @Html.Label("Year", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownList("lstYear", ViewData["lstYear"] as SelectListItem[], "--Select year--", htmlAttributes: new { @class = "form-control" })
 
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.Label("Client", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-
-                                @Html.DropDownList("lstClient", ViewData["lstClient"] as SelectListItem[], "--Select client--", htmlAttributes: new { @class = "form-control" })
-                                                                
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.Label("Job", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownList("lstJob", ViewData["lstJob"] as SelectListItem[], "--Select client--", htmlAttributes: new { @class = "form-control" })
-                                
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.Label("Partner", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownList("lstPartner", ViewData["lstPartner"] as SelectListItem[], "--Select partner--", htmlAttributes: new { @class = "form-control" })
-                                
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.Label("Manager", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownList("lstManager", ViewData["lstManager"] as SelectListItem[], "--Select manager--", htmlAttributes: new { @class = "form-control" })
-
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.Label("Office", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownList("lstOffice", ViewData["lstOffice"] as SelectListItem[], "--Select office--", htmlAttributes: new { @class = "form-control" })
-                                
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownList("lstStatus", ViewData["lstStatus"] as SelectListItem[], "--Select status--", htmlAttributes: new { @class = "form-control" })
-
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" id="btnApplyfilter" class="btn btn-primary button button4">Apply</button>
-
-                    <button type="button" id="btnHideModal" class="btn btn-primary button button4">
-                        Cancel
-                    </button>
-                </div>
             </div>
         </div>
+
+
     </div>
+
+    
 
 </div>
 <div class="table-responsive tblcaws">
@@ -123,7 +118,7 @@
                 <th>
                     Year
                 </th>
-                
+
                 <th></th>
             </tr>
         </thead>
@@ -149,7 +144,7 @@
                     <td id="tbldtcawoffice">
                         @Html.DisplayFor(modelItem => item.caw_office)
                     </td>
-                    <td id="tbldtcawyear">                        
+                    <td id="tbldtcawyear">
                         @Html.Raw(item.caw_stdate.Value.Year.ToString())
                     </td>
 
@@ -168,6 +163,18 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+        $('#block-filter').accordion({
+            header: ".filter-title",
+            collapsible: true,
+            active: false,
+            icons: { "header": "ui-icon-caret-1-s", "activeHeader": "ui-icon-caret-1-n" },
+            heightStyle: "content"
+        });
+        $(window).on('resize', function () {
+            $('.filter-content').css('width', $('.body-content').innerWidth());
+        });
+        $('.filter-content').css('width', $('.body-content').innerWidth());
+
         //$('.clickable-row').on("click", function () {
         //    debugger;
         //    window.location = $(this).data("href");
@@ -192,10 +199,10 @@
                     },
 
                     success: function (data) {
-                        console.log("Data : " + data);
+                        //console.log("Data : " + data);
                         response($.map(data, function (val, item) {
-                            console.log("Data : " + val.Partner_Gestore);
-                            console.log("item : " + item.Partner_Gestore);
+                            //console.log("Data : " + val.Partner_Gestore);
+                            //console.log("item : " + item.Partner_Gestore);
                             return {
                                 label: val.Partner_Gestore,
                                 value: val.Partner_Gestore
@@ -216,7 +223,7 @@
     });
 
     function AjaxFilter(year, client, job, partner, manager, office, status ) {
-        console.log("Filtering");
+        //console.log("Filtering");
 
 
         $.ajax({
@@ -241,9 +248,9 @@
 
 
                 $.each(elements, function (i, element) {
-                    console.log("element V: " + element.CawName);
-                    console.log("element T: " + element.Client);
-                    console.log("element T: " + element.Partner);
+                    //console.log("element V: " + element.CawName);
+                    //console.log("element T: " + element.Client);
+                    //console.log("element T: " + element.Partner);
                     $('table tbody').append(
                         '<tr class="clickable-row" data-href="/Caws/Details/' + element.CawID + '">' +
                         '<td id="tbldtcawname">' + element.CawName + '</td>' +
@@ -264,8 +271,9 @@
 
     }
     $(document).on('click', '#btnApplyfilter', function () {
+        $('#block-filter').accordion("option", "active", false);
         $('table tbody').empty();
-        $("#loginModal").modal('hide');
+        //$("#loginModal").modal('hide');
         var year = $('#lstYear option:selected').val();
         var client = $('#lstClient option:selected').val();
         var job = $('#lstJob option:selected').val();
@@ -278,8 +286,9 @@
 
     });
     $(document).on('click', '#btnclearfilters', function () {
+        $('#block-filter').accordion("option", "active", false);
         $('table tbody').empty();
-        $('.modal-dialog .modal-content select').val($('.modal-dialog .modal-content select option:first').val());
+        $('#block-filter .filter-content select').val($('#block-filter .filter-content select option:first').val());
         AjaxFilter();
         $('#btnclearfilters').addClass('disabled');
     });

@@ -8,6 +8,8 @@
 }
 #btn-container {
     padding: 10px 0;
+    overflow: hidden;
+    height: 63px;
 }
 .stage {
     display: block;
@@ -39,4 +41,35 @@ a[data-title="drpbutton"][disabled="disabled"] {
 }
 .icon-groove {
     content: url(/Content/themes/base/images/groove_48x48.png)
+}
+/**********************Filter layout***********************/
+.filter-title {
+    outline: none;
+    width: 100px;
+    background: none;
+    color: #333;
+    border: none;
+    float: right;
+    text-align: right;
+}
+.ui-state-active .ui-icon {
+    background-image: url(images/ui-icons_555555_256x240.png);
+}
+.filter-content {
+    border: none;
+}
+#block-filter {
+    /*position: absolute;
+    z-index: 100;*/
+}
+.filter-content {
+    position: absolute;
+    z-index: 100;
+    margin-top: 45px;
+}
+.glyphicon {
+    line-height: 20px;
+}
+button#btnclearfilters.disabled {
+    display: none;
 }

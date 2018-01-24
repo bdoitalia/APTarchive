@@ -728,7 +728,7 @@
     <Content Include="Views\Caws\Delete.cshtml" />
     <Content Include="Views\Caws\Details.cshtml" />
     <Content Include="Views\Caws\Edit.cshtml" />
-    <Content Include="Views\Caws\Index.cshtml" />
+    <Content Include="Views\Caws\List.cshtml" />
     <Content Include="Views\Upload\Upload.cshtml" />
     <Content Include="Views\Caws\_Upload.cshtml" />
     <Content Include="Views\Shared\_Files.cshtml" />
