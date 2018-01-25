@@ -3,74 +3,138 @@
 }
 
 @Styles.Render("~/Content/caw")
+@Scripts.Render("~/Scripts/jquery.canvasjs.min.js")
+
 
 <div id="home-btn-container" class="row">
-    <div class="col-md-6 btn-container">
-        <div class="col-md-12">
-            <a id="btn-legacy-apt" href="http://archivio.bdo.it/" class="col-md-8 thumbnail">
-            </a>
-            <h4 class="btn-text col-md-8">Archivio Cartaceo</h4>
+        <div class="col-md-6 btn-container">
+            <div class="col-md-12">
+                <a id="btn-legacy-apt" href="http://archivio.bdo.it/" class="col-md-8 thumbnail">
+                </a>
+                <h4 class="btn-text col-md-8">Archivio Cartaceo</h4>
+            </div>
+        </div>
+
+        <div class="col-md-6 btn-container">
+            <div class="col-md-12">
+                <a id="btn-new-apt" href="@Url.Action("List","Caws")" class="col-md-8 thumbnail">
+                </a>
+                <h4 class="btn-text col-md-8">APT Management</h4>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-6 btn-container">
-        <div class="col-md-12">
-            <a id="btn-new-apt" href="@Url.Action("Index","Caws")" class="col-md-8 thumbnail">
-            </a>
-            <h4 class="btn-text col-md-8">APT Management</h4>
-        </div>
-    </div>
 
+<div class="row statistic">
     
+    <div class="col-md-6">
+        <div class="col-md-12">
+            <h5>Total CAWs: @ViewData["total"]</h5>
+        </div>
+        <ul><li>Opened: @ViewData["opened"]</li></ul>
+        <ul><li>Reporting: @ViewData["reporting"]</li></ul>
+        <ul><li>Closed: @ViewData["closed"]</li></ul>
+    </div>
+
+
+
+
+
+
+    <div class="col-md-6">
+        <h5 class="col-md-12 caws-overview">CAWs Overview</h5>
+        <div class="col-md-12" id="chartContainer" style="width: 100%; height: 300px"></div>
+    </div>
+
+
 
 
 </div>
-<style>
-    .navbar {
-        display: none;
-    }
 
-    #home-btn-container .btn-container > a {
-        float: none;
-        margin: 0 auto;
-        display: block;
-        max-width: 300px;
-    }
+    <style>
+        .navbar {
+            display: none;
+        }
 
-    #home-btn-container .btn-container {
-        padding: 15px 10px;
-        overflow: hidden;
-    }
-    .btn-img {
-        max-width: 300px;
-        float: none;
-        margin: 0 auto;
-    }
-    .btn-text {
-        text-align: center;
-        float: none;
-        margin: 0 auto;
-        padding-top: 10px;
-    }
-    #btn-legacy-apt {
-        content: url(/Content/images/cartaceo.png);
-        max-width: 250px;
-        float: none;
-        margin: 0 auto;
-    }
+        #home-btn-container .btn-container > a {
+            float: none;
+            margin: 0 auto;
+            display: block;
+            max-width: 300px;
+        }
 
-    #btn-new-apt {
-        content: url(/Content/images/apt.png);
-        max-width: 250px;
-        float: none;
-        margin: 0 auto;
-    }
-</style>
-<script>
-    $(document).ready(function () {
-        $('#home-btn-container').css("margin-top", $(window).height() / 2 - $('#home-btn-container').height() / 2 - 45 - 75);
-        $(window).on('resize', function () {
+        #home-btn-container .btn-container {
+            padding: 15px 10px;
+            overflow: hidden;
+        }
+
+        .btn-img {
+            max-width: 300px;
+            float: none;
+            margin: 0 auto;
+        }
+
+        .btn-text {
+            text-align: center;
+            float: none;
+            margin: 0 auto;
+            padding-top: 10px;
+        }
+
+        #btn-legacy-apt {
+            content: url(/Content/images/cartaceo.png);
+            max-width: 250px;
+            float: none;
+            margin: 0 auto;
+        }
+
+        #btn-new-apt {
+            content: url(/Content/images/apt.png);
+            max-width: 250px;
+            float: none;
+            margin: 0 auto;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
             $('#home-btn-container').css("margin-top", $(window).height() / 2 - $('#home-btn-container').height() / 2 - 45 - 75);
+            $(window).on('resize', function () {
+                $('#home-btn-container').css("margin-top", $(window).height() / 2 - $('#home-btn-container').height() / 2 - 45 - 75);
+            });
         });
-    });
-</script>
+    </script>
+
+
+    <script type="text/javascript">
+    window.onload = function () {
+        $("#chartContainer").CanvasJSChart({
+            /*title: {
+                text: "Your APTs",
+                fontSize: 24
+            },*/
+            animationEnabled: true,
+            axisY: {
+                title: "Products in %"
+            },
+            width: 350,
+            legend: {
+                verticalAlign: "center",
+                horizontalAlign: "right"
+            },
+            data: [
+                {
+                    type: "pie",
+                    showInLegend: true,
+                    toolTipContent: "{label} <br/> {y} %",
+                    indexLabel: "{y} %",
+                    dataPoints: [
+                        { label: "Opened", y: @ViewData["openedperc"], legendText: "Opened", color: "green", exploded: true },
+                        { label: "Reporting", y: @ViewData["reportingperc"], legendText: "Reporting", color: "yellow", exploded: true },
+                        { label: "Closed", y: @ViewData["closedperc"], legendText: "Closed", color: "red" }
+                    ]
+                }
+            ]
+
+        });
+    }
+    </script>
