@@ -18,6 +18,7 @@ namespace APT_ArchV03.Models
         public Caw()
         {
             this.CawJobs = new HashSet<CawJob>();
+            this.CawFiles = new HashSet<CawFile>();
         }
     
         public int caw_id { get; set; }
@@ -30,7 +31,6 @@ namespace APT_ArchV03.Models
         public Nullable<System.DateTime> caw_reldate { get; set; }
         public Nullable<System.DateTime> caw_dldate { get; set; }
         public Nullable<System.DateTime> caw_archdate { get; set; }
-        public string caw_fname { get; set; }
         public string caw_notes { get; set; }
         public Nullable<int> caw_status { get; set; }
         public Nullable<System.DateTime> caw_crdate { get; set; }
@@ -42,5 +42,7 @@ namespace APT_ArchV03.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CawJob> CawJobs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CawFile> CawFiles { get; set; }
     }
 }

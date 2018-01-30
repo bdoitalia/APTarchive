@@ -22,12 +22,19 @@
           <Property Name="caw_reldate" Type="date" />
           <Property Name="caw_dldate" Type="date" />
           <Property Name="caw_archdate" Type="date" />
-          <Property Name="caw_fname" Type="nvarchar" MaxLength="255" />
           <Property Name="caw_notes" Type="text" />
           <Property Name="caw_status" Type="int" />
           <Property Name="caw_crdate" Type="datetime2" Precision="7" />
           <Property Name="caw_usrcreator" Type="nvarchar" MaxLength="100" />
           <Property Name="caw_usrcreator_code" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CawFiles">
+          <Key>
+            <PropertyRef Name="cawfiles_id" />
+          </Key>
+          <Property Name="cawfiles_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="caw_id" Type="int" Nullable="false" />
+          <Property Name="cawfiles_fn" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="CawJob">
           <Key>
@@ -95,6 +102,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CawFilesCaw">
+          <End Role="Caw" Type="Self.Caw" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CawFiles" Type="Self.CawFiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Caw">
+              <PropertyRef Name="caw_id" />
+            </Principal>
+            <Dependent Role="CawFiles">
+              <PropertyRef Name="caw_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_NavJobs_NavClients">
           <End Role="NavClients" Type="Self.NavClients" Multiplicity="1" />
           <End Role="NavJobs" Type="Self.NavJobs" Multiplicity="*" />
@@ -109,6 +130,7 @@
         </Association>
         <EntityContainer Name="Db_APT_ArchModelStoreContainer">
           <EntitySet Name="Caw" EntityType="Self.Caw" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CawFiles" EntityType="Self.CawFiles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CawJob" EntityType="Self.CawJob" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NavClients" EntityType="Self.NavClients" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NavJobs" EntityType="Self.NavJobs" Schema="dbo" store:Type="Tables" />
@@ -116,6 +138,10 @@
           <AssociationSet Name="FK_caw_id" Association="Self.FK_caw_id">
             <End Role="Caw" EntitySet="Caw" />
             <End Role="CawJob" EntitySet="CawJob" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CawFilesCaw" Association="Self.FK_CawFilesCaw">
+            <End Role="Caw" EntitySet="Caw" />
+            <End Role="CawFiles" EntitySet="CawFiles" />
           </AssociationSet>
           <AssociationSet Name="FK_NavJobs_NavClients" Association="Self.FK_NavJobs_NavClients">
             <End Role="NavClients" EntitySet="NavClients" />
@@ -140,7 +166,6 @@
           <Property Name="caw_reldate" Type="DateTime" Precision="0" />
           <Property Name="caw_dldate" Type="DateTime" Precision="0" />
           <Property Name="caw_archdate" Type="DateTime" Precision="0" />
-          <Property Name="caw_fname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="caw_notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="caw_status" Type="Int32" />
           <Property Name="caw_crdate" Type="DateTime" Precision="7" />
@@ -150,6 +175,7 @@
           <Property Name="caw_partner_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="caw_manager_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="caw_usrcreator_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CawFiles" Relationship="Db_APT_ArchModel.FK_CawFilesCaw" FromRole="Caw" ToRole="CawFile" />
         </EntityType>
         <EntityType Name="CawJob">
           <Key>
@@ -246,7 +272,35 @@
             <End Role="NavClients" EntitySet="NavClients" />
             <End Role="NavJobs" EntitySet="NavJobs" />
           </AssociationSet>
+          <EntitySet Name="CawFiles" EntityType="Db_APT_ArchModel.CawFile" />
+          <AssociationSet Name="FK_CawFilesCaw" Association="Db_APT_ArchModel.FK_CawFilesCaw">
+            <End Role="Caw" EntitySet="Caws" />
+            <End Role="CawFile" EntitySet="CawFiles" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="CawFile">
+          <Key>
+            <PropertyRef Name="cawfiles_id" />
+          </Key>
+          <Property Name="cawfiles_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="caw_id" Type="Int32" Nullable="false" />
+          <Property Name="cawfiles_fn" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Caw" Relationship="Db_APT_ArchModel.FK_CawFilesCaw" FromRole="CawFile" ToRole="Caw" />
+        </EntityType>
+        <Association Name="FK_CawFilesCaw">
+          <End Type="Db_APT_ArchModel.Caw" Role="Caw" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Db_APT_ArchModel.CawFile" Role="CawFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Caw">
+              <PropertyRef Name="caw_id" />
+            </Principal>
+            <Dependent Role="CawFile">
+              <PropertyRef Name="caw_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -270,7 +324,6 @@
                 <ScalarProperty Name="caw_reldate" ColumnName="caw_reldate" />
                 <ScalarProperty Name="caw_dldate" ColumnName="caw_dldate" />
                 <ScalarProperty Name="caw_archdate" ColumnName="caw_archdate" />
-                <ScalarProperty Name="caw_fname" ColumnName="caw_fname" />
                 <ScalarProperty Name="caw_notes" ColumnName="caw_notes" />
                 <ScalarProperty Name="caw_status" ColumnName="caw_status" />
                 <ScalarProperty Name="caw_crdate" ColumnName="caw_crdate" />
@@ -331,6 +384,15 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="PlanGroup" ColumnName="PlanGroup" />
                 <ScalarProperty Name="Resource_Level" ColumnName="Resource Level" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CawFiles">
+            <EntityTypeMapping TypeName="Db_APT_ArchModel.CawFile">
+              <MappingFragment StoreEntitySet="CawFiles">
+                <ScalarProperty Name="cawfiles_fn" ColumnName="cawfiles_fn" />
+                <ScalarProperty Name="caw_id" ColumnName="caw_id" />
+                <ScalarProperty Name="cawfiles_id" ColumnName="cawfiles_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

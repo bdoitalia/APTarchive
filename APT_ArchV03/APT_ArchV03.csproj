@@ -214,6 +214,9 @@
     <Compile Include="Models\Caw.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CawFile.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CawJob.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
