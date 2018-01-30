@@ -6,7 +6,7 @@
 @{
     ViewBag.Title = Model.caw_name.ToString() + " Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
-   
+
 }
 
 <h2>@Model.caw_name@*.Replace(Model.caw_name, Model.caw_name.Substring(0,5) + "...")*@</h2>
@@ -42,11 +42,14 @@
 
                     <dt>
                         @Html.DisplayNameFor(model => model.CawJobs)
+
                     </dt>
 
-                    <dd>
-                        @Html.DisplayFor(model => model.caw_client)
-                    </dd>
+                    @foreach (var item in Model.CawJobs)
+                    {
+                        <dd>@item.cawjob_jc - @item.cawjob_jn</dd>
+                    }
+
                     </li>
 
                     <li class="list-group-item">
@@ -197,13 +200,13 @@
                         </div>
                         <div class="col-md-10">
                             @*<script>
-                                $(document).ready(function () {
-                                    setTimeout(disableaccordion, 3000)
-                                });
-                                function disableaccordion() {
-                                    $('#accordion').accordion("disable");
-                                }
-                            </script>*@
+                                    $(document).ready(function () {
+                                        setTimeout(disableaccordion, 3000)
+                                    });
+                                    function disableaccordion() {
+                                        $('#accordion').accordion("disable");
+                                    }
+                                </script>*@
                             @Html.DisplayFor(model => model.caw_fname)
                         </div>
 
@@ -226,7 +229,7 @@
 
     $(document).ready(function () {
 
-        
+
         $('#accordion').accordion({
             header: "h4",
             icons: { "header": "ui-icon-caret-1-s", "activeHeader": "ui-icon-caret-1-n" },
