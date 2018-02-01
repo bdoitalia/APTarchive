@@ -50,8 +50,7 @@ namespace APT_ArchV03.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public object caw_archdate;
 
-        [Display(Name = "Filename")]
-        public object caw_fname;
+        
 
         [Display(Name = "Notes")]
         public object caw_notes;
