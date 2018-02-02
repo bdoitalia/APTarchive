@@ -33,9 +33,9 @@ namespace APT_ArchV03.Controllers
 
          
             System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
-            ViewData["openedperc"] = Convert.ToString(Math.Round(opened,0), culture); //variabile opened passata alla vista tramite ViewData
-            ViewData["reportingperc"] = Convert.ToString(Math.Round(reporting, 0), culture);
-            ViewData["closedperc"] = Convert.ToString(Math.Round(closed, 0), culture);
+            ViewData["openedperc"] = Convert.ToString(Math.Ceiling(opened), culture); //variabile opened passata alla vista tramite ViewData
+            ViewData["reportingperc"] = Convert.ToString(Math.Floor(reporting), culture);
+            ViewData["closedperc"] = Convert.ToString(Math.Floor(closed), culture);
 
             return View();
         }

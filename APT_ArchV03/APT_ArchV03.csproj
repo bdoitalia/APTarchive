@@ -718,6 +718,9 @@
     <Content Include="Scripts\blueimp-gallery2\js\blueimp-helper.min.js.map" />
     <Content Include="Scripts\blueimp-gallery2\js\jquery.blueimp-gallery.min.js.map" />
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
+    <Content Include="Scripts\canvas-dashboard\jquery.inview.min.js" />
+    <Content Include="Scripts\canvas-dashboard\jquery.scrollspeed.min.js" />
+    <Content Include="Scripts\canvas-dashboard\tether.min.js" />
     <Content Include="Scripts\cawscripts.js" />
     <Content Include="Scripts\combobox.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />

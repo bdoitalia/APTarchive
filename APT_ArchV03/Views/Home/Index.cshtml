@@ -3,138 +3,307 @@
 }
 
 @Styles.Render("~/Content/caw")
-@Scripts.Render("~/Scripts/jquery.canvasjs.min.js")
+
+@section Scripts
+    {
+    <script src="@Url.Content("~/Scripts/jquery.canvasjs.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/canvas-dashboard/jquery.inview.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/canvas-dashboard/jquery.scrollspeed.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/canvas-dashboard/tether.min.js")"></script>
+}
+
+<html>
+    <head>
+        <style>
+
+            ul.nav.navbar-nav {
+                display: none;
+            }
+            hr {
+                border-top: 1px solid #727273;
+                margin-bottom: 2rem;
+                margin-top: 2rem;
+            }
+
+            #revenue-tag {
+                border-radius: 0px !important;
+                font-size: inherit !important;
+                font-weight: inherit !important;
+            }
+
+            .align-center {
+                text-align: center;
+            }
+
+            .card {
+                background-color: transparent;
+                border: none;
+                margin-bottom: 0px;
+            }
+
+            #sales-doughnut-chart-us, #sales-doughnut-chart-nl, #sales-doughnut-chart-de {
+                height: 280px;
+                margin-top: 1rem;
+                width: 100%;
+            }
 
 
-<div id="home-btn-container" class="row">
-        <div class="col-md-6 btn-container">
-            <div class="col-md-12">
-                <a id="btn-legacy-apt" href="http://archivio.bdo.it/" class="col-md-8 thumbnail">
-                </a>
-                <h4 class="btn-text col-md-8">Archivio Cartaceo</h4>
-            </div>
-        </div>
+            #home-btn-container .btn-container > a {
+                float: none;
+                margin: 0 auto;
+                display: block;
+                max-width: 300px;
+            }
 
-        <div class="col-md-6 btn-container">
-            <div class="col-md-12">
-                <a id="btn-new-apt" href="@Url.Action("List","Caws")" class="col-md-8 thumbnail">
-                </a>
-                <h4 class="btn-text col-md-8">APT Management</h4>
-            </div>
-        </div>
-    </div>
+            #home-btn-container .btn-container {
+                padding: 15px 10px;
+                overflow: hidden;
+            }
 
+            .btn-img {
+                max-width: 300px;
+                float: none;
+                margin: 0 auto;
+            }
 
-<div class="row statistic">
-    
-    <div class="col-md-6">
-        <div class="col-md-12">
-            <h5>Total CAWs: @ViewData["total"]</h5>
-        </div>
-        <ul><li>Opened: @ViewData["opened"]</li></ul>
-        <ul><li>Reporting: @ViewData["reporting"]</li></ul>
-        <ul><li>Closed: @ViewData["closed"]</li></ul>
-    </div>
+            .btn-text {
+                text-align: center;
+                float: none;
+                margin: 0 auto;
+                padding-top: 10px;
+            }
 
+            #btn-legacy-apt {
+                content: url(/Content/images/cartaceo.png);
+                max-width: 250px;
+                float: none;
+                margin: 0 auto;
+            }
 
+            #btn-new-apt {
+                content: url(/Content/images/apt.png);
+                max-width: 250px;
+                float: none;
+                margin: 0 auto;
+            }
 
+            hr.row-footer {
+                display: none;
+            }
 
-
-
-    <div class="col-md-6">
-        <h5 class="col-md-12 caws-overview">CAWs Overview</h5>
-        <div class="col-md-12" id="chartContainer" style="width: 100%; height: 300px"></div>
-    </div>
-
-
-
-
-</div>
-
-    <style>
-        .navbar {
-            display: none;
-        }
-
-        #home-btn-container .btn-container > a {
-            float: none;
-            margin: 0 auto;
-            display: block;
-            max-width: 300px;
-        }
-
-        #home-btn-container .btn-container {
-            padding: 15px 10px;
-            overflow: hidden;
-        }
-
-        .btn-img {
-            max-width: 300px;
-            float: none;
-            margin: 0 auto;
-        }
-
-        .btn-text {
-            text-align: center;
-            float: none;
-            margin: 0 auto;
-            padding-top: 10px;
-        }
-
-        #btn-legacy-apt {
-            content: url(/Content/images/cartaceo.png);
-            max-width: 250px;
-            float: none;
-            margin: 0 auto;
-        }
-
-        #btn-new-apt {
-            content: url(/Content/images/apt.png);
-            max-width: 250px;
-            float: none;
-            margin: 0 auto;
-        }
-    </style>
-    <script>
-        $(document).ready(function () {
-            $('#home-btn-container').css("margin-top", $(window).height() / 2 - $('#home-btn-container').height() / 2 - 45 - 75);
-            $(window).on('resize', function () {
-                $('#home-btn-container').css("margin-top", $(window).height() / 2 - $('#home-btn-container').height() / 2 - 45 - 75);
-            });
-        });
-    </script>
+        </style>
 
 
-    <script type="text/javascript">
-    window.onload = function () {
-        $("#chartContainer").CanvasJSChart({
-            /*title: {
-                text: "Your APTs",
-                fontSize: 24
-            },*/
-            animationEnabled: true,
-            axisY: {
-                title: "Products in %"
-            },
-            width: 350,
-            legend: {
-                verticalAlign: "center",
-                horizontalAlign: "right"
-            },
-            data: [
-                {
-                    type: "pie",
-                    showInLegend: true,
-                    toolTipContent: "{label} <br/> {y} %",
-                    indexLabel: "{y} %",
-                    dataPoints: [
-                        { label: "Opened", y: @ViewData["openedperc"], legendText: "Opened", color: "green", exploded: true },
-                        { label: "Reporting", y: @ViewData["reportingperc"], legendText: "Reporting", color: "yellow", exploded: true },
-                        { label: "Closed", y: @ViewData["closedperc"], legendText: "Closed", color: "red" }
+        <script>
+            $(function () {
+                var totalRevenue = 15341110,
+                    totalUsers = 7687036;
+
+                // CanvasJS Open CAWS 
+                var salesDoughnutChartUS = new CanvasJS.Chart("sales-doughnut-chart-us", {
+                    animationEnabled: true,
+                    backgroundColor: "transparent",
+                    title: {
+                        fontColor: "#848484",
+                        fontSize: 70,
+                        horizontalAlign: "center",
+                        text: @ViewData["openedperc"]+"%",
+                        verticalAlign: "center"
+                    },
+                    toolTip: {
+                        backgroundColor: "#ffffff",
+                        borderThickness: 0,
+                        cornerRadius: 0,
+                        fontColor: "#424242"
+                    },
+                    data: [
+                        {
+                            explodeOnClick: false,
+                            innerRadius: "96%",
+                            radius: "90%",
+                            startAngle: 270,
+                            type: "doughnut",
+                            dataPoints: [
+                                { y: @ViewData["openedperc"], color: "#c70000", toolTipContent: null },
+                                { y: 100-@ViewData["openedperc"], color: "#424242", toolTipContent: null }
+                            ]
+                        }
                     ]
-                }
-            ]
+                });
 
-        });
-    }
-    </script>
+                // CanvasJS Reporting CAWS
+                var salesDoughnutChartNL = new CanvasJS.Chart("sales-doughnut-chart-nl", {
+                    animationEnabled: true,
+                    backgroundColor: "transparent",
+                    title: {
+                        fontColor: "#848484",
+                        fontSize: 70,
+                        horizontalAlign: "center",
+                        text: @ViewData["reportingperc"]+"%",
+                        verticalAlign: "center"
+                    },
+                    toolTip: {
+                        backgroundColor: "#ffffff",
+                        borderThickness: 0,
+                        cornerRadius: 0,
+                        fontColor: "#424242"
+                    },
+                    data: [
+                        {
+                            explodeOnClick: false,
+                            innerRadius: "96%",
+                            radius: "90%",
+                            startAngle: 270,
+                            type: "doughnut",
+                            dataPoints: [
+                                { y: @ViewData["reportingperc"], color: "#c70000", toolTipContent: null },
+                                { y: 100-@ViewData["reportingperc"], color: "#424242", toolTipContent: null }
+                            ]
+                        }
+                    ]
+                });
+
+                // CanvasJS Closed CAWS
+                var salesDoughnutChartDE = new CanvasJS.Chart("sales-doughnut-chart-de", {
+                    animationEnabled: true,
+                    backgroundColor: "transparent",
+                    title: {
+                        fontColor: "#848484",
+                        fontSize: 70,
+                        horizontalAlign: "center",
+                        text: @ViewData["closedperc"]+"%",
+                        verticalAlign: "center"
+                    },
+                    toolTip: {
+                        backgroundColor: "#ffffff",
+                        borderThickness: 0,
+                        cornerRadius: 0,
+                        fontColor: "#424242"
+                    },
+                    data: [
+                        {
+                            explodeOnClick: false,
+                            innerRadius: "96%",
+                            radius: "90%",
+                            startAngle: 270,
+                            type: "doughnut",
+                            dataPoints: [
+                                { y: @ViewData["closedperc"], color: "#c70000", toolTipContent: null },
+                                { y: 100-@ViewData["closedperc"], color: "#424242", toolTipContent: null }
+                            ]
+                        }
+                    ]
+                });
+
+
+                jQuery.scrollSpeed(100, 400); // for smooth mouse wheel scrolling
+
+                // jQuery.inview plugin
+                $('.inview').one('inview', function (e, isInView) {
+                    if (isInView) {
+                        switch (this.id) {
+                            case "sales-doughnut-chart-us": salesDoughnutChartUS.render();
+                                break;
+                            case "sales-doughnut-chart-nl": salesDoughnutChartNL.render();
+                                break;
+                            case "sales-doughnut-chart-de": salesDoughnutChartDE.render();
+                                break;
+
+
+                        }
+                    }
+                });
+
+            });
+
+            $(document).ready(function () {
+                $('#home-btn-container').css("margin-top", $(window).height() / 2 - $('#home-btn-container').height() / 2 - 45 - 75);
+                $(window).on('resize', function () {
+                    $('#home-btn-container').css("margin-top", $(window).height() / 2 - $('#home-btn-container').height() / 2 - 45 - 75);
+                });
+            });
+
+
+        </script>
+
+    </head>
+    <body>
+
+        <div class="container">
+
+
+            <!-- sales doughnut charts -->
+
+            <div class="row boxstatistic">Dashboard - Utente</div>
+            <div class="canvascontainer">
+                <div class="col-md-4">
+                    <div class="inview" id="sales-doughnut-chart-us"></div>
+                    <h3 class="align-center">Opened</h3>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="inview" id="sales-doughnut-chart-nl"></div>
+                    <h3 class="align-center">Reporting</h3>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="inview" id="sales-doughnut-chart-de"></div>
+                    <h3 class="align-center">Closed</h3>
+                </div>
+            </div>
+        </div>
+
+        <br /><br /><br />
+
+
+        <table class="table-striped">
+            <thead>
+                <tr>
+                    <th scope="col" class="table-title">Riepilogo</th>
+                    <th scope="col" class="table-title"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row" class="summary">CAWS IN SCADENZA NEI PROSSIMI QUINDICI GIORNI:</th>
+                    <td style="font-weight:bold;">@ViewData["reporting"]</td>
+                </tr>
+
+                <tr class="tr-summary">
+                    <th scope="row" class="summary">CAWS APERTI ULTIMI SETTE GIORNI:</th>
+                    <td style="font-weight:bold;">@ViewData["opened"]</td>
+                </tr>
+
+                <tr class="tr-summary">
+                    <th scope="row" class="summary">CAWS CHIUSI ULTIMI SETTE GIORNI:</th>
+                    <td style="font-weight:bold;">@ViewData["closed"]</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br /><br />
+
+        <div class="container buttons">
+
+
+
+            <div class="row link">Link Utili</div>
+            <div class="col-md-6 btn-container">
+                <div class="col-md-6 buttons">
+                    <a id="btn-legacy-apt" href="http://archivio.bdo.it/" class="col-md-8 thumbnail">
+                    </a>
+                    <h4 class="btn-text col-md-8">Archivio Cartaceo</h4>
+                </div>
+            </div>
+
+            <div class="col-md-6 btn-container">
+                <div class="col-md-6 buttons">
+                    <a id="btn-new-apt" href="@Url.Action("List","Caws")" class="col-md-8 thumbnail">
+                    </a>
+                    <h4 class="btn-text col-md-8">APT Management</h4>
+                </div>
+            </div>
+
+        </div>
+    </body>
+ </html>

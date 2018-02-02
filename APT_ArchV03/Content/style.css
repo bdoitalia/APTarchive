@@ -151,3 +151,60 @@ svg:not(:root) {
         display: none;
     }
 }
+
+
+.row.boxstatistic {
+    font-size: 30px;
+}
+
+.row.link {
+    background-color: #323232;
+    color: white;
+    padding: 8px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+th.table-title {
+    background-color: #323232;
+    color: white;
+    padding: 8px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+table.table-striped {
+    width: 100%;
+}
+
+th.summary {
+    padding: 3px;
+    width: 40%;
+}
+
+.col-md-12.buttons {
+    padding-top: 15px;
+}
+
+.thumbnail {
+    display: inline-block;
+    display: block;
+    height: auto;
+    max-width: 100%;
+    padding: 4px;
+    line-height: 1.428571429;
+    background-color: #ffffff;
+    border: 0px;
+    border-radius: 4px;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-container .buttons {
+    margin: 0 auto;
+    float: none;
+}
+
+.btn-container {
+    padding-top: 45px;
+}
