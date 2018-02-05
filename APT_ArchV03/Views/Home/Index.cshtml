@@ -12,94 +12,170 @@
     <script src="@Url.Content("~/Scripts/canvas-dashboard/tether.min.js")"></script>
 }
 
-<html>
-    <head>
-        <style>
+@*<html>
 
-            ul.nav.navbar-nav {
-                display: none;
-            }
-            hr {
-                border-top: 1px solid #727273;
-                margin-bottom: 2rem;
-                margin-top: 2rem;
-            }
+    <body>*@
 
-            #revenue-tag {
-                border-radius: 0px !important;
-                font-size: inherit !important;
-                font-weight: inherit !important;
-            }
-
-            .align-center {
-                text-align: center;
-            }
-
-            .card {
-                background-color: transparent;
-                border: none;
-                margin-bottom: 0px;
-            }
-
-            #sales-doughnut-chart-us, #sales-doughnut-chart-nl, #sales-doughnut-chart-de {
-                height: 280px;
-                margin-top: 1rem;
-                width: 100%;
-            }
+<div class="container">
 
 
-            #home-btn-container .btn-container > a {
-                float: none;
-                margin: 0 auto;
-                display: block;
-                max-width: 300px;
-            }
+    <!-- sales doughnut charts -->
 
-            #home-btn-container .btn-container {
-                padding: 15px 10px;
-                overflow: hidden;
-            }
+    <div class="row boxstatistic">Dashboard - Utente</div>
+    <div class="canvascontainer">
+        <div class="col-md-4">
+            <div class="inview" id="sales-doughnut-chart-us"></div>
+            <h3 class="align-center">Opened</h3>
+        </div>
 
-            .btn-img {
-                max-width: 300px;
-                float: none;
-                margin: 0 auto;
-            }
+        <div class="col-md-4">
+            <div class="inview" id="sales-doughnut-chart-nl"></div>
+            <h3 class="align-center">Reporting</h3>
+        </div>
 
-            .btn-text {
-                text-align: center;
-                float: none;
-                margin: 0 auto;
-                padding-top: 10px;
-            }
+        <div class="col-md-4">
+            <div class="inview" id="sales-doughnut-chart-de"></div>
+            <h3 class="align-center">Closed</h3>
+        </div>
+    </div>
+</div>
 
-            #btn-legacy-apt {
-                content: url(/Content/images/cartaceo.png);
-                max-width: 250px;
-                float: none;
-                margin: 0 auto;
-            }
-
-            #btn-new-apt {
-                content: url(/Content/images/apt.png);
-                max-width: 250px;
-                float: none;
-                margin: 0 auto;
-            }
-
-            hr.row-footer {
-                display: none;
-            }
-
-        </style>
+<br /><br /><br />
 
 
-        <script>
+<table class="table-striped">
+    <thead>
+        <tr>
+            <th scope="col" class="table-title">Riepilogo</th>
+            <th scope="col" class="table-title"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row" class="summary">CAWS IN SCADENZA NEI PROSSIMI QUINDICI GIORNI:</th>
+            <td style="font-weight:bold;">@ViewData["reporting"]</td>
+        </tr>
+
+        <tr class="tr-summary">
+            <th scope="row" class="summary">CAWS APERTI ULTIMI SETTE GIORNI:</th>
+            <td style="font-weight:bold;">@ViewData["opened"]</td>
+        </tr>
+
+        <tr class="tr-summary">
+            <th scope="row" class="summary">CAWS CHIUSI ULTIMI SETTE GIORNI:</th>
+            <td style="font-weight:bold;">@ViewData["closed"]</td>
+        </tr>
+    </tbody>
+</table>
+
+<br /><br />
+
+<div class="container buttons">
+
+
+
+    <div class="row link">Link Utili</div>
+    <div class="col-md-6 btn-container">
+        <div class="col-md-6 buttons">
+            <a id="btn-legacy-apt" href="http://archivio.bdo.it/" class="col-md-8 thumbnail">
+            </a>
+            <h4 class="btn-text col-md-8">Archivio Cartaceo</h4>
+        </div>
+    </div>
+
+    <div class="col-md-6 btn-container">
+        <div class="col-md-6 buttons">
+            <a id="btn-new-apt" href="@Url.Action("List","Caws")" class="col-md-8 thumbnail">
+            </a>
+            <h4 class="btn-text col-md-8">APT Management</h4>
+        </div>
+    </div>
+
+</div>
+
+<style>
+
+
+
+    hr {
+        border-top: 1px solid #727273;
+        margin-bottom: 2rem;
+        margin-top: 2rem;
+    }
+
+    #revenue-tag {
+        border-radius: 0px !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+    }
+
+    .align-center {
+        text-align: center;
+    }
+
+    .card {
+        background-color: transparent;
+        border: none;
+        margin-bottom: 0px;
+    }
+
+    #sales-doughnut-chart-us, #sales-doughnut-chart-nl, #sales-doughnut-chart-de {
+        height: 280px;
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+
+    #home-btn-container .btn-container > a {
+        float: none;
+        margin: 0 auto;
+        display: block;
+        max-width: 300px;
+    }
+
+    #home-btn-container .btn-container {
+        padding: 15px 10px;
+        overflow: hidden;
+    }
+
+    .btn-img {
+        max-width: 300px;
+        float: none;
+        margin: 0 auto;
+    }
+
+    .btn-text {
+        text-align: center;
+        float: none;
+        margin: 0 auto;
+        padding-top: 10px;
+    }
+
+    #btn-legacy-apt {
+        content: url(/Content/images/cartaceo.png);
+        max-width: 250px;
+        float: none;
+        margin: 0 auto;
+    }
+
+    #btn-new-apt {
+        content: url(/Content/images/apt.png);
+        max-width: 250px;
+        float: none;
+        margin: 0 auto;
+    }
+
+    hr.row-footer {
+        display: none;
+    }
+</style>
+
+<script>
             $(function () {
                 var totalRevenue = 15341110,
                     totalUsers = 7687036;
 
-                // CanvasJS Open CAWS 
+                // CanvasJS Open CAWS
                 var salesDoughnutChartUS = new CanvasJS.Chart("sales-doughnut-chart-us", {
                     animationEnabled: true,
                     backgroundColor: "transparent",
@@ -224,86 +300,8 @@
             });
 
 
-        </script>
+</script>
 
-    </head>
-    <body>
+@*</body>
 
-        <div class="container">
-
-
-            <!-- sales doughnut charts -->
-
-            <div class="row boxstatistic">Dashboard - Utente</div>
-            <div class="canvascontainer">
-                <div class="col-md-4">
-                    <div class="inview" id="sales-doughnut-chart-us"></div>
-                    <h3 class="align-center">Opened</h3>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="inview" id="sales-doughnut-chart-nl"></div>
-                    <h3 class="align-center">Reporting</h3>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="inview" id="sales-doughnut-chart-de"></div>
-                    <h3 class="align-center">Closed</h3>
-                </div>
-            </div>
-        </div>
-
-        <br /><br /><br />
-
-
-        <table class="table-striped">
-            <thead>
-                <tr>
-                    <th scope="col" class="table-title">Riepilogo</th>
-                    <th scope="col" class="table-title"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row" class="summary">CAWS IN SCADENZA NEI PROSSIMI QUINDICI GIORNI:</th>
-                    <td style="font-weight:bold;">@ViewData["reporting"]</td>
-                </tr>
-
-                <tr class="tr-summary">
-                    <th scope="row" class="summary">CAWS APERTI ULTIMI SETTE GIORNI:</th>
-                    <td style="font-weight:bold;">@ViewData["opened"]</td>
-                </tr>
-
-                <tr class="tr-summary">
-                    <th scope="row" class="summary">CAWS CHIUSI ULTIMI SETTE GIORNI:</th>
-                    <td style="font-weight:bold;">@ViewData["closed"]</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <br /><br />
-
-        <div class="container buttons">
-
-
-
-            <div class="row link">Link Utili</div>
-            <div class="col-md-6 btn-container">
-                <div class="col-md-6 buttons">
-                    <a id="btn-legacy-apt" href="http://archivio.bdo.it/" class="col-md-8 thumbnail">
-                    </a>
-                    <h4 class="btn-text col-md-8">Archivio Cartaceo</h4>
-                </div>
-            </div>
-
-            <div class="col-md-6 btn-container">
-                <div class="col-md-6 buttons">
-                    <a id="btn-new-apt" href="@Url.Action("List","Caws")" class="col-md-8 thumbnail">
-                    </a>
-                    <h4 class="btn-text col-md-8">APT Management</h4>
-                </div>
-            </div>
-
-        </div>
-    </body>
- </html>
+    </html>*@

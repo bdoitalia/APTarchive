@@ -13,6 +13,7 @@ namespace APT_ArchV03.Controllers
     public class FileUploadController : Controller
     {
         FilesHelper filesHelper;
+
         String tempPath = "~/somefiles/";
         String serverMapPath = "~/Files/somefiles/";
         private string StorageRoot
