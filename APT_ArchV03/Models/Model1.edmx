@@ -27,6 +27,8 @@
           <Property Name="caw_crdate" Type="datetime2" Precision="7" />
           <Property Name="caw_usrcreator" Type="nvarchar" MaxLength="100" />
           <Property Name="caw_usrcreator_code" Type="nvarchar" MaxLength="50" />
+          <Property Name="caw_delplan" Type="int" />
+          <Property Name="caw_type" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CawFiles">
           <Key>
@@ -34,7 +36,7 @@
           </Key>
           <Property Name="cawfiles_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="caw_id" Type="int" Nullable="false" />
-          <Property Name="cawfiles_fn" Type="nvarchar" MaxLength="255" />
+          <Property Name="cawfiles_fn" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="CawJob">
           <Key>
@@ -176,6 +178,8 @@
           <Property Name="caw_manager_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="caw_usrcreator_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CawFiles" Relationship="Db_APT_ArchModel.FK_CawFilesCaw" FromRole="Caw" ToRole="CawFile" />
+          <Property Name="caw_delplan" Type="Int32" />
+          <Property Name="caw_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CawJob">
           <Key>
@@ -284,7 +288,7 @@
           </Key>
           <Property Name="cawfiles_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="caw_id" Type="Int32" Nullable="false" />
-          <Property Name="cawfiles_fn" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cawfiles_fn" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Caw" Relationship="Db_APT_ArchModel.FK_CawFilesCaw" FromRole="CawFile" ToRole="Caw" />
         </EntityType>
         <Association Name="FK_CawFilesCaw">
@@ -310,6 +314,8 @@
           <EntitySetMapping Name="Caws">
             <EntityTypeMapping TypeName="Db_APT_ArchModel.Caw">
               <MappingFragment StoreEntitySet="Caw">
+                <ScalarProperty Name="caw_type" ColumnName="caw_type" />
+                <ScalarProperty Name="caw_delplan" ColumnName="caw_delplan" />
                 <ScalarProperty Name="caw_usrcreator_code" ColumnName="caw_usrcreator_code" />
                 <ScalarProperty Name="caw_manager_code" ColumnName="caw_manager_code" />
                 <ScalarProperty Name="caw_partner_code" ColumnName="caw_partner_code" />
