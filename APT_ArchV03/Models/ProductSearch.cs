@@ -13,14 +13,7 @@ namespace APT_ArchV03.Models
         public string Partner { get; set; }
         public string Manager { get; set; }
         public string Office { get; set; }
-        public int? Status { get; set; }
-        //public enum StatusValue
-        //{
-        //    Opened = 1,
-        //    Reporting = 2,
-        //    Closed = 3
-        //}
-        //StatusValue Status { get; set; }
+        public int? Status { get; set; }        
     }
 
     public class ProductBusinessLogic

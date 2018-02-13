@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using Backload.Bundles;
+using System.Web;
 using System.Web.Optimization;
 
 namespace APT_ArchV03
@@ -8,14 +9,32 @@ namespace APT_ArchV03
         // For more information on bundling, visit https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            // Add or remove this line for the bundeling feature
+            BackloadBundles.RegisterBundles(bundles);
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        //"~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery-2.1.4.min.js"
+                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                         "~/Scripts/jquery-ui-{version}.js"));
+
+            // Pause & Resume Chuncked file upload
+            bundles.Add(new ScriptBundle("~/bundles/FileUploadPauseResumeJs").Include(
+                      //"~/Scripts/jquery-2.1.4.min.js",
+                      "~/Backload/Client/blueimp/bundles/js/jquery.fileupload.basicplusui.min.js",
+                      "~/Scripts/demos.support.uuid.js",
+                      "~/Scripts/jquery.fileupload-pauseresume.js"/*,
+                      "~/Scripts/demos.other.chunkingadvanced.js"*/));
+
+            bundles.Add(new StyleBundle("~/Content/FileUploadPauseResumeCss").Include(
+                      "~/Backload/Client/blueimp/bundles/css/jquery.fileupload.bundle.min.css",
+                      "~/Content/demo.styles.css"));
+            // End
 
             bundles.Add(new ScriptBundle("~/bundles/jQuery-File-Upload").Include(
                         //<!-- The Templates plugin is included to render the upload/download listings -->
