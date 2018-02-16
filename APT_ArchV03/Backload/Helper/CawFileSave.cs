@@ -26,11 +26,11 @@ namespace APT_ArchV03.Backload.Helper
             db = new Db_APT_ArchEntities();
         }
 
-        public void WriteFile(string filename, string partnername, int cawid ) {
+        public void WriteFile(string filepath, string filename, int cawid ) {
             Caw caw = new Caw();
             caw = db.Caws.Find(cawid);
             CawFile cawFile = new CawFile();
-            cawFile.cawfiles_fn = partnername + "\\" + filename;
+            cawFile.cawfiles_fn = filepath + "\\" + filename;
             caw.CawFiles.Add(cawFile);
             db.SaveChanges();
 

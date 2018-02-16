@@ -55,8 +55,11 @@ namespace Backload.Controllers
                             {
 
                                 //start file data saving procedure
+                                string filepath = file.ObjectContext + "\\" + file.UploadContext;
+                                string filename = file.FileName;
+                                int id = Convert.ToInt32(handler.RequestValues.CustomQueryValues["id"]);
                                 var FileSave = new CawFileSave();
-                                FileSave.WriteFile(file.FileName, file.ObjectContext, Convert.ToInt32(file.UploadContext));
+                                FileSave.WriteFile(filepath, filename, id);
 
                             }
                         }
@@ -73,8 +76,9 @@ namespace Backload.Controllers
                 }
                 if (HttpContext.Request.HttpMethod == "DELETE")
                 {
+                    int id = Convert.ToInt32(handler.RequestValues.CustomQueryValues["id"]);
                     var FileRemove = new CawFileSave();
-                    FileRemove.DeleteFile(handler.FileStatus.Files[0].FileName, Convert.ToInt32(handler.FileStatus.Files[0].UploadContext));
+                    FileRemove.DeleteFile(handler.FileStatus.Files[0].FileName, id);
                 }
                 //handler.Init(provider);
 

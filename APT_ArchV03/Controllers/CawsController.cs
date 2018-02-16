@@ -251,6 +251,11 @@ namespace APT_ArchV03.Controllers
                 caw.caw_manager = mgrquery.First().Resource_Name;
                 caw.caw_manager_code = tmpmgr;
 
+                string tmpdelplan = Request[key: "caw_delplan"];
+                caw.caw_delplan = Convert.ToInt16(tmpdelplan);
+
+                caw.caw_type = Request[key: "caw_type"];
+
                 caw.caw_office = Request[key: "Office"];
                 caw.caw_usrcreator = GetResourceName(User.Identity.Name);
                 caw.caw_usrcreator_code = User.Identity.Name;
@@ -258,7 +263,7 @@ namespace APT_ArchV03.Controllers
                 caw.caw_crdate = DateTime.Now;
                 db.Caws.Add(caw);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
             var errors = ModelState.Values.SelectMany(v => v.Errors);
             var clients = PopulateClients();
@@ -550,7 +555,52 @@ namespace APT_ArchV03.Controllers
                 return Json(new { success = false, responseText = "Action not supported" }, JsonRequestBehavior.AllowGet);
             }
 
-            caw.caw_dldate = caw.caw_reldate.Value.AddDays(60);
+            
+            caw.caw_dldate = caw.caw_reldate.Value.AddDays(Convert.ToDouble(caw.caw_delplan));
+            caw.caw_status = 2;
+
+            db.Entry(caw).State = EntityState.Modified;
+            db.SaveChanges();
+
+            Response.StatusCode = (int)HttpStatusCode.OK;
+            return Json(new { success = true, responseText = "Report date submitted successfully" }, JsonRequestBehavior.AllowGet);
+        }
+        /****************************/
+
+        /*********ARCHIVE APT*********/
+        [HttpPost]
+        public JsonResult ArchiveAPT(int id, string archdate)
+        {
+            if (id == null)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { success = false, responseText = "ID is null" }, JsonRequestBehavior.AllowGet);
+            }
+            Caw caw = db.Caws.Find(id);
+            if (caw == null)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { success = false, responseText = "ID is not valid" }, JsonRequestBehavior.AllowGet);
+            }
+            if (caw.caw_status != 1)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { success = false, responseText = "Invalid stage" }, JsonRequestBehavior.AllowGet);
+            }
+            DateTime temp;
+            //Validate request
+            if (DateTime.TryParse(archdate.ToString(), out temp))
+            {
+                caw.caw_archdate = temp;
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { success = false, responseText = "Action not supported" }, JsonRequestBehavior.AllowGet);
+            }
+
+
+            caw.caw_dldate = caw.caw_reldate.Value.AddDays(Convert.ToDouble(caw.caw_delplan));
             caw.caw_status = 2;
 
             db.Entry(caw).State = EntityState.Modified;

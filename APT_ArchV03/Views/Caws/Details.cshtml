@@ -203,7 +203,7 @@
                         var web_app = '/';                                                   // Name of a web application (usually in full IIS mode). Can be found in Properties/Web/Server/Project-Url. Example: http://localhost/Demo (Name of web application is "Demo")
 
                         
-                        var url = web_app + 'Backload/FileHandler?objectContext=@(Model.caw_partner_code.ToUpper())&uploadContext=@(Model.caw_id)';
+                        var url = web_app + 'Backload/FileHandler?objectContext=@(Model.caw_partner_code.ToUpper())&id=@(Model.caw_id)&uploadContext=@(Model.caw_type.Replace(" ", "-"))';
 
 
                         // Initialize the jQuery File Upload widget:
@@ -338,6 +338,39 @@
                 //contentType: "application/json",
                 //processData: false,
                 url: '/Caws/PostReportDate',
+
+                dataType: 'json',
+
+                data: {
+                    id: @Model.caw_id,
+                    reldate: $('#caw_reldate').val()
+                },
+
+
+                success: function (response) {
+
+                    //$('#btnToPhase2').addClass("disabled");
+                    //$('#caw_reldate').attr("disabled", "disabled")
+                    //$('#statusflag').removeClass('stage1').addClass('stage2');
+                    //$('#accordion').accordion({ active: 3 });
+                    alert(response.responseText);
+                    location.reload();
+
+                },
+                error: function (response) {
+                    alert('There was a problem when trying to submit the report date. ' + response.responseText);
+                }
+            });
+
+        });
+
+        $(document).on('click', '#btnArchive', function () {
+
+            $.ajax({
+                type: 'POST',
+                //contentType: "application/json",
+                //processData: false,
+                url: '/Caws/ArchiveAPT',
 
                 dataType: 'json',
 
