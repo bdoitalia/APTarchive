@@ -40,7 +40,7 @@ a[data-title="drpbutton"][disabled="disabled"] {
     border: none !important;
 }
 .icon-groove {
-    content: url(/Content/themes/base/images/groove_48x48.png)
+    content: url(/Backload/ContentTypes/16/groove.png)
 }
 /**********************Filter layout***********************/
 .filter-title {

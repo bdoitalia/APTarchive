@@ -35,6 +35,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>AllFilesInProjectFolder</FilesToIncludeForPublish>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -231,6 +232,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EmailHandler.cs" />
     <Compile Include="Helpers\FilesHelper.cs" />
     <Compile Include="Helpers\ImageHandler.cs" />
     <Compile Include="Models\Caw.cs">
@@ -438,6 +440,7 @@
     <Content Include="Backload\ContentTypes\128\Excel.png" />
     <Content Include="Backload\ContentTypes\128\File.png" />
     <Content Include="Backload\ContentTypes\128\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\128\groove.png" />
     <Content Include="Backload\ContentTypes\128\Image.png" />
     <Content Include="Backload\ContentTypes\128\Multimedia.png" />
     <Content Include="Backload\ContentTypes\128\OpenOffice-Writer.png" />
@@ -448,6 +451,7 @@
     <Content Include="Backload\ContentTypes\16\Excel.png" />
     <Content Include="Backload\ContentTypes\16\File.png" />
     <Content Include="Backload\ContentTypes\16\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\16\groove.png" />
     <Content Include="Backload\ContentTypes\16\Image.png" />
     <Content Include="Backload\ContentTypes\16\Multimedia.png" />
     <Content Include="Backload\ContentTypes\16\OpenOffice-Writer.png" />
@@ -458,6 +462,7 @@
     <Content Include="Backload\ContentTypes\24\Excel.png" />
     <Content Include="Backload\ContentTypes\24\File.png" />
     <Content Include="Backload\ContentTypes\24\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\24\groove.png" />
     <Content Include="Backload\ContentTypes\24\Image.png" />
     <Content Include="Backload\ContentTypes\24\Multimedia.png" />
     <Content Include="Backload\ContentTypes\24\OpenOffice-Writer.png" />
@@ -468,6 +473,7 @@
     <Content Include="Backload\ContentTypes\32\Excel.png" />
     <Content Include="Backload\ContentTypes\32\File.png" />
     <Content Include="Backload\ContentTypes\32\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\32\groove.png" />
     <Content Include="Backload\ContentTypes\32\Image.png" />
     <Content Include="Backload\ContentTypes\32\Multimedia.png" />
     <Content Include="Backload\ContentTypes\32\OpenOffice-Writer.png" />
@@ -478,6 +484,7 @@
     <Content Include="Backload\ContentTypes\48\Excel.png" />
     <Content Include="Backload\ContentTypes\48\File.png" />
     <Content Include="Backload\ContentTypes\48\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\48\groove.png" />
     <Content Include="Backload\ContentTypes\48\Image.png" />
     <Content Include="Backload\ContentTypes\48\Multimedia.png" />
     <Content Include="Backload\ContentTypes\48\OpenOffice-Writer.png" />
@@ -488,6 +495,7 @@
     <Content Include="Backload\ContentTypes\64\Excel.png" />
     <Content Include="Backload\ContentTypes\64\File.png" />
     <Content Include="Backload\ContentTypes\64\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\64\groove.png" />
     <Content Include="Backload\ContentTypes\64\Image.png" />
     <Content Include="Backload\ContentTypes\64\Multimedia.png" />
     <Content Include="Backload\ContentTypes\64\OpenOffice-Writer.png" />
@@ -498,6 +506,7 @@
     <Content Include="Backload\ContentTypes\72\Excel.png" />
     <Content Include="Backload\ContentTypes\72\File.png" />
     <Content Include="Backload\ContentTypes\72\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\72\groove.png" />
     <Content Include="Backload\ContentTypes\72\Image.png" />
     <Content Include="Backload\ContentTypes\72\Multimedia.png" />
     <Content Include="Backload\ContentTypes\72\OpenOffice-Writer.png" />
@@ -508,6 +517,7 @@
     <Content Include="Backload\ContentTypes\96\Excel.png" />
     <Content Include="Backload\ContentTypes\96\File.png" />
     <Content Include="Backload\ContentTypes\96\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\96\groove.png" />
     <Content Include="Backload\ContentTypes\96\Image.png" />
     <Content Include="Backload\ContentTypes\96\Multimedia.png" />
     <Content Include="Backload\ContentTypes\96\OpenOffice-Writer.png" />
@@ -899,8 +909,14 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Backload\Web.Backload.config" />
+    <None Include="Properties\PublishProfiles\APTArchV0320180219121431 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\APTManagementV01 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\APTManagementV01 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\IIS Debug.pubxml" />
+    <None Include="Properties\PublishProfiles\LocalFolder.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

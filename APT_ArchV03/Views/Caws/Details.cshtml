@@ -202,7 +202,7 @@
 
                         var web_app = '/';                                                   // Name of a web application (usually in full IIS mode). Can be found in Properties/Web/Server/Project-Url. Example: http://localhost/Demo (Name of web application is "Demo")
 
-                        
+
                         var url = web_app + 'Backload/FileHandler?objectContext=@(Model.caw_partner_code.ToUpper())&id=@(Model.caw_id)&uploadContext=@(Model.caw_type.Replace(" ", "-"))';
 
 
@@ -259,6 +259,12 @@
                             }
                         });
 
+                        // Warn after upload.
+                        var uploadingFiles = 0;
+                        $(window).bind('fileuploaddone', function () {
+                            //console.log('File Completed');
+                            $('#btnArchive').removeAttr('disabled');
+                        });
 
 
                         // Optional: Load existing files:
@@ -286,26 +292,37 @@
             @if (Model.caw_status == 3)
             {
                 @*@Html.Partial("_Show")*@
-                <h3>Uploaded Files</h3>
+                <h3>Uploaded Files: @Model.CawFiles.Count</h3>
+
+
+
                 <div class="container">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <span class="icon-groove"></span>
-                        </div>
-                        <div class="col-md-10">
-                            @*<script>
-                                    $(document).ready(function () {
-                                        setTimeout(disableaccordion, 3000)
-                                    });
-                                    function disableaccordion() {
-                                        $('#accordion').accordion("disable");
-                                    }
-                                </script>*@
-                            @*@Html.DisplayFor(model => model.caw_fname)*@
-                        </div>
+                    <ul class="list-group borderless">
+                        <dl class="dl-horizontal">
 
-                    </div>
+                            <li class="list-group-item">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.caw_archdate)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.caw_archdate)
+                            </dd>
+                            </li>
 
+                            @foreach (var file in Model.CawFiles)
+                            {
+                                <li class="list-group-item">
+                                <dt>
+                                    @*<span class="icon-groove"></span>*@
+                                </dt>
+                                <dd>
+                                    <span class="icon-groove"></span> @Html.DisplayFor(modelitem => file.cawfiles_fn)
+                                </dd>
+                                </li>
+
+                            }
+                        </dl>
+                    </ul>
                 </div>
             }
         </div>
@@ -328,7 +345,8 @@
             header: "h4",
             icons: { "header": "ui-icon-caret-1-s", "activeHeader": "ui-icon-caret-1-n" },
             heightStyle: "content",
-            active: @Model.caw_status
+            collapsible: true,
+            active: @Model.caw_status >= 3 ? 2 : @Model.caw_status
         });
 
         $(document).on('click', '#btnToPhase2', function () {
@@ -375,8 +393,7 @@
                 dataType: 'json',
 
                 data: {
-                    id: @Model.caw_id,
-                    reldate: $('#caw_reldate').val()
+                    id: @Model.caw_id
                 },
 
 
@@ -397,7 +414,17 @@
 
         });
 
-
+        $(document).on('click', 'button.btn.delete', function () {
+            setTimeout(function () {
+                if ($('#fileupload table tbody tr').length >= 1) {
+                    $('#btnArchive').removeAttr('disabled');
+                    //console.log('Enabled');
+                } else {
+                    $('#btnArchive').attr('disabled', 'disabled');
+                    //console.log('Disabled');
+                }
+            }, 300);
+        })
 
     });
     //$(document).on('click', 'button.btn.start', function () {

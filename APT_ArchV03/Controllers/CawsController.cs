@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
+using APT_ArchV03.Helpers;
 using System.Web.Mvc;
 using APT_ArchV03.Models;
 
@@ -261,9 +262,15 @@ namespace APT_ArchV03.Controllers
                 caw.caw_usrcreator_code = User.Identity.Name;
                 caw.caw_status = 1;
                 caw.caw_crdate = DateTime.Now;
+
+                EmailHandler emailHandler = new EmailHandler();
+
+                emailHandler.EmailSender("jroca22@gmail.com", "Testing Method", "This is my body");
+
                 db.Caws.Add(caw);
                 db.SaveChanges();
                 return RedirectToAction("List");
+
             }
             var errors = ModelState.Values.SelectMany(v => v.Errors);
             var clients = PopulateClients();
@@ -276,7 +283,10 @@ namespace APT_ArchV03.Controllers
                     }
             );
 
+            //Log errors
+
             ViewData["Client"] = selectListItems;
+
             return View(caw);
         }
 
@@ -569,45 +579,30 @@ namespace APT_ArchV03.Controllers
 
         /*********ARCHIVE APT*********/
         [HttpPost]
-        public JsonResult ArchiveAPT(int id, string archdate)
+        public JsonResult ArchiveAPT(int id)
         {
-            if (id == null)
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json(new { success = false, responseText = "ID is null" }, JsonRequestBehavior.AllowGet);
-            }
             Caw caw = db.Caws.Find(id);
             if (caw == null)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json(new { success = false, responseText = "ID is not valid" }, JsonRequestBehavior.AllowGet);
             }
-            if (caw.caw_status != 1)
+            if (caw.caw_status != 2)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json(new { success = false, responseText = "Invalid stage" }, JsonRequestBehavior.AllowGet);
             }
-            DateTime temp;
-            //Validate request
-            if (DateTime.TryParse(archdate.ToString(), out temp))
-            {
-                caw.caw_archdate = temp;
-            }
-            else
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json(new { success = false, responseText = "Action not supported" }, JsonRequestBehavior.AllowGet);
-            }
 
+            caw.caw_archdate = DateTime.Now;
 
-            caw.caw_dldate = caw.caw_reldate.Value.AddDays(Convert.ToDouble(caw.caw_delplan));
-            caw.caw_status = 2;
+            //caw.caw_dldate = caw.caw_reldate.Value.AddDays(Convert.ToDouble(caw.caw_delplan));
+            caw.caw_status = 3;
 
             db.Entry(caw).State = EntityState.Modified;
             db.SaveChanges();
 
             Response.StatusCode = (int)HttpStatusCode.OK;
-            return Json(new { success = true, responseText = "Report date submitted successfully" }, JsonRequestBehavior.AllowGet);
+            return Json(new { success = true, responseText = "APT successfully closed" }, JsonRequestBehavior.AllowGet);
         }
         /****************************/
 
