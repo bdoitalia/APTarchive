@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
+using APT_ArchV03.Helpers;
 using System.Web.Mvc;
 using APT_ArchV03.Models;
 
@@ -25,9 +26,8 @@ namespace APT_ArchV03.Controllers
             var business = new ProductBusinessLogic();
             var model = business.GetProducts(searchModel);
 
-
-            var yearlst = model.Select(x => new SelectListItem
-            {
+            
+            var yearlst = model.Select(x => new SelectListItem {
                 Text = x.caw_stdate.Value.Year.ToString(),
                 Value = x.caw_stdate.Value.Year.ToString()
             }).Distinct();
@@ -58,7 +58,7 @@ namespace APT_ArchV03.Controllers
 
             var statustlst = model.Select(x => new SelectListItem
             {
-                Text = x.caw_status == 1 ? "Opened" : (x.caw_status == 2 ? "Reporting" : "Closed"),
+                Text = x.caw_status == 1 ? "Opened" : ( x.caw_status == 2 ? "Reporting" : "Closed" ),
                 Value = x.caw_status.ToString()
             }).Distinct();
 
@@ -66,7 +66,7 @@ namespace APT_ArchV03.Controllers
 
             var cawjobs = (from nj in db.CawJobs
                                //where nj.Job_Code.Equals(item.cawjob_jc)
-                           select nj.cawjob_jc).Distinct();
+                               select nj.cawjob_jc).Distinct();
 
             List<SelectListItem> joblst = new List<SelectListItem>();
             foreach (var item in cawjobs)
@@ -74,25 +74,25 @@ namespace APT_ArchV03.Controllers
                 var navjobsquery = from nj in db.NavJobs
                                    where nj.Job_Code.Equals(item)
                                    select nj.Job_Name;
-                joblst.Add(new SelectListItem() { Value = item, Text = item + " - " + navjobsquery.First() });
+                joblst.Add( new SelectListItem() { Value = item, Text = item + " - " + navjobsquery.First() } );
 
             }
 
-
+            
             ViewData["lstYear"] = yearlst;
             ViewData["lstOffice"] = officelst;
-            ViewData["lstJob"] = new SelectList(joblst, "Value", "Text");
+            ViewData["lstJob"] = new SelectList(joblst,"Value","Text");
             ViewData["lstManager"] = managerlst;
             ViewData["lstPartner"] = partnerlst;
             ViewData["lstClient"] = clientlst;
             ViewData["lstStatus"] = statustlst;
 
-
+            
             return View(model.ToList());
             //return View(db.Caws.ToList());
         }
         [HttpPost]
-        public ActionResult ApplyFilter(string year, string client, string job, string partner, string manager, string office, string status)
+        public ActionResult ApplyFilter(string year, string client, string job, string partner, string manager, string office, string status )
         {
             ProductSearchModel searchModel = new ProductSearchModel();
 
@@ -100,7 +100,7 @@ namespace APT_ArchV03.Controllers
             {
                 searchModel.Year = Convert.ToInt16(year);
             }
-
+            
             searchModel.Client = client;
             searchModel.Job = job;
             searchModel.Partner = partner;
@@ -110,14 +110,13 @@ namespace APT_ArchV03.Controllers
             {
                 searchModel.Status = Convert.ToInt16(status);
             }
-
+            
 
             var business = new ProductBusinessLogic();
-
+            
             var model = business.GetProducts(searchModel);
             var list = model.ToList();
-            var table = list.Select(x => new
-            {
+            var table = list.Select( x => new {
                 CawID = x.caw_id,
                 CawName = x.caw_name,
                 Client = x.caw_client,
@@ -127,7 +126,7 @@ namespace APT_ArchV03.Controllers
                 Year = x.caw_stdate.Value.Year.ToString(),
                 Status = x.caw_status.ToString()
 
-            }).ToList();
+            } ).ToList();
 
             return Json(table, JsonRequestBehavior.AllowGet);
             //return View(model.ToList());
@@ -147,7 +146,7 @@ namespace APT_ArchV03.Controllers
                 return HttpNotFound();
             }
 
-
+            
             List<SelectListItem> items2 = new List<SelectListItem>();
 
             foreach (var cjitem in caw.CawJobs)
@@ -155,26 +154,20 @@ namespace APT_ArchV03.Controllers
                 var navjobsquery = from nj in db.NavJobs
                                    where nj.Job_Code.Equals(cjitem.cawjob_jc)
                                    select nj;
-
+                
                 var items = navjobsquery.Select(a => new SelectListItem
                 {
                     Value = a.Job_Code,
                     Text = a.Job_Code + " - " + a.Job_Name
                 });
-
+                
                 items2.Add(new SelectListItem() { Text = items.First().Text, Value = items.First().Value });
             }
 
-            var items4 = caw.CawJobs.Select(x => new SelectListItem
-            {
+            var items4 = caw.CawJobs.Select(x => new SelectListItem {
                 Value = x.cawjob_id.ToString(),
                 Text = x.cawjob_jc + " - " + x.cawjob_jn
             });
-
-
-
-
-
 
             TempData["cawdata"] = caw;
             ViewData["LstCawJobs"] = new SelectList(items2, "Value", "Text");
@@ -193,30 +186,30 @@ namespace APT_ArchV03.Controllers
                         Text = a.Client_ID + separator + a.Client_Name,
                         Value = a.Client_ID
                     }
-            );
-
+            );            
+            
             ViewData["Client"] = selectListItems;
             return View();
         }
 
-
+        
 
         // POST: Caws/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]        
         public ActionResult Create([Bind(Include = "caw_name,caw_stdate,caw_notes")] Caw caw)
         {
             string lstcawjobs = Request[key: "LstCawJobs"];
             string tmpclnt = Request[key: "caw_client"];
-            tmpclnt = tmpclnt.Substring(0, (tmpclnt.IndexOf(" - ")));
+            tmpclnt = tmpclnt.Substring(0,(tmpclnt.IndexOf(" - ") ));
 
             if (lstcawjobs is null)
             {
                 ModelState.AddModelError("LstCawJobs", "Add Jobs");
-            }
-
+            }            
+            
             if (ModelState.IsValid)
             {
                 //string name = Request[key: "Clients"];
@@ -231,22 +224,22 @@ namespace APT_ArchV03.Controllers
 
                 var tmpmgr = Request[key: "Manager"];
                 var mgrquery = from m in db.NavResources
-                               where m.Staff_NO.Equals(tmpmgr)
-                               select m;
+                                where m.Staff_NO.Equals(tmpmgr)
+                                select m;
                 //string lstcawjobs = Request[key: "LstCawJobs"];
-
-                string[] tmpcawjobs = lstcawjobs.Split(',');
-
+                
+                string[] tmpcawjobs = lstcawjobs.Split(',');               
+                
 
                 foreach (string tmpcawjob in tmpcawjobs)
                 {
-                    string tmpcawjob_jc = tmpcawjob.Substring(0, tmpcawjob.IndexOf(" - "));
-                    string tmpcawjob_jn = tmpcawjob.Substring(tmpcawjob.IndexOf(" - ") + 3);
+                    string tmpcawjob_jc = tmpcawjob.Substring(0,tmpcawjob.IndexOf(" - "));
+                    string tmpcawjob_jn = tmpcawjob.Substring(tmpcawjob.IndexOf(" - ") + 3 );
 
                     var cawJob = new CawJob();
                     cawJob.cawjob_jc = tmpcawjob_jc;
                     cawJob.cawjob_jn = tmpcawjob_jn;
-                    caw.CawJobs.Add(cawJob);
+                    caw.CawJobs.Add(cawJob);                    
 
                 }
 
@@ -254,19 +247,30 @@ namespace APT_ArchV03.Controllers
                 caw.caw_client_code = tmpclnt;
 
                 caw.caw_partner = Request[key: "Partner"];
-                caw.caw_partner_code = GetStaffNO(caw.caw_partner);
+                caw.caw_partner_code = GetSamAccount(caw.caw_partner);
 
                 caw.caw_manager = mgrquery.First().Resource_Name;
                 caw.caw_manager_code = tmpmgr;
+
+                string tmpdelplan = Request[key: "caw_delplan"];
+                caw.caw_delplan = Convert.ToInt16(tmpdelplan);
+
+                caw.caw_type = Request[key: "caw_type"];
 
                 caw.caw_office = Request[key: "Office"];
                 caw.caw_usrcreator = GetResourceName(User.Identity.Name);
                 caw.caw_usrcreator_code = User.Identity.Name;
                 caw.caw_status = 1;
                 caw.caw_crdate = DateTime.Now;
+
+                EmailHandler emailHandler = new EmailHandler();
+
+                emailHandler.EmailSender("jroca22@gmail.com", "Testing Method", "This is my body");
+
                 db.Caws.Add(caw);
                 db.SaveChanges();
                 return RedirectToAction("List");
+
             }
             var errors = ModelState.Values.SelectMany(v => v.Errors);
             var clients = PopulateClients();
@@ -279,7 +283,10 @@ namespace APT_ArchV03.Controllers
                     }
             );
 
+            //Log errors
+
             ViewData["Client"] = selectListItems;
+
             return View(caw);
         }
 
@@ -295,46 +302,7 @@ namespace APT_ArchV03.Controllers
             {
                 return HttpNotFound();
             }
-
-            //popolo lista uffici
-            var itemsoffice = db.NavResources.Select(r => new SelectListItem
-            {
-                Value = r.Region,
-                Text = r.Region
-            }).Distinct();
-            ViewBag.office = new SelectList(itemsoffice, "Value", "Text");
-
-            //popolo lista manager
-            var itemsmanager = db.NavResources.Select(s => new SelectListItem
-            {
-                Value = s.Staff_NO,
-                Text = s.Resource_Name
-            }).Distinct();
-            ViewBag.manager = new SelectList(itemsmanager, "Value", "Text");
-
-
-            //popolo lista partner
-            var itemspartner = db.NavJobs.Select(t => new SelectListItem
-            {
-                Value = t.Partner_Gestore,
-                Text = t.Partner_Gestore
-            }).Distinct();
-            ViewBag.partner = new SelectList(itemspartner, "Value", "Text");
-
-
-            //popolo lista commesse
-            var itemscommesse = db.CawJobs.Select(c => new SelectListItem
-            {
-                Value = c.cawjob_jc,
-                Text = c.cawjob_jn
-            }).Distinct();
-            ViewBag.commesse = new SelectList(itemscommesse, "Value", "Text");
-
-
-
-
             return View(caw);
-
         }
 
         // POST: Caws/Edit/5
@@ -342,54 +310,15 @@ namespace APT_ArchV03.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "caw_id,caw_name,caw_client,caw_partner,caw_manager,caw_office,caw_stdate,caw_reldate,caw_dldate,caw_archdate,caw_fname,caw_notes,caw_status,caw_crdate,caw_usrcreator")] Caw caw)
-        public ActionResult Edit(Caw caw)
+        public ActionResult Edit([Bind(Include = "caw_id,caw_name,caw_client,caw_partner,caw_manager,caw_office,caw_stdate,caw_reldate,caw_dldate,caw_archdate,caw_fname,caw_notes,caw_status,caw_crdate,caw_usrcreator")] Caw caw)
         {
             if (ModelState.IsValid)
             {
-                Caw ecaw = new Caw();
-                ecaw = db.Caws.Find(caw.caw_id);
-
-                caw.caw_partner_code = GetStaffNO(caw.caw_partner);
-                string tmpstaffNO = caw.caw_manager;
-                caw.caw_manager = db.NavResources.FirstOrDefault(x => x.Staff_NO == tmpstaffNO).Resource_Name;
-                caw.caw_manager_code = tmpstaffNO;
-
-                ecaw.caw_id = caw.caw_id;
-                ecaw.caw_name = caw.caw_name;
-                ecaw.caw_client = caw.caw_client;
-                ecaw.caw_partner = caw.caw_partner;
-                ecaw.caw_manager = caw.caw_manager;
-                ecaw.caw_manager_code = caw.caw_manager_code;
-                ecaw.caw_office = caw.caw_office;
-                ecaw.caw_stdate = caw.caw_stdate;
-                ecaw.caw_reldate = caw.caw_reldate;
-                ecaw.caw_dldate = caw.caw_dldate;
-                ecaw.caw_archdate = caw.caw_archdate;
-                ecaw.caw_notes = caw.caw_notes;
-                ecaw.caw_status = caw.caw_status;
-                ecaw.caw_crdate = caw.caw_crdate;
-                ecaw.caw_usrcreator = caw.caw_usrcreator;
-                ecaw.caw_usrcreator_code = caw.caw_usrcreator_code;
-
-   
-
-                ViewData["editstdate"] = caw.caw_stdate;
-
-                db.Entry(ecaw).State = EntityState.Modified;
-                db.SaveChanges();    
-                return RedirectToAction("List");
+                db.Entry(caw).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
-
-
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
-
-
-
-
             return View(caw);
-
-
         }
 
         // GET: Caws/Delete/5
@@ -441,13 +370,13 @@ namespace APT_ArchV03.Controllers
             return item;
         }
 
-        public string GetStaffNO(string resourcename)
+        public string GetSamAccount(string resourcename)
         {
 
             var navresourcequery = from res in db.NavResources
                                    where res.Resource_Name.Equals(resourcename)
                                    select res;
-            string item = navresourcequery.First().Staff_NO;
+            string item = navresourcequery.First().User_name;
             string samaccount = item.Substring((item.IndexOf("\\")) + 1);
 
 
@@ -524,7 +453,7 @@ namespace APT_ArchV03.Controllers
                                orderby p.id
                                select p;
             string separator = " - ";
-
+          
             //var items = new SelectList(jobsquery, "Job_Code", "Job_Name");
             var items = partnerquery.Select(a => new SelectListItem
             {
@@ -539,10 +468,10 @@ namespace APT_ArchV03.Controllers
         [HttpPost]
         public JsonResult CompletePartner(string Prefix)
         {
-
+             
             var PartnerQuery = (from N in db.NavJobs
-                                where N.Partner_Gestore.Contains(Prefix)
-                                select new { N.Partner_Gestore }).Distinct();
+                               where N.Partner_Gestore.Contains(Prefix)
+                               select new { N.Partner_Gestore } ).Distinct();
             var PartnerList = PartnerQuery.Select(a => new SelectListItem
             {
                 Value = a.Partner_Gestore,
@@ -556,8 +485,8 @@ namespace APT_ArchV03.Controllers
         {
             string separator = " - ";
             var clientquery = (from N in db.NavClients
-                               where (N.Client_Name.Contains(Prefix) || N.Client_ID.Contains(Prefix))
-                               select new { N.Client_Name, N.Client_ID });
+                                where ( N.Client_Name.Contains(Prefix) || N.Client_ID.Contains(Prefix) )
+                                select new { N.Client_Name , N.Client_ID });
             //var ClientList = clientquery.Select(a => new SelectListItem
             //{
             //    Value = a.Client_ID,
@@ -636,7 +565,8 @@ namespace APT_ArchV03.Controllers
                 return Json(new { success = false, responseText = "Action not supported" }, JsonRequestBehavior.AllowGet);
             }
 
-            caw.caw_dldate = caw.caw_reldate.Value.AddDays(60);
+            
+            caw.caw_dldate = caw.caw_reldate.Value.AddDays(Convert.ToDouble(caw.caw_delplan));
             caw.caw_status = 2;
 
             db.Entry(caw).State = EntityState.Modified;
@@ -644,6 +574,35 @@ namespace APT_ArchV03.Controllers
 
             Response.StatusCode = (int)HttpStatusCode.OK;
             return Json(new { success = true, responseText = "Report date submitted successfully" }, JsonRequestBehavior.AllowGet);
+        }
+        /****************************/
+
+        /*********ARCHIVE APT*********/
+        [HttpPost]
+        public JsonResult ArchiveAPT(int id)
+        {
+            Caw caw = db.Caws.Find(id);
+            if (caw == null)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { success = false, responseText = "ID is not valid" }, JsonRequestBehavior.AllowGet);
+            }
+            if (caw.caw_status != 2)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { success = false, responseText = "Invalid stage" }, JsonRequestBehavior.AllowGet);
+            }
+
+            caw.caw_archdate = DateTime.Now;
+
+            //caw.caw_dldate = caw.caw_reldate.Value.AddDays(Convert.ToDouble(caw.caw_delplan));
+            caw.caw_status = 3;
+
+            db.Entry(caw).State = EntityState.Modified;
+            db.SaveChanges();
+
+            Response.StatusCode = (int)HttpStatusCode.OK;
+            return Json(new { success = true, responseText = "APT successfully closed" }, JsonRequestBehavior.AllowGet);
         }
         /****************************/
 

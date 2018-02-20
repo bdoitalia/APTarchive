@@ -63,5 +63,11 @@ namespace APT_ArchV03.Models
 
         [Display(Name = "Jobs")]
         public object CawJobs;
+
+        [Display(Name = "Due days")]
+        public object caw_delplan;
+
+        [Display(Name = "Caw type")]
+        public object caw_type;
     }
 }

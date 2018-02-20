@@ -35,6 +35,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>AllFilesInProjectFolder</FilesToIncludeForPublish>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,6 +47,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Backload, Version=2.2.7.0, Culture=neutral, PublicKeyToken=02eaf42ab375d363, processorArchitecture=MSIL">
+      <HintPath>..\packages\Backload.Core.2.2.7\lib\net45\Backload.dll</HintPath>
+    </Reference>
+    <Reference Include="Backload.Contracts, Version=2.2.7.0, Culture=neutral, PublicKeyToken=079b4834180abdf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Backload.Core.2.2.7\lib\net45\Backload.Contracts.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -92,9 +99,19 @@
     <Reference Include="Microsoft.Extensions.WebEncoders.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.WebEncoders.Core.1.0.0-rc1-final\lib\net451\Microsoft.Extensions.WebEncoders.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop, Version=1.0.168.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
@@ -202,6 +219,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Backload\Bundles\BackloadBundles.cs" />
+    <Compile Include="Backload\Controller\BackloadController.cs" />
+    <Compile Include="Backload\Controller\BackloadController.obsolete.cs" />
+    <Compile Include="Backload\Helper\CawFileSave.cs" />
+    <Compile Include="Backload\Helper\ResultCreator.Classic.cs" />
+    <Compile Include="Backload\Helper\ResultCreator.cs" />
     <Compile Include="Controllers\CawsController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -209,6 +232,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EmailHandler.cs" />
     <Compile Include="Helpers\FilesHelper.cs" />
     <Compile Include="Helpers\ImageHandler.cs" />
     <Compile Include="Models\Caw.cs">
@@ -329,6 +353,181 @@
     <Content Include="Backload\Client\blueimp\loadimage\js\vendor\jquery.Jcrop.js" />
     <Content Include="Backload\Client\blueimp\templates\js\tmpl.js" />
     <Content Include="Backload\Client\blueimp\templates\js\tmpl.min.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\ar.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\az.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\bg.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\bs.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\ca.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\cs.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\cy.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\da.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\de.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\el.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\en.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\es.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\et.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\fa.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\fi.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\fr.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\he.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\hr.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\hu.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\hy.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\id.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\it.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\ja.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\ka.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\kk.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\km.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\ko.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\ku_IQ.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\lt.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\lv.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\mn.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\ms.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\nl.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\pl.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\pt_BR.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\ro.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\ru.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\sk.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\sq.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\sr.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\sr_RS.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\sv.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\th_TH.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\tr.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\uk_UA.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\vi.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\zh_CN.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\i18n\zh_TW.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.plupload.queue\css\jquery.plupload.queue.css" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.plupload.queue\img\backgrounds.gif" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.plupload.queue\img\buttons-disabled.png" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.plupload.queue\img\buttons.png" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.plupload.queue\img\delete.gif" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.plupload.queue\img\done.gif" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.plupload.queue\img\error.gif" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.plupload.queue\img\throbber.gif" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.plupload.queue\img\transp50.png" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.plupload.queue\jquery.plupload.queue.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.plupload.queue\jquery.plupload.queue.min.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.ui.plupload\css\jquery.ui.plupload.css" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.ui.plupload\img\loading.gif" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.ui.plupload\img\plupload.png" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.ui.plupload\jquery.ui.plupload.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\jquery.ui.plupload\jquery.ui.plupload.min.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\moxie.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\moxie.min.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\Moxie.swf" />
+    <Content Include="Backload\Client\moxie\plupload\js\plupload.dev.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\plupload.full.min.js" />
+    <Content Include="Backload\Client\moxie\plupload\js\plupload.min.js" />
+    <Content Include="Backload\Client\widen\fineuploader\continue.gif" />
+    <Content Include="Backload\Client\widen\fineuploader\edit.gif" />
+    <Content Include="Backload\Client\widen\fineuploader\fine-uploader-gallery.min.css" />
+    <Content Include="Backload\Client\widen\fineuploader\fine-uploader-new.min.css" />
+    <Content Include="Backload\Client\widen\fineuploader\js\fine-uploader.min.js" />
+    <Content Include="Backload\Client\widen\fineuploader\loading.gif" />
+    <Content Include="Backload\Client\widen\fineuploader\pause.gif" />
+    <Content Include="Backload\Client\widen\fineuploader\placeholders\not_available-generic.png" />
+    <Content Include="Backload\Client\widen\fineuploader\placeholders\waiting-generic.png" />
+    <Content Include="Backload\Client\widen\fineuploader\processing.gif" />
+    <Content Include="Backload\Client\widen\fineuploader\retry.gif" />
+    <Content Include="Backload\Client\widen\fineuploader\templates\fine-uploader-gallery.template.js" />
+    <Content Include="Backload\Client\widen\fineuploader\trash.gif" />
+    <Content Include="Backload\Config\_Defaults\Defaults.txt" />
+    <Content Include="Backload\ContentTypes\128\Excel.png" />
+    <Content Include="Backload\ContentTypes\128\File.png" />
+    <Content Include="Backload\ContentTypes\128\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\128\groove.png" />
+    <Content Include="Backload\ContentTypes\128\Image.png" />
+    <Content Include="Backload\ContentTypes\128\Multimedia.png" />
+    <Content Include="Backload\ContentTypes\128\OpenOffice-Writer.png" />
+    <Content Include="Backload\ContentTypes\128\PDF.png" />
+    <Content Include="Backload\ContentTypes\128\PowerPoint.png" />
+    <Content Include="Backload\ContentTypes\128\Text.png" />
+    <Content Include="Backload\ContentTypes\128\Word.png" />
+    <Content Include="Backload\ContentTypes\16\Excel.png" />
+    <Content Include="Backload\ContentTypes\16\File.png" />
+    <Content Include="Backload\ContentTypes\16\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\16\groove.png" />
+    <Content Include="Backload\ContentTypes\16\Image.png" />
+    <Content Include="Backload\ContentTypes\16\Multimedia.png" />
+    <Content Include="Backload\ContentTypes\16\OpenOffice-Writer.png" />
+    <Content Include="Backload\ContentTypes\16\PDF.png" />
+    <Content Include="Backload\ContentTypes\16\PowerPoint.png" />
+    <Content Include="Backload\ContentTypes\16\Text.png" />
+    <Content Include="Backload\ContentTypes\16\Word.png" />
+    <Content Include="Backload\ContentTypes\24\Excel.png" />
+    <Content Include="Backload\ContentTypes\24\File.png" />
+    <Content Include="Backload\ContentTypes\24\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\24\groove.png" />
+    <Content Include="Backload\ContentTypes\24\Image.png" />
+    <Content Include="Backload\ContentTypes\24\Multimedia.png" />
+    <Content Include="Backload\ContentTypes\24\OpenOffice-Writer.png" />
+    <Content Include="Backload\ContentTypes\24\PDF.png" />
+    <Content Include="Backload\ContentTypes\24\PowerPoint.png" />
+    <Content Include="Backload\ContentTypes\24\Text.png" />
+    <Content Include="Backload\ContentTypes\24\Word.png" />
+    <Content Include="Backload\ContentTypes\32\Excel.png" />
+    <Content Include="Backload\ContentTypes\32\File.png" />
+    <Content Include="Backload\ContentTypes\32\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\32\groove.png" />
+    <Content Include="Backload\ContentTypes\32\Image.png" />
+    <Content Include="Backload\ContentTypes\32\Multimedia.png" />
+    <Content Include="Backload\ContentTypes\32\OpenOffice-Writer.png" />
+    <Content Include="Backload\ContentTypes\32\PDF.png" />
+    <Content Include="Backload\ContentTypes\32\PowerPoint.png" />
+    <Content Include="Backload\ContentTypes\32\Text.png" />
+    <Content Include="Backload\ContentTypes\32\Word.png" />
+    <Content Include="Backload\ContentTypes\48\Excel.png" />
+    <Content Include="Backload\ContentTypes\48\File.png" />
+    <Content Include="Backload\ContentTypes\48\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\48\groove.png" />
+    <Content Include="Backload\ContentTypes\48\Image.png" />
+    <Content Include="Backload\ContentTypes\48\Multimedia.png" />
+    <Content Include="Backload\ContentTypes\48\OpenOffice-Writer.png" />
+    <Content Include="Backload\ContentTypes\48\PDF.png" />
+    <Content Include="Backload\ContentTypes\48\PowerPoint.png" />
+    <Content Include="Backload\ContentTypes\48\Text.png" />
+    <Content Include="Backload\ContentTypes\48\Word.png" />
+    <Content Include="Backload\ContentTypes\64\Excel.png" />
+    <Content Include="Backload\ContentTypes\64\File.png" />
+    <Content Include="Backload\ContentTypes\64\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\64\groove.png" />
+    <Content Include="Backload\ContentTypes\64\Image.png" />
+    <Content Include="Backload\ContentTypes\64\Multimedia.png" />
+    <Content Include="Backload\ContentTypes\64\OpenOffice-Writer.png" />
+    <Content Include="Backload\ContentTypes\64\PDF.png" />
+    <Content Include="Backload\ContentTypes\64\PowerPoint.png" />
+    <Content Include="Backload\ContentTypes\64\Text.png" />
+    <Content Include="Backload\ContentTypes\64\Word.png" />
+    <Content Include="Backload\ContentTypes\72\Excel.png" />
+    <Content Include="Backload\ContentTypes\72\File.png" />
+    <Content Include="Backload\ContentTypes\72\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\72\groove.png" />
+    <Content Include="Backload\ContentTypes\72\Image.png" />
+    <Content Include="Backload\ContentTypes\72\Multimedia.png" />
+    <Content Include="Backload\ContentTypes\72\OpenOffice-Writer.png" />
+    <Content Include="Backload\ContentTypes\72\PDF.png" />
+    <Content Include="Backload\ContentTypes\72\PowerPoint.png" />
+    <Content Include="Backload\ContentTypes\72\Text.png" />
+    <Content Include="Backload\ContentTypes\72\Word.png" />
+    <Content Include="Backload\ContentTypes\96\Excel.png" />
+    <Content Include="Backload\ContentTypes\96\File.png" />
+    <Content Include="Backload\ContentTypes\96\FileNotFound.png" />
+    <Content Include="Backload\ContentTypes\96\groove.png" />
+    <Content Include="Backload\ContentTypes\96\Image.png" />
+    <Content Include="Backload\ContentTypes\96\Multimedia.png" />
+    <Content Include="Backload\ContentTypes\96\OpenOffice-Writer.png" />
+    <Content Include="Backload\ContentTypes\96\PDF.png" />
+    <Content Include="Backload\ContentTypes\96\PowerPoint.png" />
+    <Content Include="Backload\ContentTypes\96\Text.png" />
+    <Content Include="Backload\ContentTypes\96\Word.png" />
+    <Content Include="Backload\Imaging\readme.txt" />
+    <Content Include="Backload\License.txt" />
+    <Content Include="Backload\Release.txt" />
     <Content Include="bdofavicon.ico" />
     <Content Include="Content\blueimp-gallery2\css\blueimp-gallery-indicator.css" />
     <Content Include="Content\blueimp-gallery2\css\blueimp-gallery-indicator.min.css" />
@@ -345,6 +544,7 @@
     <Content Include="Content\blueimp-gallery2\img\video-play.svg" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\demo.styles.css" />
     <Content Include="Content\Free-file-icons\16px\aac.png" />
     <Content Include="Content\Free-file-icons\16px\ai.png" />
     <Content Include="Content\Free-file-icons\16px\aiff.png" />
@@ -703,8 +903,20 @@
     <Content Include="Content\Free-file-icons\icons.ai" />
     <Content Include="Content\Free-file-icons\icons.pdf" />
     <Content Include="Content\Free-file-icons\LICENSE" />
+    <Content Include="Backload\Logs\log.folder" />
+    <Content Include="Backload\Client\moxie\plupload\js\Moxie.xap" />
+    <None Include="Backload\Config\Web.Backload.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Backload\Web.Backload.config" />
+    <None Include="Properties\PublishProfiles\APTArchV0320180219121431 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\APTManagementV01 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\APTManagementV01 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\IIS Debug.pubxml" />
+    <None Include="Properties\PublishProfiles\LocalFolder.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -723,13 +935,20 @@
     <Content Include="Scripts\canvas-dashboard\tether.min.js" />
     <Content Include="Scripts\cawscripts.js" />
     <Content Include="Scripts\combobox.js" />
+    <Content Include="Scripts\demos.other.chunkingadvanced.js" />
+    <Content Include="Scripts\demos.support.uuid.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
     <Content Include="Scripts\jquery-1.12.4.min.js" />
     <Content Include="Scripts\jquery-1.12.4.min.map" />
+    <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.4.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery.canvasjs.min.js" />
+    <Content Include="Scripts\jquery.fileupload-pauseresume.js" />
     <Content Include="Scripts\jQuery.FileUpload\canvas-to-blob.min.js" />
     <Content Include="Scripts\jQuery.FileUpload\cors\jquery.postmessage-transport.js" />
     <Content Include="Scripts\jQuery.FileUpload\cors\jquery.xdr-transport.js" />
@@ -753,7 +972,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -780,6 +1001,7 @@
     <Content Include="Views\FileUpload\Show.cshtml" />
     <Content Include="Views\Shared\_Show.cshtml" />
     <Content Include="Views\Shared\_Chart.cshtml" />
+    <Content Include="Views\Shared\_FilesPauseResume.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -836,12 +1058,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
   </Target>
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
-  </Target>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
