@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+@*<h2>Edit</h2>*@
 
 
 @using (Html.BeginForm())
@@ -13,48 +13,52 @@
     @Html.AntiForgeryToken()
 
 <div class="form-horizontal">
-    <h4>Caw</h4>
+    <h4>Modify CAW data</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.caw_id)
 
     <div class="form-group">
-        @Html.LabelFor(model => model.caw_name, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.caw_name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.caw_name, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
         @Html.LabelFor(model => model.caw_client, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.caw_client, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.EditorFor(model => model.caw_client, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.caw_client, "", new { @class = "text-danger" })
         </div>
     </div>
 
+     <div class="form-group">
+            @Html.LabelFor(model => model.CawJobs, htmlAttributes: new { @class = "control-label col-md-2" })
+         <div class="col-md-10">
+             @Html.ListBox("LstNavJobs", new SelectList(string.Empty, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+
+             <input id="BtnAddJob" type="button" value="Add" class="btn vertical" />
+             <input id="BtnRemoveJob" type="button" value="Remove" class="btn vertical" />
+
+                @Html.ListBoxFor(model => model.CawJobs, Model.CawJobs.Select(m => new SelectListItem { Value = m.cawjob_id.ToString(), Text = m.cawjob_jc + " - " + m.cawjob_jn }), htmlAttributes: new { @class = "form-control", required = "required", title = "Please, add some jobs to this caw", @id = "LstCawJobs" })
+                @Html.ValidationMessage("LstCawJobs", "", new { @class = "text-danger" }) 
+
+
+         </div>
+        </div> 
+
     <div class="form-group">
         @Html.LabelFor(model => model.caw_partner, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.caw_partner, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.caw_partner, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(model => model.caw_partner, ViewBag.partner as SelectList, new { @class = "form-control" })
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.caw_manager, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.caw_manager, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.caw_manager, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(model => model.caw_manager, ViewBag.manager as SelectList, new { @class = "form-control" })
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.caw_office, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.caw_office, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.caw_office, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(model => model.caw_office, ViewBag.office as SelectList, new { @class = "form-control" })
         </div>
     </div>
 
@@ -63,6 +67,19 @@
         <div class="col-md-10">
             @Html.EditorFor(model => model.caw_stdate, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.caw_stdate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.caw_name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.caw_name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.caw_name, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -77,6 +94,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.caw_dldate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
+
             @Html.EditorFor(model => model.caw_dldate, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.caw_dldate, "", new { @class = "text-danger" })
         </div>
@@ -91,61 +109,124 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.caw_fname, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.caw_fname, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.caw_fname, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
         @Html.LabelFor(model => model.caw_notes, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.caw_notes, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.TextAreaFor(model => model.caw_notes, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.caw_notes, "", new { @class = "text-danger" })
         </div>
     </div>
 
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
+        <div class="col-md-12 actionbtn">
+            <input type="submit" value="Save" class="btn btn-default pull-right" />
+            <input type="button" value="Back" class="btn btn-default pull-right" onclick="location.href='@Url.Action("List","Caws")'" />
         </div>
     </div>
 </div>
-
-
-  
- 
-
-
-
-
 }
 
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/cawscripts")
+
+    @Scripts.Render("~/bundles/cawscripts")
+    @Scripts.Render("~/bundles/combobox")
+    @Styles.Render("~/Content/caw")
 }
+
+
+
+
+    <script>
+
+    //funzione per convertire data
+    function formatDate(date) {
+
+        var datearray = date.split('/');
+
+        var d = new Date(datearray[2], datearray[1] - 1, datearray[0]),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+
+    $(document).ready(function () {
+
+        if ($('#caw_stdate').attr('value') != "") {
+
+            $('#caw_stdate').val(formatDate($('#caw_stdate').attr('value')));
+
+        }
+
+        if ($('#caw_stdate').attr('value') != "") {
+
+            $('#caw_reldate').val(formatDate($('#caw_reldate').attr('value')));
+
+        }
+
+        if ($('#caw_dldate').attr('value') != "") {
+
+            $('#caw_dldate').val(formatDate($('#caw_dldate').attr('value')));
+
+        }
+
+        if ($('#caw_archdate').attr('value') != "") {
+
+            $('#caw_archdate').val(formatDate($('#caw_archdate').attr('value')));
+
+        }
+
+        $("#LstNavJobs").empty();
+
+        var datasource = '@Model.caw_client_code';
+        var iddatatarget = $("#LstNavJobs");
+        var urltarget = '@Url.Action("GetJobs")';
+
+       var result = PostAjax(datasource, iddatatarget, urltarget);
+
+    });
+
+
+    $("#caw_client").autocomplete({
+
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("RetrieveClients")',
+                    datatype: "json",
+                    type: "POST",
+                    data: {
+                        Prefix: request.term
+                    },
+                    success: function (data) {
+                        response($.map(data, function (val, item) {
+                            //console.log("Data : " + data);
+                            //console.log("item : " + item);
+                            //console.log("Value : " + val.Client_Name);
+                            //console.log("Value : " + val.Client_ID);
+                            return {
+                                label: (val.Client_ID + " - " + val.Client_Name),
+                                value: (val.Client_ID + " - " + val.Client_Name)
+                            }
+                        }))
+                    }
+                })
+            },
+            delay: 300,
+            minLength: 2,
+            select: function (event, ui) {
+                $("#caw_client").val(ui.item.Client_Name);
+            }
+        });
+
+
+
+    </script>

@@ -20,16 +20,21 @@
 }
 
 .stage1 {
-    background: green;
+    background: #22409a;
 }
 
 .stage2 {
-    background: yellow;
+    background: #df8639;
 }
 
 .stage3 {
-    background: red;
+    background: #218f8b;
 }
+
+.stage4 {
+    background: #ed1a3b;
+}
+
 a[data-title="drpbutton"][disabled="disabled"] {
     cursor: not-allowed;
 }

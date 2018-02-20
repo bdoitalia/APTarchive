@@ -1,4 +1,32 @@
-﻿$(document).ready(function () {
+﻿function PostAjax(datasource, iddatatarget, urltarget) {
+    $.ajax({
+        type: 'POST',
+        url: urltarget,
+
+        dataType: 'json',
+
+        data: { param: datasource },
+
+
+        success: function (elements) {
+
+
+            $.each(elements, function (i, element) {
+                //console.log("element V: " + element.Value);
+                //console.log("element T: " + element.Text);
+                iddatatarget.append('<option value="' + element.Value + '">' +
+                    element.Text + '</option>');
+
+            });
+        },
+        error: function (ex) {
+            alert('Failed to retrieve elements.' + ex);
+        }
+    });
+    return completed = 1;
+};
+
+$(document).ready(function () {
     $('input[type = datetime]').datepicker({
         dateFormat: "dd/mm/yy",
         changeMonth: true,
