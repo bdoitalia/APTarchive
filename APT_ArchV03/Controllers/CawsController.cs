@@ -201,6 +201,8 @@ namespace APT_ArchV03.Controllers
         [ValidateAntiForgeryToken]        
         public ActionResult Create([Bind(Include = "caw_name,caw_stdate,caw_notes")] Caw caw)
         {
+            NLogHandler createNLogHandler = new NLogHandler();
+
             string lstcawjobs = Request[key: "LstCawJobs"];
             string tmpclnt = Request[key: "caw_client"];
             tmpclnt = tmpclnt.Substring(0,(tmpclnt.IndexOf(" - ") ));
@@ -265,10 +267,17 @@ namespace APT_ArchV03.Controllers
 
                 EmailHandler emailHandler = new EmailHandler();
 
-                emailHandler.EmailSender("jroca22@gmail.com", "Testing Method", "This is my body");
+                string to = db.NavResources.FirstOrDefault( x => x.User_name == caw.caw_usrcreator_code).Email;
+
+                //Notify user by email
+                emailHandler.EmailSender( to, "Testing Method", "This is my body");
 
                 db.Caws.Add(caw);
                 db.SaveChanges();
+
+                createNLogHandler.APTLoggerUser("APT " + caw.caw_name +  " created", "Info");
+                //createNLogHandler.APTLoggerUser("User: " + caw.caw_usrcreator_code, "Info");
+
                 return RedirectToAction("List");
 
             }

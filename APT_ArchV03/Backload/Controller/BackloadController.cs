@@ -67,6 +67,11 @@ namespace Backload.Controllers
                         {
 
                             //Start File data saving procedure
+                            string filepath = file.ObjectContext + "\\" + file.UploadContext;
+                            string filename = file.FileName;
+                            int id = Convert.ToInt32(handler.RequestValues.CustomQueryValues["id"]);
+                            var FileSave = new CawFileSave();
+                            FileSave.WriteFile(filepath, filename, id);
 
                         }
 
