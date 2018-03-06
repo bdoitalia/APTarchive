@@ -263,17 +263,22 @@ namespace APT_ArchV03.Controllers
                 caw.caw_usrcreator = GetResourceName(User.Identity.Name);
                 caw.caw_usrcreator_code = User.Identity.Name;
                 caw.caw_status = 1;
-                caw.caw_crdate = DateTime.Now;
-
-                EmailHandler emailHandler = new EmailHandler();
-
-                string to = db.NavResources.FirstOrDefault( x => x.User_name == caw.caw_usrcreator_code).Email;
-
-                //Notify user by email
-                emailHandler.EmailSender( to, "Testing Method", "This is my body");
+                caw.caw_crdate = DateTime.Now;                            
 
                 db.Caws.Add(caw);
                 db.SaveChanges();
+
+                EmailHandler emailHandler = new EmailHandler();
+                //Putting on Cc the user behind the request
+
+                string usernamerequest = HttpContext.User.Identity.Name;
+
+                string cc = db.NavResources.FirstOrDefault(u => u.User_name == usernamerequest).Email;
+
+                string to = db.NavResources.FirstOrDefault(x => x.User_name == caw.caw_usrcreator_code).Email;
+
+                //Send email
+                emailHandler.EmailSender(to, "New CAW for client " + caw.caw_client_code, emailHandler.BodyConstructor(1, caw));
 
                 createNLogHandler.APTLoggerUser("APT " + caw.caw_name +  " created", "Info");
                 //createNLogHandler.APTLoggerUser("User: " + caw.caw_usrcreator_code, "Info");
@@ -581,6 +586,26 @@ namespace APT_ArchV03.Controllers
             db.Entry(caw).State = EntityState.Modified;
             db.SaveChanges();
 
+            EmailHandler emailHandler = new EmailHandler();
+            //Putting on Cc the user behind the request
+
+            string usernamerequest = HttpContext.User.Identity.Name;
+
+            string cc = db.NavResources.FirstOrDefault(u => u.User_name == usernamerequest).Email;
+
+            string to = db.NavResources.FirstOrDefault(x => x.User_name == caw.caw_usrcreator_code).Email;
+
+            //Send email
+            if (cc == to)
+            {
+                emailHandler.EmailSender(to, "Modified - CAW for client " + caw.caw_client_code, emailHandler.BodyConstructor(2, caw));
+            }
+            else
+            {
+                emailHandler.EmailSender(to, "Modified - CAW for client " + caw.caw_client_code, emailHandler.BodyConstructor(2, caw), cc);
+            }
+            
+
             Response.StatusCode = (int)HttpStatusCode.OK;
             return Json(new { success = true, responseText = "Report date submitted successfully" }, JsonRequestBehavior.AllowGet);
         }
@@ -609,6 +634,25 @@ namespace APT_ArchV03.Controllers
 
             db.Entry(caw).State = EntityState.Modified;
             db.SaveChanges();
+
+            EmailHandler emailHandler = new EmailHandler();
+            //Putting on Cc the user behind the request
+
+            string usernamerequest = HttpContext.User.Identity.Name;
+
+            string cc = db.NavResources.FirstOrDefault(u => u.User_name == usernamerequest).Email;
+
+            string to = db.NavResources.FirstOrDefault(x => x.User_name == caw.caw_usrcreator_code).Email;
+
+            //Send email
+            if (cc == to)
+            {
+                emailHandler.EmailSender(to, "Archived - CAW for client " + caw.caw_client_code, emailHandler.BodyConstructor(3, caw));
+            }
+            else
+            {
+                emailHandler.EmailSender(to, "Archived - CAW for client " + caw.caw_client_code, emailHandler.BodyConstructor(3, caw), cc);
+            }
 
             Response.StatusCode = (int)HttpStatusCode.OK;
             return Json(new { success = true, responseText = "APT successfully closed" }, JsonRequestBehavior.AllowGet);

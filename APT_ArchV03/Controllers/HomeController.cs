@@ -7,10 +7,13 @@ using APT_ArchV03.Models;
 
 namespace APT_ArchV03.Controllers
 {
+    //[Authorize(Roles = @"BDOITALIA\APTarch")]
+    //[HandleError]
     public class HomeController : Controller
     {
         private Db_APT_ArchEntities db = new Db_APT_ArchEntities(); //da all'accesso al database
 
+        //[Authorize(Roles = @"BDOITALIA\APTarch")]
         public ActionResult Index()
         {
             
