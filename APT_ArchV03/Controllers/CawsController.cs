@@ -249,7 +249,7 @@ namespace APT_ArchV03.Controllers
                 caw.caw_client_code = tmpclnt;
 
                 caw.caw_partner = Request[key: "Partner"];
-                caw.caw_partner_code = GetSamAccount(caw.caw_partner);
+                caw.caw_partner_code = GetStaffNO(caw.caw_partner);
 
                 caw.caw_manager = mgrquery.First().Resource_Name;
                 caw.caw_manager_code = tmpmgr;
@@ -316,7 +316,72 @@ namespace APT_ArchV03.Controllers
             {
                 return HttpNotFound();
             }
+
+            //populating client
+
+            ViewData["Client"] = caw.caw_client_code + " - " + caw.caw_client;
+
+            //Populating NavJobs
+            var itemnavjobs = db.NavJobs.Where(x => x.Client == caw.caw_client_code).Select(nj => new SelectListItem {
+                Value = nj.Job_Code + " - " + nj.Job_Name,
+                Text = nj.Job_Code + " - " + nj.Job_Name,
+            });
+            ViewData["LstNavJobs"] = itemnavjobs;
+            //ViewData["LNavJobs"] = new SelectList(itemnavjobs, "Value", "Text");
+
+            //Populating CawJobs
+            var itemcawjobs = caw.CawJobs.Select(cj => new SelectListItem
+            {
+                Value = cj.cawjob_jc + " - " + cj.cawjob_jn,
+                Text = cj.cawjob_jc + " - " + cj.cawjob_jn,
+            });
+            ViewData["LstCawJobs"] = itemcawjobs;
+
+            if (itemnavjobs.Count() == itemcawjobs.Count())
+            {
+                //ViewData["LstCawJobs"] = SelectListItem
+            }
+
+            //popolo lista uffici
+            var itemsoffice = db.NavResources.Select(r => new SelectListItem
+            {
+                Value = r.Region,
+                Text = r.Region
+            }).Distinct();
+            ViewBag.office = new SelectList(itemsoffice, "Value", "Text");
+
+            //popolo lista manager
+            var itemsmanager = db.NavResources.Select(s => new SelectListItem
+            {
+                Value = s.Staff_NO,
+                Text = s.Resource_Name
+            }).Distinct();
+            ViewBag.manager = new SelectList(itemsmanager, "Value", "Text");
+
+
+            //popolo lista partner
+            var itemspartner = db.NavJobs.Select(t => new SelectListItem
+            {
+                Value = t.Partner_Gestore,
+                Text = t.Partner_Gestore,
+                Selected = t.Client == caw.caw_client_code ? true : false
+            }).Distinct();
+            //ViewBag.partner = new SelectList(itemspartner, "Value", "Text");
+            ViewData["Partner"] = itemspartner;
+
+            //popolo lista commesse
+            var itemscommesse = db.CawJobs.Select(c => new SelectListItem
+            {
+                Value = c.cawjob_jc,
+                Text = c.cawjob_jn
+            }).Distinct();
+            ViewBag.commesse = new SelectList(itemscommesse, "Value", "Text");
+
+
+
+
             return View(caw);
+
         }
 
         // POST: Caws/Edit/5
@@ -324,17 +389,87 @@ namespace APT_ArchV03.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "caw_id,caw_name,caw_client,caw_partner,caw_manager,caw_office,caw_stdate,caw_reldate,caw_dldate,caw_archdate,caw_fname,caw_notes,caw_status,caw_crdate,caw_usrcreator")] Caw caw)
+        //public ActionResult Edit([Bind(Include = "caw_id,caw_name,caw_client,caw_partner,caw_manager,caw_office,caw_stdate,caw_reldate,caw_dldate,caw_archdate,caw_fname,caw_notes,caw_status,caw_crdate,caw_usrcreator")] Caw caw)
+        public ActionResult Edit(Caw caw)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(caw).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(caw);
-        }
+                Caw ecaw = new Caw();
+                ecaw = db.Caws.Find(caw.caw_id);
 
+                caw.caw_partner_code = GetStaffNO(caw.caw_partner);
+                string tmpstaffNO = caw.caw_manager;
+                caw.caw_manager = db.NavResources.FirstOrDefault(x => x.Staff_NO == tmpstaffNO).Resource_Name;
+                caw.caw_manager_code = tmpstaffNO;
+
+                ecaw.caw_id = caw.caw_id;
+                ecaw.caw_name = caw.caw_name;
+                ecaw.caw_client = caw.caw_client;
+                ecaw.caw_partner = caw.caw_partner;
+                ecaw.caw_manager = caw.caw_manager;
+                ecaw.caw_manager_code = caw.caw_manager_code;
+                ecaw.caw_office = caw.caw_office;
+                ecaw.caw_stdate = caw.caw_stdate;
+                ecaw.caw_reldate = caw.caw_reldate;
+                ecaw.caw_dldate = caw.caw_dldate;
+                ecaw.caw_archdate = caw.caw_archdate;
+                ecaw.caw_notes = caw.caw_notes;
+                ecaw.caw_status = caw.caw_status;
+                //ecaw.caw_crdate = caw.caw_crdate;
+                ecaw.caw_usrcreator = caw.caw_usrcreator;
+                ecaw.caw_usrcreator_code = caw.caw_usrcreator_code;
+
+
+
+                ViewData["editstdate"] = caw.caw_stdate;
+
+                db.Entry(ecaw).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("List");
+            }
+
+
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+
+            //popolo lista uffici
+            var itemsoffice = db.NavResources.Select(r => new SelectListItem
+            {
+                Value = r.Region,
+                Text = r.Region
+            }).Distinct();
+            ViewBag.office = new SelectList(itemsoffice, "Value", "Text");
+
+            //popolo lista manager
+            var itemsmanager = db.NavResources.Select(s => new SelectListItem
+            {
+                Value = s.Staff_NO,
+                Text = s.Resource_Name
+            }).Distinct();
+            ViewBag.manager = new SelectList(itemsmanager, "Value", "Text");
+
+
+            //popolo lista partner
+            var itemspartner = db.NavJobs.Select(t => new SelectListItem
+            {
+                Value = t.Partner_Gestore,
+                Text = t.Partner_Gestore
+            }).Distinct();
+            ViewBag.partner = new SelectList(itemspartner, "Value", "Text");
+
+
+            //popolo lista commesse
+            var itemscommesse = db.CawJobs.Select(c => new SelectListItem
+            {
+                Value = c.cawjob_jc,
+                Text = c.cawjob_jn
+            }).Distinct();
+            ViewBag.commesse = new SelectList(itemscommesse, "Value", "Text");
+
+
+            return View(caw);
+
+
+        }
         // GET: Caws/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -384,13 +519,13 @@ namespace APT_ArchV03.Controllers
             return item;
         }
 
-        public string GetSamAccount(string resourcename)
+        public string GetStaffNO(string resourcename)
         {
 
             var navresourcequery = from res in db.NavResources
                                    where res.Resource_Name.Equals(resourcename)
                                    select res;
-            string item = navresourcequery.First().User_name;
+            string item = navresourcequery.First().Staff_NO;
             string samaccount = item.Substring((item.IndexOf("\\")) + 1);
 
 

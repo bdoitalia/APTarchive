@@ -22,13 +22,13 @@ namespace APT_ArchV03.Helpers
 
         public EmailHandler() {
 
-            SmtpServer = "smtp.office365.com";
-            SmtpPort = 587;
-            SmtpUseDefaultCredentials = true;
-            EnableSsl = true;
-            UserName = "juan.roca@bdo.it";
-            Password = "Protocol76*";
-            From = "juan.roca@bdo.it";
+            SmtpServer = "10.39.129.95";
+            SmtpPort = 25;
+            //SmtpUseDefaultCredentials = true;
+            SmtpUseDefaultCredentials = false;
+            //EnableSsl = true;
+            
+            From = "APT Management";
 
         }
 

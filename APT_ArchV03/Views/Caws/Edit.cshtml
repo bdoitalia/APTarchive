@@ -8,7 +8,7 @@
 @*<h2>Edit</h2>*@
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Caws"))
 {
     @Html.AntiForgeryToken()
 
@@ -21,44 +21,46 @@
     <div class="form-group">
         @Html.LabelFor(model => model.caw_client, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.caw_client, new { htmlAttributes = new { @class = "form-control" } })
+            @*@Html.EditorFor(model => model.caw_client, new { htmlAttributes = new { @class = "form-control", placeholder = "Type client ID or name", required = "required", title = "Client name is required" } })*@
+            @Html.EditorFor(model => model.caw_client, new { htmlAttributes = new { @class = "form-control", placeholder = "Type client ID or name", required = "required", title = "Client name is required", @Value = ViewData["Client"] } })
             @Html.ValidationMessageFor(model => model.caw_client, "", new { @class = "text-danger" })
         </div>
     </div>
 
-     <div class="form-group">
-            @Html.LabelFor(model => model.CawJobs, htmlAttributes: new { @class = "control-label col-md-2" })
-         <div class="col-md-10">
-             @Html.ListBox("LstNavJobs", new SelectList(string.Empty, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.CawJobs, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.ListBox("LstNavJobs", ViewData["LstNavJobs"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
 
-             <input id="BtnAddJob" type="button" value="Add" class="btn vertical" />
-             <input id="BtnRemoveJob" type="button" value="Remove" class="btn vertical" />
+            <input id="BtnAddJob" type="button" value="Add" class="btn vertical" />
+            <input id="BtnRemoveJob" type="button" value="Remove" class="btn vertical" />
 
-                @Html.ListBoxFor(model => model.CawJobs, Model.CawJobs.Select(m => new SelectListItem { Value = m.cawjob_id.ToString(), Text = m.cawjob_jc + " - " + m.cawjob_jn }), htmlAttributes: new { @class = "form-control", required = "required", title = "Please, add some jobs to this caw", @id = "LstCawJobs" })
-                @Html.ValidationMessage("LstCawJobs", "", new { @class = "text-danger" }) 
+            @Html.ListBox("LstCawJobs", ViewData["LstCawJobs"] as SelectListItem[], htmlAttributes: new { @class = "form-control", required = "required", title = "Please, add some jobs to this caw"})
+            @Html.ValidationMessage("LstCawJobs", "", new { @class = "text-danger" })
 
 
-         </div>
-        </div> 
+        </div>
+    </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.caw_partner, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.caw_partner, ViewBag.partner as SelectList, new { @class = "form-control" })
+            @Html.DropDownList("Partner", ViewData["Partner"] as SelectListItem[], htmlAttributes: new { @class = "form-control", required = "required", title = "Partner name is required" })
+            @Html.ValidationMessage("Partner", "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.caw_manager, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.caw_manager, ViewBag.manager as SelectList, new { @class = "form-control" })
+        <div class="col-md-10" data-text="Manager">
+            @Html.DropDownList("Manager", new SelectList(string.Empty, "Value", "Text"), "--Select Manager--", htmlAttributes: new { @class = "form-control" })
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.caw_office, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.caw_office, ViewBag.office as SelectList, new { @class = "form-control" })
+            @Html.DropDownList("Office", new SelectList(string.Empty, "Value", "Text"), "--Select Office--", htmlAttributes: new { @class = "form-control" })
         </div>
     </div>
 
@@ -70,19 +72,43 @@
         </div>
     </div>
 
+    <div class="form-group">
+        @Html.LabelFor(model => model.caw_delplan, htmlAttributes: new { @class = "control-label col-md-2" })
 
+        <div class="col-md-10">
+            @Html.RadioButtonFor(model => model.caw_delplan, "60", htmlAttributes: new { @class = "radio-inline", @checked = true }) 60
+            @Html.RadioButtonFor(model => model.caw_delplan, "45", htmlAttributes: new { @class = "radio-inline" }) 45
+            @Html.ValidationMessageFor(model => model.caw_delplan, "", new { @class = "text-danger" })
+        </div>
+    </div>
 
+    <div class="form-group">
+        @Html.LabelFor(model => model.caw_type, htmlAttributes: new { @class = "control-label col-md-2" })
 
-
+        <div class="col-md-10">
+            @Html.RadioButtonFor(model => model.caw_type, "Financial", htmlAttributes: new { @class = "radio-inline", @checked = true }) Financial
+            @Html.RadioButtonFor(model => model.caw_type, "Non financial", htmlAttributes: new { @class = "radio-inline" }) Non financial
+            @Html.ValidationMessageFor(model => model.caw_type, "", new { @class = "text-danger" })
+        </div>
+    </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.caw_name, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.caw_name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.caw_name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter caw name here" } })
             @Html.ValidationMessageFor(model => model.caw_name, "", new { @class = "text-danger" })
         </div>
     </div>
 
+    <div class="form-group">
+        @Html.LabelFor(model => model.caw_notes, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.caw_notes, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.caw_notes, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    
     <div class="form-group">
         @Html.LabelFor(model => model.caw_reldate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -108,17 +134,10 @@
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.caw_notes, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextAreaFor(model => model.caw_notes, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.caw_notes, "", new { @class = "text-danger" })
-        </div>
-    </div>
 
     <div class="form-group">
         <div class="col-md-12 actionbtn">
-            <input type="submit" value="Save" class="btn btn-default pull-right" />
+            <input type="submit" value="Edit" class="btn btn-default pull-right" />
             <input type="button" value="Back" class="btn btn-default pull-right" onclick="location.href='@Url.Action("List","Caws")'" />
         </div>
     </div>
@@ -140,7 +159,7 @@
 
 
 
-    <script>
+<script>
 
     //funzione per convertire data
     function formatDate(date) {
@@ -159,7 +178,80 @@
     }
 
 
-    $(document).ready(function () {
+        $(document).ready(function () {
+
+            $('#caw_client').on("change", function () {
+            //var currentval = $('#caw_client').val().split(" - ").shift();
+            //console.log("caw_client val = " + currentval);
+            //console.log("caw_client = " + $('#caw_client'));
+            $("#LstNavJobs, #LstCawJobs").empty();
+            $("#LstNavJobs, #LstCawJobs").removeAttr("disabled");
+
+            var datasource = $("#caw_client").val().split(" - ").shift();
+            var iddatatarget = $("#LstNavJobs");
+            var urltarget = '@Url.Action("GetJobs")';
+
+            var result = PostAjax(datasource, iddatatarget, urltarget);
+            //console.log(result);
+            if (result == 1) {
+
+            }
+            $(document).ajaxSuccess(function (event, xhr, settings) {
+                //debugger;
+                //console.log($('#LstNavJobs').val());
+                //console.log(event);
+                //console.log(xhr);
+                //console.log(settings.url);
+                //activetarget = $(event.currentTarget.activeElement).attr('id');
+                //activetarget = $(event.currentTarget.activeElement).attr('id');
+                ///Caws/GetJobs
+                //console.log(activetarget);
+
+                if (settings.url == "/Caws/GetJobs") {
+
+                    $('input[data-title="drpinput"], a[data-title="drpbutton"]').removeAttr("disabled");
+                    ////
+                    $("#Partner").empty();
+                    $("#Partner").removeAttr("disabled");
+                    selectDeselect('LstNavJobs', true)
+                    //Getting Jobcode by from LstNavJobs' first element Value after splitting (before " - ")
+                    var datasource = $("#LstNavJobs").val().shift().split(" - ").shift();
+                    var iddatatarget = $("#Partner");
+                    var urltarget = '@Url.Action("GetPartner")';
+
+                    PostAjax(datasource, iddatatarget, urltarget);
+
+                    $("#Manager").empty();
+
+                    //var datasource = $("#Jobs").val();
+                    var iddatatarget = $("#Manager");
+                    var urltarget = '@Url.Action("GetManager")';
+
+                    PostAjax(datasource, iddatatarget, urltarget);
+
+                     $("#Office").empty();
+
+                    //var datasource = $("#Jobs").val();
+                     var iddatatarget = $("#Office");
+                    var urltarget = '@Url.Action("GetOffice")';
+
+                    PostAjax(datasource, iddatatarget, urltarget);
+
+                    @*var datasource = $("#Clients").val();
+                    var iddatatarget = $("#LstCawJobs");
+                    var urltarget = '@Url.Action("GetJobs")';
+                    PostAjax(datasource, iddatatarget, urltarget);*@
+
+                    $(event.currentTarget).unbind('ajaxSuccess')
+                    return false;
+                    /////
+
+                }
+            })
+            return false;
+
+
+        });
 
         if ($('#caw_stdate').attr('value') != "") {
 
@@ -193,7 +285,8 @@
 
        var result = PostAjax(datasource, iddatatarget, urltarget);
 
-    });
+        });
+
 
 
     $("#caw_client").autocomplete({
@@ -229,4 +322,63 @@
 
 
 
-    </script>
+</script>
+<style>
+    .1custom-combobox {
+        position: relative;
+        display: inline-block;
+    }
+
+    .custom-combobox-toggle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin-left: -1px;
+        padding: 0;
+    }
+
+    .custom-combobox-input {
+        margin: 0;
+        padding: 5px 10px;
+        background: none !important;
+    }
+
+    .ui-state-active .ui-icon, .ui-button:active .ui-icon {
+        background: none !important;
+    }
+
+    .ui-icon {
+        width: 2px;
+        height: 2px;
+        background: none !important;
+    }
+
+    a.btncombo, a.btncombo:hover, span a.btncombo:active, a.btncombo:focus {
+        border: none;
+        background: none;
+        position: absolute;
+        border-radius: 4px;
+        padding: 0;
+    }
+
+        a.btncombo:focus {
+            outline: none !important;
+        }
+
+        a.btncombo span {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            margin-left: 2px;
+            vertical-align: middle;
+            border-top: 4px dashed;
+            border-top: 4px solid\9;
+            border-right: 4px solid transparent;
+            border-left: 4px solid transparent;
+        }
+
+    .custom-combobox a.btncombo span {
+        margin-left: 0;
+        margin-top: 0;
+    }
+</style>
