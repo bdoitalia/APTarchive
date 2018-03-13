@@ -322,12 +322,19 @@ namespace APT_ArchV03.Controllers
             ViewData["Client"] = caw.caw_client_code + " - " + caw.caw_client;
 
             //Populating NavJobs
-            var itemnavjobs = db.NavJobs.Where(x => x.Client == caw.caw_client_code).Select(nj => new SelectListItem {
+            
+            var itemnavjobs = db.NavJobs.Where(x => x.Client == caw.caw_client_code).Select(nj => new SelectListItem
+            {
                 Value = nj.Job_Code + " - " + nj.Job_Name,
                 Text = nj.Job_Code + " - " + nj.Job_Name,
-            });
-            ViewData["LstNavJobs"] = itemnavjobs;
-            //ViewData["LNavJobs"] = new SelectList(itemnavjobs, "Value", "Text");
+            }).AsEnumerable();
+
+            //ViewData["LstNavJobs"] = itemnavjobs;
+            ViewData["FlagNavJobs"] = "0";
+            //ViewData["LstNavJobs"] = itemnavjobs;
+            //var myList = new SelectList(itemnavjobs, "Value", "Text");
+            //ViewData["LstNavJobs"] = myLis;
+            //ViewData["LstNavJobs"] = itemnavjobs;
 
             //Populating CawJobs
             var itemcawjobs = caw.CawJobs.Select(cj => new SelectListItem
@@ -337,11 +344,36 @@ namespace APT_ArchV03.Controllers
             });
             ViewData["LstCawJobs"] = itemcawjobs;
 
-            if (itemnavjobs.Count() == itemcawjobs.Count())
+            //Diff list
+
+            //List<SelectListItem> Lstitemnavjobs = itemnavjobs.ToList();
+            //List<SelectListItem> Lstitemcawjobs = itemcawjobs.ToList();
+            List<SelectListItem> Lstitemnavjobs = itemnavjobs.AsEnumerable().ToList();
+            List<SelectListItem> Lstitemcawjobs = itemcawjobs.ToList();
+
+
+
+            //List<SelectListItem> Except = Lstitemnavjobs.Except(Lstitemcawjobs).ToList();
+
+            if (Lstitemnavjobs.Count() == Lstitemcawjobs.Count())
             {
-                //ViewData["LstCawJobs"] = SelectListItem
+                //Flag to flush
+                ViewData["FlagNavJobs"] = "1";
+                //ViewData["LstNavJobs"] = itemnavjobs;
+                var removed = Lstitemnavjobs.RemoveAll(item1 => Lstitemcawjobs.Any(item2 => item1.Text == item2.Text));
+                ViewData["LstNavJobs"] = new SelectList(Lstitemnavjobs, "Text", "Value");
+            }
+            else
+            {
+                //Search coincidences
+                var removed = Lstitemnavjobs.RemoveAll(item1 => Lstitemcawjobs.Any(item2 => item1.Text == item2.Text));
+                ViewData["LstNavJobs"] = new SelectList(Lstitemnavjobs, "Text", "Value");
+                //var test04 = Lstitemnavjobs.Select(z => new SelectListItem { Text = z.Text, Value = z.Value });
+                //ViewBag.LstNavJobs2 = test04;
+
             }
 
+            
             //popolo lista uffici
             var itemsoffice = db.NavResources.Select(r => new SelectListItem
             {
@@ -376,7 +408,6 @@ namespace APT_ArchV03.Controllers
                 Text = c.cawjob_jn
             }).Distinct();
             ViewBag.commesse = new SelectList(itemscommesse, "Value", "Text");
-
 
 
 
