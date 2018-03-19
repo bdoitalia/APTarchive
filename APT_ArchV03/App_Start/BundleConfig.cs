@@ -17,8 +17,18 @@ namespace APT_ArchV03
                         "~/Scripts/jquery-2.1.4.min.js"
                         ));
 
+            //bundles.Add(new ScriptBundle("~/bundles/globalize").Include(
+            //                            "~/Scripts/cldr.js",
+            //                            "~/Scripts/cldr/event.js",
+            //                            "~/Scripts/cldr/supplemental.js",
+            //                            "~/Scripts/globalize.js",
+            //                            "~/Scripts/globalize/number.js",
+            //                            "~/Scripts/globalize/plural.js",
+            //                            "~/Scripts/globalize/currency.js",
+            //                            "~/Scripts/globalize/date.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+                        "~/Scripts/jquery.validate.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                         "~/Scripts/jquery-ui-{version}.js"));
@@ -78,6 +88,7 @@ namespace APT_ArchV03
 
             bundles.Add(new ScriptBundle("~/bundles/combobox").Include(
                         "~/Scripts/combobox.js"));
+            
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.

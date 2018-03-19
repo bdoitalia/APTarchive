@@ -8,7 +8,11 @@
 @section Scripts {
     @Scripts.Render("~/bundles/cawscripts")
     @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/DataTables/jquery.dataTables.min.js")
+    @Scripts.Render("~/Scripts/DataTables/dataTables.bootstrap.min.js")
     @Styles.Render("~/Content/cssjqryUi")
+    @Styles.Render("~/Content/DataTables/css/jquery.dataTables.min.css")
+    @Styles.Render("~/Content/DataTables/css/dataTables.bootstrap.css")
     @Styles.Render("~/Content/caw")
 
 }
@@ -20,7 +24,7 @@
 
     <div id="btn-container" class="row">
         @*<button id="btnclearfilters" class="disabled pull-right btn btn-link">Clear</button>
-        <button id="btnpopupfilters" class="pull-right btn btn-primary">Filter</button>*@
+            <button id="btnpopupfilters" class="pull-right btn btn-primary">Filter</button>*@
         <div id="block-filter">
             <button id="btnclearfilters" class="disabled pull-right btn btn-link"><span class="glyphicon glyphicon-remove"></span></button>
             <div class="filter-title">
@@ -93,11 +97,11 @@
 
     </div>
 
-    
+
 
 </div>
 <div class="table-responsive tblcaws">
-    <table class="table table-hover">
+    <table id="CAWList" class="table table-hover">
         <thead>
             <tr class="intestazionetabella">
                 <th class="col-md-2">
@@ -150,7 +154,7 @@
 
                     <td id="tbldtcawstatus">
 
-                        <div class="@(item.caw_status == 1 ? "stage stage1" : ( item.caw_status == 2 ? "stage stage2" : "stage stage3" ) )"></div>
+                        <span class="stage @(item.caw_status == 1 ? "stage1" : ( item.caw_status == 2 ? "stage2" : ( item.caw_status == 3 ? "stage3" : ( item.caw_status == 4 ? "stage4" : "stage0" ) ) ) )" data-toggle="tooltip" title="@(item.caw_status == 1 ? "Opened" : (item.caw_status == 2 ? "Reporting" : (item.caw_status == 3 ? "Archived" : (item.caw_status == 4 ? "Delayed" : "Unknown" ) )) )"></span>
 
                     </td>
 
@@ -163,6 +167,7 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+        $('#CAWList').DataTable();
         $('#block-filter').accordion({
             header: ".filter-title",
             collapsible: true,

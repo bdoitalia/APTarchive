@@ -4,17 +4,25 @@
 @Styles.Render("~/Content/caw")
 @Styles.Render("~/Content/FileUploadPauseResumeCss")
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/bundles/cawscripts")
+    @Scripts.Render("~/bundles/combobox")
+    @Styles.Render("~/Content/caw")
+}
+
 @{
     ViewBag.Title = Model.caw_name.ToString() + " Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
 
-<h2>@Model.caw_name@*.Replace(Model.caw_name, Model.caw_name.Substring(0,5) + "...")*@</h2>
+<h2 class="max-lentght-200">@Model.caw_name@*.Replace(Model.caw_name, Model.caw_name.Substring(0,5) + "...")*@</h2>
 
-<div>
+<div id="detail-page">
     <h4 style="display: inline-flex;">Details</h4>
-    <span id="statusflag" style="display: inline-flex;" class="pull-right @(Model.caw_status == 1 ? "stage stage1" : (Model.caw_status == 2 ? "stage stage2" : "stage stage3") )"></span>
+    <span id="statusflag" style="display: inline-flex;" class="pull-right stage @(Model.caw_status == 1 ? "stage1" : (Model.caw_status == 2 ? "stage2" : "stage3") )" data-toggle="tooltip" title="@(Model.caw_status == 1 ? "Opened" : (Model.caw_status == 2 ? "Reporting" : (Model.caw_status == 3 ? "Archived" : (Model.caw_status == 4 ? "Delayed" : "Unknown" ) )) )"></span>
     <hr />
     <div id="accordion">
         <h4>Opening information</h4>
@@ -209,7 +217,7 @@
                         // Initialize the jQuery File Upload widget:
                         $('#fileupload').fileupload({
                             url: url,
-                            //maxChunkSize: 5000000,                                           // Size of file chunks (data packets): 5MB. Note: In a real world scenario this depends on target infrastructure or use cases.
+                            maxChunkSize: 5000000,                                           // Size of file chunks (data packets): 5MB. Note: In a real world scenario this depends on target infrastructure or use cases.
                             acceptFileTypes: /(jpg)|(jpeg)|(gsa)|(mp4)|(png)|(gif)|(pdf)$/i,             // Allowed file types
 
                             // the add function is called immediately after a file was added to the client UI list, but not uploaded so far.
@@ -329,16 +337,20 @@
     </div>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.caw_id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.caw_id }) |
+    @Html.ActionLink("Back to List", "Index")*@
 
+    <div class="col-md-12 actionbtn" style="padding-bottom: 31px;">
+        <input type="submit" value="Modify" class="btn btn-default pull-right" onclick="location.href='@Url.Action("Edit","Caws", new { id = Model.caw_id })'" />
+        <input type="button" value="Back" class="btn btn-default pull-right" onclick="location.href='@Url.Action("List","Caws")'" />
+    </div>
+</p>
 
 <script>
 
 
 
-    $(document).ready(function () {
+    $(document).ready(function () {        
 
 
         $('#accordion').accordion({
@@ -424,7 +436,9 @@
                     //console.log('Disabled');
                 }
             }, 300);
-        })
+        });
+
+               
 
     });
     //$(document).on('click', 'button.btn.start', function () {

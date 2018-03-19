@@ -345,9 +345,7 @@ namespace APT_ArchV03.Controllers
             ViewData["LstCawJobs"] = itemcawjobs;
 
             //Diff list
-
-            //List<SelectListItem> Lstitemnavjobs = itemnavjobs.ToList();
-            //List<SelectListItem> Lstitemcawjobs = itemcawjobs.ToList();
+                        
             List<SelectListItem> Lstitemnavjobs = itemnavjobs.AsEnumerable().ToList();
             List<SelectListItem> Lstitemcawjobs = itemcawjobs.ToList();
 
@@ -359,7 +357,6 @@ namespace APT_ArchV03.Controllers
             {
                 //Flag to flush
                 ViewData["FlagNavJobs"] = "1";
-                //ViewData["LstNavJobs"] = itemnavjobs;
                 var removed = Lstitemnavjobs.RemoveAll(item1 => Lstitemcawjobs.Any(item2 => item1.Text == item2.Text));
                 ViewData["LstNavJobs"] = new SelectList(Lstitemnavjobs, "Text", "Value");
             }
@@ -368,9 +365,7 @@ namespace APT_ArchV03.Controllers
                 //Search coincidences
                 var removed = Lstitemnavjobs.RemoveAll(item1 => Lstitemcawjobs.Any(item2 => item1.Text == item2.Text));
                 ViewData["LstNavJobs"] = new SelectList(Lstitemnavjobs, "Text", "Value");
-                //var test04 = Lstitemnavjobs.Select(z => new SelectListItem { Text = z.Text, Value = z.Value });
-                //ViewBag.LstNavJobs2 = test04;
-
+                
             }
 
             
@@ -378,7 +373,8 @@ namespace APT_ArchV03.Controllers
             var itemsoffice = db.NavResources.Select(r => new SelectListItem
             {
                 Value = r.Region,
-                Text = r.Region
+                Text = r.Region,
+                Selected = r.Region == caw.caw_office ? true : false
             }).Distinct();
             ViewBag.office = new SelectList(itemsoffice, "Value", "Text");
 
@@ -386,7 +382,8 @@ namespace APT_ArchV03.Controllers
             var itemsmanager = db.NavResources.Select(s => new SelectListItem
             {
                 Value = s.Staff_NO,
-                Text = s.Resource_Name
+                Text = s.Resource_Name,
+                Selected = s.Resource_Name == caw.caw_manager ? true : false
             }).Distinct();
             ViewBag.manager = new SelectList(itemsmanager, "Value", "Text");
 
@@ -401,13 +398,13 @@ namespace APT_ArchV03.Controllers
             //ViewBag.partner = new SelectList(itemspartner, "Value", "Text");
             ViewData["Partner"] = itemspartner;
 
-            //popolo lista commesse
-            var itemscommesse = db.CawJobs.Select(c => new SelectListItem
-            {
-                Value = c.cawjob_jc,
-                Text = c.cawjob_jn
-            }).Distinct();
-            ViewBag.commesse = new SelectList(itemscommesse, "Value", "Text");
+            List<SelectListItem> CAWStatus = new List<SelectListItem>();
+            CAWStatus.Add(new SelectListItem { Value = "1", Text = "Opened", Selected = caw.caw_status == 1 ? true : false });
+            CAWStatus.Add(new SelectListItem { Value = "1", Text = "Reporting", Selected = caw.caw_status == 2 ? true : false });
+            CAWStatus.Add(new SelectListItem { Value = "1", Text = "Archived", Selected = caw.caw_status == 3 ? true : false });
+            CAWStatus.Add(new SelectListItem { Value = "1", Text = "Delayed", Selected = caw.caw_status == 4 ? true : false });
+
+            ViewData["Status"] = CAWStatus;
 
 
 
@@ -423,36 +420,101 @@ namespace APT_ArchV03.Controllers
         //public ActionResult Edit([Bind(Include = "caw_id,caw_name,caw_client,caw_partner,caw_manager,caw_office,caw_stdate,caw_reldate,caw_dldate,caw_archdate,caw_fname,caw_notes,caw_status,caw_crdate,caw_usrcreator")] Caw caw)
         public ActionResult Edit(Caw caw)
         {
+            NLogHandler createNLogHandler = new NLogHandler();
+
             if (ModelState.IsValid)
             {
                 Caw ecaw = new Caw();
                 ecaw = db.Caws.Find(caw.caw_id);
+                
+                int status = Int16.Parse(Request[key: "Status"]);
+                
+                
+                ecaw.caw_status = status;
 
+                string tmpclnt = caw.caw_client;
+                caw.caw_client_code = tmpclnt.Substring(0, (tmpclnt.IndexOf(" - ")));
+                caw.caw_client = tmpclnt.Substring(tmpclnt.IndexOf("-") + 2);
+
+                caw.caw_partner = Request[key: "Partner"];
                 caw.caw_partner_code = GetStaffNO(caw.caw_partner);
-                string tmpstaffNO = caw.caw_manager;
-                caw.caw_manager = db.NavResources.FirstOrDefault(x => x.Staff_NO == tmpstaffNO).Resource_Name;
-                caw.caw_manager_code = tmpstaffNO;
 
-                ecaw.caw_id = caw.caw_id;
+                caw.caw_manager_code = Request[key: "Manager"];
+                caw.caw_manager = db.NavResources.FirstOrDefault(x => x.Staff_NO == caw.caw_manager_code).Resource_Name;
+                
+                
                 ecaw.caw_name = caw.caw_name;
+
                 ecaw.caw_client = caw.caw_client;
+                ecaw.caw_client_code = caw.caw_client_code;
+
                 ecaw.caw_partner = caw.caw_partner;
+                ecaw.caw_partner_code = caw.caw_partner_code;
+
                 ecaw.caw_manager = caw.caw_manager;
                 ecaw.caw_manager_code = caw.caw_manager_code;
+
                 ecaw.caw_office = caw.caw_office;
+
                 ecaw.caw_stdate = caw.caw_stdate;
-                ecaw.caw_reldate = caw.caw_reldate;
-                ecaw.caw_dldate = caw.caw_dldate;
-                ecaw.caw_archdate = caw.caw_archdate;
+
+                ecaw.caw_type = caw.caw_type;
+
+                ecaw.caw_delplan = caw.caw_delplan;
+
                 ecaw.caw_notes = caw.caw_notes;
-                ecaw.caw_status = caw.caw_status;
-                //ecaw.caw_crdate = caw.caw_crdate;
-                ecaw.caw_usrcreator = caw.caw_usrcreator;
-                ecaw.caw_usrcreator_code = caw.caw_usrcreator_code;
+
+                //Stage 2 actions
+
+                if (caw.caw_status >= 2)
+                {
+                    ecaw.caw_reldate = caw.caw_reldate;
+
+                    ecaw.caw_dldate = caw.caw_dldate;
+
+                }
+
+                //Stage 3 actions
+
+                if (caw.caw_status >= 3)
+                {
+
+                    ecaw.caw_archdate = caw.caw_archdate;
+
+                }
+
+                //ecaw.caw_usrcreator = caw.caw_usrcreator;
+                //ecaw.caw_usrcreator_code = caw.caw_usrcreator_code;
 
 
 
                 ViewData["editstdate"] = caw.caw_stdate;
+
+                string lstcawjobs = Request[key: "LstCawJobs"];
+                string[] tmpcawjobs = lstcawjobs.Split(',');
+
+                int[] cjids = ecaw.CawJobs.Select(x => x.cawjob_id).ToArray();
+
+                CawJob cawJob = new CawJob();
+
+                //Flushing CawJobs
+                for (int i = 0; i < cjids.Count(); i++)
+                {
+                    cawJob = db.CawJobs.Find(cjids[i]);
+                    db.Entry(cawJob).State = EntityState.Deleted;
+                }
+                db.SaveChanges();
+                
+                foreach (string tmpcawjob in tmpcawjobs)
+                {
+                    string tmpcawjob_jc = tmpcawjob.Substring(0, tmpcawjob.IndexOf(" - "));
+                    string tmpcawjob_jn = tmpcawjob.Substring(tmpcawjob.IndexOf(" - ") + 3);
+
+                    cawJob.cawjob_jc = tmpcawjob_jc;
+                    cawJob.cawjob_jn = tmpcawjob_jn;
+                    ecaw.CawJobs.Add(cawJob);
+
+                }
 
                 db.Entry(ecaw).State = EntityState.Modified;
                 db.SaveChanges();

@@ -27,12 +27,41 @@
 };
 
 $(document).ready(function () {
+    //jQuery.validator.methods.date = function () { return Globalize.parseDate(value); };
     $('input[type = datetime]').datepicker({
         dateFormat: "dd/mm/yy",
+        buttonImage: "/Content/images/calendar.png",
+        showOn: "button",
+        //buttonImageOnly: true,
         changeMonth: true,
         changeYear: true,
         yearRange: "-5:+3"
     }).val();
+    $('.ui-datepicker-trigger[type = button]').css({
+        'position': 'absolute',        
+        'margin-left': $('input[type = datetime]').innerWidth() - 40
+    });
+    $('.form-group .ui-datepicker-trigger[type = button]').css('top', 4);
+    if ($(window).width() < 768) {
+        $('dd .ui-datepicker-trigger[type = button]').css('top', 40);
+    } else {
+        $('dd .ui-datepicker-trigger[type = button]').css('top', 14);
+    }
+
+    $(window).on('resize', function () {
+        $('.ui-datepicker-trigger[type = button]').css({
+            'position': 'absolute',
+            'margin-left': $('input[type = datetime]').innerWidth() - 40
+        });
+        $('.form-group .ui-datepicker-trigger[type = button]').css('top', 4);
+        
+        if ($(window).width() < 768) {
+            $('dd .ui-datepicker-trigger[type = button]').css('top', 40);
+        } else {
+            $('dd .ui-datepicker-trigger[type = button]').css('top', 14);
+        }
+    })
+
     $('body').on('click', function (event) {
         if ($("#LstNavJobs option").length == 0) {
             //console.log('Cero');
@@ -75,7 +104,8 @@ $(document).ready(function () {
     $(function () {
 
         $("#BtnAddJob,#BtnRemoveJob").click(function (event) {
-            //console.log('Click');
+
+            console.log('Click');
             var ID = $(event.target).attr("ID");
             var ChooseFrom = ID == "BtnAddJob" ? "#LstNavJobs" : "#LstCawJobs";
             var moveTo = ID == "BtnAddJob" ? "#LstCawJobs" : "#LstNavJobs";

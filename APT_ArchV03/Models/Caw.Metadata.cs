@@ -29,24 +29,24 @@ namespace APT_ArchV03.Models
         [Display(Name = "Office")]
         public object caw_office;
 
-        [Required]
+        //[Required]
         [Display(Name = "Statement date")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime), Required]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public object caw_stdate;
 
         [Display(Name = "Report date")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public object caw_reldate;
 
         [Display(Name = "Delivery date")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public object caw_dldate;
 
         [Display(Name = "Archiving date")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public object caw_archdate;
 
