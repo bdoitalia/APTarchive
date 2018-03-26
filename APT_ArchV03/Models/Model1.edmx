@@ -29,6 +29,7 @@
           <Property Name="caw_usrcreator_code" Type="nvarchar" MaxLength="50" />
           <Property Name="caw_delplan" Type="int" />
           <Property Name="caw_type" Type="nvarchar" MaxLength="50" />
+          <Property Name="caw_archplan" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CawFiles">
           <Key>
@@ -180,6 +181,7 @@
           <NavigationProperty Name="CawFiles" Relationship="Db_APT_ArchModel.FK_CawFilesCaw" FromRole="Caw" ToRole="CawFile" />
           <Property Name="caw_delplan" Type="Int32" />
           <Property Name="caw_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="caw_archplan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CawJob">
           <Key>
@@ -314,6 +316,7 @@
           <EntitySetMapping Name="Caws">
             <EntityTypeMapping TypeName="Db_APT_ArchModel.Caw">
               <MappingFragment StoreEntitySet="Caw">
+                <ScalarProperty Name="caw_archplan" ColumnName="caw_archplan" />
                 <ScalarProperty Name="caw_type" ColumnName="caw_type" />
                 <ScalarProperty Name="caw_delplan" ColumnName="caw_delplan" />
                 <ScalarProperty Name="caw_usrcreator_code" ColumnName="caw_usrcreator_code" />

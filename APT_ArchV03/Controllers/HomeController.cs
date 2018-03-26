@@ -7,7 +7,7 @@ using APT_ArchV03.Models;
 
 namespace APT_ArchV03.Controllers
 {
-    //[Authorize(Roles = @"BDOITALIA\APTarch")]
+    [Authorize(Roles = @"BDOITALIA\APTarch")]
     //[HandleError]
     public class HomeController : Controller
     {

@@ -19,10 +19,10 @@
 
 
 @*<script>
-    $(document).ready(function () {
-        Globalize.load;
-    })
-</script>*@
+        $(document).ready(function () {
+            Globalize.load;
+        })
+    </script>*@
 
 @if (clearflag == 1)
 {
@@ -187,7 +187,23 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                @Html.LabelFor(model => model.caw_archplan, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.RadioButtonFor(model => model.caw_archplan, "Digital", htmlAttributes: new { @class = "radio-inline", @checked = true, id = "pdigital", style = "margin-top: 0;" }) Digital
+                    @Html.RadioButtonFor(model => model.caw_archplan, "Physical", htmlAttributes: new { @class = "radio-inline", id = "pphysical" }) Physical
+                    @Html.ValidationMessageFor(model => model.caw_archplan, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
+            if (Model.caw_archplan != "Digital")
+            {
+                <script>
+                    $(document).ready(function () {
+                        $('.container.file-uploader').toggleClass('anime-hide', 500);
+                    });                    
+                </script>
+            }
 
         }
 
@@ -425,7 +441,7 @@
 
         });
 
-        
+
 
         });
 

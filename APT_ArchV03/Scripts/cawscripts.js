@@ -37,6 +37,9 @@ $(document).ready(function () {
         changeYear: true,
         yearRange: "-5:+3"
     }).val();
+    $('input[type = datetime]').on('click', function () {
+        $(this).datepicker('show');
+    });
     $('.ui-datepicker-trigger[type = button]').css({
         'position': 'absolute',        
         'margin-left': $('input[type = datetime]').innerWidth() - 40
@@ -101,6 +104,12 @@ $(document).ready(function () {
         
         
     });
+
+    $('input[name=caw_archplan]').on('change', function () {
+        //console.log($(this).val());
+        $('.container.file-uploader').toggleClass('anime-hide', 500);
+    })
+
     $(function () {
 
         $("#BtnAddJob,#BtnRemoveJob").click(function (event) {

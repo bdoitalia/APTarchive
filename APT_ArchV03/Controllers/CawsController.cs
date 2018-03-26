@@ -11,6 +11,7 @@ using System.Web;
 using APT_ArchV03.Helpers;
 using System.Web.Mvc;
 using APT_ArchV03.Models;
+using System.Web.Security;
 
 namespace APT_ArchV03.Controllers
 {
@@ -273,9 +274,9 @@ namespace APT_ArchV03.Controllers
 
                 string usernamerequest = HttpContext.User.Identity.Name;
 
-                string cc = db.NavResources.FirstOrDefault(u => u.User_name == usernamerequest).Email;
+                string cc = db.NavResources.FirstOrDefault(u => u.User_name == usernamerequest).Email.ToLower();
 
-                string to = db.NavResources.FirstOrDefault(x => x.User_name == caw.caw_usrcreator_code).Email;
+                string to = db.NavResources.FirstOrDefault(x => x.User_name == caw.caw_usrcreator_code).Email.ToLower();
 
                 //Send email
                 emailHandler.EmailSender(to, "New CAW for client " + caw.caw_client_code, emailHandler.BodyConstructor(1, caw));
@@ -305,6 +306,7 @@ namespace APT_ArchV03.Controllers
         }
 
         // GET: Caws/Edit/5
+        [Authorize(Roles = @"BDOITALIA\APTarchAdmin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -316,6 +318,11 @@ namespace APT_ArchV03.Controllers
             {
                 return HttpNotFound();
             }
+
+            //string usernamerequest = HttpContext.User.Identity.Name;
+            //string[] rolesuserbelongto = Roles.GetRolesForUser();
+            //string[] allroles = Roles.GetAllRoles();
+
 
             //populating client
 
@@ -417,6 +424,7 @@ namespace APT_ArchV03.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = @"BDOITALIA\APTarchAdmin")]
         //public ActionResult Edit([Bind(Include = "caw_id,caw_name,caw_client,caw_partner,caw_manager,caw_office,caw_stdate,caw_reldate,caw_dldate,caw_archdate,caw_fname,caw_notes,caw_status,caw_crdate,caw_usrcreator")] Caw caw)
         public ActionResult Edit(Caw caw)
         {
@@ -518,7 +526,33 @@ namespace APT_ArchV03.Controllers
 
                 db.Entry(ecaw).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("List");
+
+                //Send confirmation Email
+
+                EmailHandler emailHandler = new EmailHandler();
+                //Putting on Cc the user behind the request
+
+                string usernamerequest = HttpContext.User.Identity.Name;
+
+                string to = db.NavResources.FirstOrDefault(u => u.User_name == usernamerequest).Email.ToLower();
+
+                string cc = db.NavResources.FirstOrDefault(x => x.User_name == ecaw.caw_usrcreator_code).Email.ToLower();
+
+                //Send email
+                if (to == cc)
+                {
+                    emailHandler.EmailSender(to, "Modified CAW for client " + caw.caw_client_code, emailHandler.BodyConstructor(2, ecaw));
+                }
+                else
+                {
+                    emailHandler.EmailSender(to, "Modified CAW for client " + caw.caw_client_code, emailHandler.BodyConstructor(2, ecaw), cc);
+                }
+                
+                //Logging activity
+                createNLogHandler.APTLoggerUser("APT " + caw.caw_name + " Modified", "Info");
+
+
+                return RedirectToAction("Details", "Caws", new {id = ecaw.caw_id });
             }
 
 
@@ -563,6 +597,8 @@ namespace APT_ArchV03.Controllers
 
 
         }
+
+        [Authorize(Roles = @"BDOITALIA\APTarchAdmin")]
         // GET: Caws/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -578,6 +614,7 @@ namespace APT_ArchV03.Controllers
             return View(caw);
         }
 
+        [Authorize(Roles = @"BDOITALIA\APTarchAdmin")]
         // POST: Caws/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -779,20 +816,28 @@ namespace APT_ArchV03.Controllers
         [HttpPost]
         public JsonResult PostReportDate(int id, string reldate)
         {
+            NLogHandler createNLogHandler = new NLogHandler();
+
             if (id == null)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                //Logging activity
+                createNLogHandler.APTLoggerUser("Relation date post error: null ID", "Error");
                 return Json(new { success = false, responseText = "ID is null" }, JsonRequestBehavior.AllowGet);
             }
             Caw caw = db.Caws.Find(id);
             if (caw == null)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                //Logging activity
+                createNLogHandler.APTLoggerUser("Relation date post error: Caw not found. Null ID", "Error");
                 return Json(new { success = false, responseText = "ID is not valid" }, JsonRequestBehavior.AllowGet);
             }
             if (caw.caw_status != 1)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                //Logging activity
+                createNLogHandler.APTLoggerUser("Relation date post error: Invalid Caw stage", "Error");
                 return Json(new { success = false, responseText = "Invalid stage" }, JsonRequestBehavior.AllowGet);
             }
             DateTime temp;
@@ -804,6 +849,8 @@ namespace APT_ArchV03.Controllers
             else
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                //Logging activity
+                createNLogHandler.APTLoggerUser("Relation date post error: Date parse error", "Error");
                 return Json(new { success = false, responseText = "Action not supported" }, JsonRequestBehavior.AllowGet);
             }
 
@@ -826,13 +873,14 @@ namespace APT_ArchV03.Controllers
             //Send email
             if (cc == to)
             {
-                emailHandler.EmailSender(to, "Modified - CAW for client " + caw.caw_client_code, emailHandler.BodyConstructor(2, caw));
+                emailHandler.EmailSender(to, "Report date successfully submitted", emailHandler.BodyConstructor(2, caw));
             }
             else
             {
-                emailHandler.EmailSender(to, "Modified - CAW for client " + caw.caw_client_code, emailHandler.BodyConstructor(2, caw), cc);
+                emailHandler.EmailSender(to, "Report date successfully submitted", emailHandler.BodyConstructor(2, caw), cc);
             }
-            
+            //Logging activity
+            createNLogHandler.APTLoggerUser("Relation date post success", "Info");
 
             Response.StatusCode = (int)HttpStatusCode.OK;
             return Json(new { success = true, responseText = "Report date submitted successfully" }, JsonRequestBehavior.AllowGet);
@@ -841,21 +889,28 @@ namespace APT_ArchV03.Controllers
 
         /*********ARCHIVE APT*********/
         [HttpPost]
-        public JsonResult ArchiveAPT(int id)
+        public JsonResult ArchiveAPT(int id, string formdata)
         {
+            NLogHandler createNLogHandler = new NLogHandler();
+
             Caw caw = db.Caws.Find(id);
             if (caw == null)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                //Logging activity
+                createNLogHandler.APTLoggerUser("Archive APT post error: null ID", "Error");
                 return Json(new { success = false, responseText = "ID is not valid" }, JsonRequestBehavior.AllowGet);
             }
             if (caw.caw_status != 2)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                //Logging activity
+                createNLogHandler.APTLoggerUser("Archive APT post error: Invalid Caw stage", "Error");
                 return Json(new { success = false, responseText = "Invalid stage" }, JsonRequestBehavior.AllowGet);
             }
 
             caw.caw_archdate = DateTime.Now;
+            caw.caw_archplan = formdata;
 
             //caw.caw_dldate = caw.caw_reldate.Value.AddDays(Convert.ToDouble(caw.caw_delplan));
             caw.caw_status = 3;
@@ -881,6 +936,8 @@ namespace APT_ArchV03.Controllers
             {
                 emailHandler.EmailSender(to, "Archived - CAW for client " + caw.caw_client_code, emailHandler.BodyConstructor(3, caw), cc);
             }
+            //Logging activity
+            createNLogHandler.APTLoggerUser("Relation date post error: Caw not found. Null ID", "Error");
 
             Response.StatusCode = (int)HttpStatusCode.OK;
             return Json(new { success = true, responseText = "APT successfully closed" }, JsonRequestBehavior.AllowGet);

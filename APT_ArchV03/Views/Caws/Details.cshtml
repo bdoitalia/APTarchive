@@ -179,13 +179,23 @@
                         </li>
 
                         <li class="list-group-item">
-                        <dt style="padding-top: 6px;">
-                            @Html.DisplayNameFor(model => model.caw_archdate)
-                        </dt>
-                        <dd>
-                            @Html.EditorFor(model => model.caw_archdate, new { htmlAttributes = new { @class = "form-control", required = "required", title = "Archiving date is required" } })
-                            @Html.ValidationMessageFor(model => model.caw_archdate, "", new { @class = "text-danger" })
-                        </dd>
+                            <dt style="padding-top: 6px;">
+                                @Html.DisplayNameFor(model => model.caw_archdate)
+                            </dt>
+                            <dd>
+                                @Html.EditorFor(model => model.caw_archdate, new { htmlAttributes = new { @class = "form-control", required = "required", title = "Archiving date is required" } })
+                                @Html.ValidationMessageFor(model => model.caw_archdate, "", new { @class = "text-danger" })
+                            </dd>
+                        </li>
+                        <li class="list-group-item">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.caw_archplan)
+                            </dt>
+                            <dd>
+                                @Html.RadioButtonFor(model => model.caw_archplan, "Digital", htmlAttributes: new { @class = "radio-inline", @checked = true, id = "pdigital", style = "margin-top: 0;" }) Digital
+                                @Html.RadioButtonFor(model => model.caw_archplan, "Physical", htmlAttributes: new { @class = "radio-inline", id = "pphysical" }) Physical
+                                @Html.ValidationMessageFor(model => model.caw_archplan, "", new { @class = "text-danger" })
+                            </dd>
                         </li>
                     </dl>
                 </ul>
@@ -291,6 +301,12 @@
                         });
                     });
 
+                    $('input[name=caw_archplan]').on('change', function () {
+                        if ($('#caw_archdate').val() != "" ) {
+                            $('#btnArchive').removeAttr('disabled');
+                        }                        
+                    })
+
                 </script>
             }
             @if (Model.caw_status == 1)
@@ -317,18 +333,27 @@
                             </dd>
                             </li>
 
-                            @foreach (var file in Model.CawFiles)
-                            {
-                                <li class="list-group-item">
+                            <li class="list-group-item">
                                 <dt>
-                                    @*<span class="icon-groove"></span>*@
+                                    @Html.DisplayNameFor(model => model.caw_archplan)
                                 </dt>
                                 <dd>
-                                    <span class="icon-groove"></span> @Html.DisplayFor(modelitem => file.cawfiles_fn)
+                                    @Html.DisplayFor(model => model.caw_archplan)
                                 </dd>
-                                </li>
+                            </li>
 
-                            }
+                            @foreach (var file in Model.CawFiles)
+    {
+                        <li class="list-group-item">
+                        <dt>
+                            @*<span class="icon-groove"></span>*@
+                        </dt>
+                        <dd>
+                            <span class="icon-groove"></span> @Html.DisplayFor(modelitem => file.cawfiles_fn)
+                        </dd>
+                        </li>
+
+}
                         </dl>
                     </ul>
                 </div>
@@ -338,7 +363,7 @@
 </div>
 <p>
     @*@Html.ActionLink("Edit", "Edit", new { id = Model.caw_id }) |
-    @Html.ActionLink("Back to List", "Index")*@
+        @Html.ActionLink("Back to List", "Index")*@
 
     <div class="col-md-12 actionbtn" style="padding-bottom: 31px;">
         <input type="submit" value="Modify" class="btn btn-default pull-right" onclick="location.href='@Url.Action("Edit","Caws", new { id = Model.caw_id })'" />
@@ -350,7 +375,7 @@
 
 
 
-    $(document).ready(function () {        
+    $(document).ready(function () {
 
 
         $('#accordion').accordion({
@@ -405,7 +430,8 @@
                 dataType: 'json',
 
                 data: {
-                    id: @Model.caw_id
+                    id: @Model.caw_id,
+                    formdata: $('input[name=caw_archplan]:checked').val()
                 },
 
 
@@ -438,7 +464,7 @@
             }, 300);
         });
 
-               
+
 
     });
     //$(document).on('click', 'button.btn.start', function () {

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using APT_ArchV03.Models;
 using APT_ArchV03.Backload.Helper;
 using System;
+using APT_ArchV03.Helpers;
 
 namespace Backload.Controllers
 {
@@ -27,6 +28,7 @@ namespace Backload.Controllers
         [AcceptVerbs(HttpVerbs.Get|HttpVerbs.Post|HttpVerbs.Put|HttpVerbs.Delete|HttpVerbs.Options)]
         public async Task<ActionResult> FileHandler()
         {
+            NLogHandler createNLogHandler = new NLogHandler();
             try
             {
 
@@ -60,6 +62,8 @@ namespace Backload.Controllers
                                 int id = Convert.ToInt32(handler.RequestValues.CustomQueryValues["id"]);
                                 var FileSave = new CawFileSave();
                                 FileSave.WriteFile(filepath, filename, id);
+                                //Logging activity
+                                createNLogHandler.APTLoggerUser("Backload: Chuncked file saved. Caw ID: " + id, "Info");
 
                             }
                         }
@@ -72,6 +76,8 @@ namespace Backload.Controllers
                             int id = Convert.ToInt32(handler.RequestValues.CustomQueryValues["id"]);
                             var FileSave = new CawFileSave();
                             FileSave.WriteFile(filepath, filename, id);
+                            //Logging activity
+                            createNLogHandler.APTLoggerUser("Backload: Unchuncked file saved. Caw ID: " + id, "Info");
 
                         }
 
@@ -84,6 +90,8 @@ namespace Backload.Controllers
                     int id = Convert.ToInt32(handler.RequestValues.CustomQueryValues["id"]);
                     var FileRemove = new CawFileSave();
                     FileRemove.DeleteFile(handler.FileStatus.Files[0].FileName, id);
+                    //Logging activity
+                    createNLogHandler.APTLoggerUser("Backload: File deleted. Caw ID: " + id, "Info");
                 }
                 //handler.Init(provider);
 
@@ -95,6 +103,8 @@ namespace Backload.Controllers
             }
             catch
             {
+                //Logging activity
+                createNLogHandler.APTLoggerUser("Backload Exception", "Error");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }

@@ -20,18 +20,21 @@ namespace APT_ArchV03.Models
         [Display(Name = "Client")]
         public object caw_client;
 
+        //[Required]
         [Display(Name = "Partner")]
         public object caw_partner;
 
+        //[Required]
         [Display(Name = "Manager")]
         public object caw_manager;
 
+        //[Required]
         [Display(Name = "Office")]
         public object caw_office;
 
-        //[Required]
+        [Required]
         [Display(Name = "Statement date")]
-        [DataType(DataType.DateTime), Required]
+        [DataType(DataType.DateTime)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public object caw_stdate;
 
@@ -69,5 +72,8 @@ namespace APT_ArchV03.Models
 
         [Display(Name = "Caw type")]
         public object caw_type;
+
+        [Display(Name = "Archiving mode")]
+        public object caw_archplan;
     }
 }

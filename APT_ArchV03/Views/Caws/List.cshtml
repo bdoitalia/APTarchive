@@ -152,8 +152,8 @@
                         @Html.Raw(item.caw_stdate.Value.Year.ToString())
                     </td>
 
-                    <td id="tbldtcawstatus">
-
+                    <td id="tbldtcawstatus" data-order="@(item.caw_status)">
+                        @*@Html.TextBoxFor(modelItem => item.caw_status, htmlAttributes: new { type = "hidden"} )*@
                         <span class="stage @(item.caw_status == 1 ? "stage1" : ( item.caw_status == 2 ? "stage2" : ( item.caw_status == 3 ? "stage3" : ( item.caw_status == 4 ? "stage4" : "stage0" ) ) ) )" data-toggle="tooltip" title="@(item.caw_status == 1 ? "Opened" : (item.caw_status == 2 ? "Reporting" : (item.caw_status == 3 ? "Archived" : (item.caw_status == 4 ? "Delayed" : "Unknown" ) )) )"></span>
 
                     </td>
@@ -250,8 +250,8 @@
 
 
             success: function (elements) {
-
-
+                //debugger;
+                //var newdata = [];
                 $.each(elements, function (i, element) {
                     //console.log("element V: " + element.CawName);
                     //console.log("element T: " + element.Client);
@@ -268,6 +268,56 @@
                         '</tr>');
 
                 });
+
+                
+                // Populating DataTables
+
+                
+
+                //$.each(elements, function (i, element) {
+                //    //console.log("element V: " + element.CawName);
+                //    //console.log("element T: " + element.Client);
+                //    //console.log("element T: " + element.Partner);
+                //    //console.log("i: " + i);
+                //    //var item = [];
+                //    //debugger;
+                //    //item.push(element.CawName);
+                //    //item.push(element.Client);
+                //    //item.push(element.Partner);
+                //    //item.push({ element.CawName, element.Client, element.Partner });
+
+                //    //newdata.push(item);
+                    
+
+                //    $('table tbody').append(
+                //        '<tr class="clickable-row" data-href="/Caws/Details/' + element.CawID + '">' +
+                //        '<td id="tbldtcawname">' + element.CawName + '</td>' +
+                //        '<td id="tbldtcawclient">' + element.Client + '</td>' +
+                //        '<td id="tbldtcawpartner">' + element.Partner + '</td>' +
+                //        '<td id="tbldtcawmanager">' + element.Manager + '</td>' +
+                //        '<td id="tbldtcawoffice">' + element.Office + '</td>' +
+                //        '<td id="tbldtcawyear">' + element.Year + '</td>' +
+                //        '<td id="tbldtcawyear" data-order="' + element.Status + '">' + '<div class="stage stage' + element.Status + '"></div></td>' +
+                //        '</tr>');
+
+                //});
+
+                //$('#CAWList').DataTable({
+                //    data: elements,
+                //    columns: [
+                //        { data: 'CawName'},
+                //        { data: 'Client'},
+                //        { data: 'Partner'},
+                //        { data: 'Manager'},
+                //        { data: 'Office'},
+                //        { data: 'Year'},
+                //        { data: 'Status'}
+                //    ]
+
+                //});
+
+                
+
             },
             error: function (ex) {
                 alert('Failed to retrieve elements.' + ex);
@@ -276,7 +326,9 @@
 
     }
     $(document).on('click', '#btnApplyfilter', function () {
+        $('#CAWList').DataTable().destroy();
         $('#block-filter').accordion("option", "active", false);
+        //debugger;
         $('table tbody').empty();
         //$("#loginModal").modal('hide');
         var year = $('#lstYear option:selected').val();
@@ -286,16 +338,24 @@
         var manager = $('#lstManager option:selected').val();
         var office = $('#lstOffice option:selected').val();
         var status = $('#lstStatus option:selected').val();
+        
         AjaxFilter(year, client, job, partner, manager, office, status);
+        
         $('#btnclearfilters').removeClass('disabled');
+
+        //$('#CAWList').DataTable();
+
+        setTimeout(function () { $('#CAWList').DataTable(); }, 300);
 
     });
     $(document).on('click', '#btnclearfilters', function () {
+        $('#CAWList').DataTable().destroy();
         $('#block-filter').accordion("option", "active", false);
         $('table tbody').empty();
         $('#block-filter .filter-content select').val($('#block-filter .filter-content select option:first').val());
         AjaxFilter();
         $('#btnclearfilters').addClass('disabled');
+        setTimeout(function () { $('#CAWList').DataTable(); }, 300);
     });
 
     $(document).on("click", '.clickable-row', function () {

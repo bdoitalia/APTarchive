@@ -22,13 +22,14 @@ namespace APT_ArchV03.Helpers
 
         public EmailHandler() {
 
-            SmtpServer = "10.39.129.95";
-            SmtpPort = 25;
-            //SmtpUseDefaultCredentials = true;
-            SmtpUseDefaultCredentials = false;
-            //EnableSsl = true;
+            SmtpServer = "smtp.office365.com";
+            SmtpPort = 587;
+            SmtpUseDefaultCredentials = true;
+            EnableSsl = true;
+            UserName = "";
+            Password = "";
             
-            From = "APT Management";
+            From = "";
 
         }
 
@@ -51,7 +52,7 @@ namespace APT_ArchV03.Helpers
             try
             {
                 //Send email  
-                WebMail.Send(to: to, subject: subject, body: body, isBodyHtml: true);
+                WebMail.Send(to: to, subject: subject, body: body, from: From, isBodyHtml: true);
                 emailNLogHandler.APTLoggerUser("Sent success to " + to, "Info");
                 return true;
 
@@ -105,14 +106,18 @@ namespace APT_ArchV03.Helpers
         //Email body constructor
         public string BodyConstructor(int phase, Caw caw)
         {
-            string[] HtmlEmailBody = new string[3];
+            //string[] HtmlEmailBody = new string[3];
+
+            string HtmlEmailBody = "";
 
             int sep = caw.caw_usrcreator.Count(c => c == ' ');
 
             string uName = caw.caw_usrcreator.Substring(caw.caw_usrcreator.Length - caw.caw_usrcreator.IndexOf(' ', caw.caw_usrcreator.IndexOf(' ') + sep - 1));
-                       
 
-            HtmlEmailBody[0] = "<div><font face='Trebuchet MS'><font color='#333333'><span style='FONT-SIZE: 11pt'>Caro " + uName + ",<br><br>" +
+            if (phase == 1)
+            {
+
+                HtmlEmailBody = "<div><font face='Trebuchet MS'><font color='#333333'><span style='FONT-SIZE: 11pt'>Caro " + uName + ",<br><br>" +
                 "ti confermaimo che il CAW &egrave; stato inserito correttamente.<br>Di seguito ti elenchiamo i dati del CAW:<br><br>" +
                  "<table> " +
                   "<tbody> " +
@@ -146,9 +151,12 @@ namespace APT_ArchV03.Helpers
                   "<span style='FONT-SIZE: 8pt'>Le informazioni contenute nella presente comunicazione sono di carattere strettamente confidenziale e sono riservate alla sola persona o società identificata come destinataria. Nel caso non siate la persona destinataria Vi informiamo che ogni divulgazione, copia o azione intrapresa sulla base delle informazioni contenute nella presente mail è proibita e sarà perseguita nei termini di legge. Qualora riceveste questa mail per errore, del quale ci scusiamo, Vi preghiamo di darcene immediata comunicazione rispondendo a questo stesso indirizzo e-mail e di cancellarlo definitivamente dal vostro computer. </span><br style='FONT-SIZE: 8pt'><br style='FONT-SIZE: 8pt'>" +
                   "<span style='FONT-SIZE: 8pt'>The contents of this message, as well as any enclosures, are addressed personally to, and thus solely intended for the addressee. They may contain information regarding a third party. A recipient who is neither the addressee, nor empowered to receive this message on behalf of the addressee, is kindly requested to immediately inform the sender of receipt replying to this e-mail and to delete it from your system. Any use of the contents of this message and/or of the enclosures by any other person than the addressee is illegal towards the sender and the aforementioned third party.</span></font></font> </span></div>";
 
+            }
 
-            HtmlEmailBody[1] = "<div><font face='Trebuchet MS'><font color='#333333'><span style='FONT-SIZE: 11pt'>Caro " + uName + ",<br><br>" +
-                "ti confermaimo che il CAW &egrave; stato inserito correttamente.<br>Di seguito ti elenchiamo i dati del CAW:<br><br>" +
+            if (phase == 2)
+            {
+                HtmlEmailBody = "<div><font face='Trebuchet MS'><font color='#333333'><span style='FONT-SIZE: 11pt'>Caro " + uName + ",<br><br>" +
+                "ti confermaimo che la data della revisione &egrave; stata inserita correttamente.<br>Di seguito ti elenchiamo i dati del CAW:<br><br>" +
                  "<table> " +
                   "<tbody> " +
                     "<tr> <td> " +
@@ -183,8 +191,12 @@ namespace APT_ArchV03.Helpers
                   "<span style='FONT-SIZE: 8pt'>Le informazioni contenute nella presente comunicazione sono di carattere strettamente confidenziale e sono riservate alla sola persona o società identificata come destinataria. Nel caso non siate la persona destinataria Vi informiamo che ogni divulgazione, copia o azione intrapresa sulla base delle informazioni contenute nella presente mail è proibita e sarà perseguita nei termini di legge. Qualora riceveste questa mail per errore, del quale ci scusiamo, Vi preghiamo di darcene immediata comunicazione rispondendo a questo stesso indirizzo e-mail e di cancellarlo definitivamente dal vostro computer. </span><br style='FONT-SIZE: 8pt'><br style='FONT-SIZE: 8pt'>" +
                   "<span style='FONT-SIZE: 8pt'>The contents of this message, as well as any enclosures, are addressed personally to, and thus solely intended for the addressee. They may contain information regarding a third party. A recipient who is neither the addressee, nor empowered to receive this message on behalf of the addressee, is kindly requested to immediately inform the sender of receipt replying to this e-mail and to delete it from your system. Any use of the contents of this message and/or of the enclosures by any other person than the addressee is illegal towards the sender and the aforementioned third party.</span></font></font> </span></div>";
 
-            HtmlEmailBody[2] = "<div><font face='Trebuchet MS'><font color='#333333'><span style='FONT-SIZE: 11pt'>Caro " + uName + ",<br><br>" +
-                "ti confermaimo che il CAW &egrave; stato inserito correttamente.<br>Di seguito ti elenchiamo i dati del CAW:<br><br>" +
+            }
+
+            if (phase == 3)
+            {
+                HtmlEmailBody = "<div><font face='Trebuchet MS'><font color='#333333'><span style='FONT-SIZE: 11pt'>Caro " + uName + ",<br><br>" +
+                "ti confermaimo che il CAW &egrave; stato archiviato correttamente.<br>Di seguito ti elenchiamo i dati del CAW:<br><br>" +
                  "<table> " +
                   "<tbody> " +
                     "<tr> <td> " +
@@ -198,6 +210,7 @@ namespace APT_ArchV03.Helpers
                           "<tr><td style='font-weight:bold;'>Data Relazione:</td><td>" + caw.caw_reldate.Value.ToShortDateString() + "</td></tr>" +
                           "<tr><td style='font-weight:bold;'>Data Scadenza:</td><td>" + caw.caw_dldate.Value.ToShortDateString() + "</td></tr>" +
                           "<tr><td style='font-weight:bold;'>Data archiviazione:</td><td>" + caw.caw_archdate + "</td></tr>" +
+                          "<tr><td style='font-weight:bold;'>Tipo di archiviazione:</td><td>" + caw.caw_archplan + "</td></tr>" +
                         "</tbody>" +
                       "</table>" +
                     "</td></tr>" +
@@ -220,22 +233,25 @@ namespace APT_ArchV03.Helpers
                   "<span style='FONT-SIZE: 8pt'>Le informazioni contenute nella presente comunicazione sono di carattere strettamente confidenziale e sono riservate alla sola persona o società identificata come destinataria. Nel caso non siate la persona destinataria Vi informiamo che ogni divulgazione, copia o azione intrapresa sulla base delle informazioni contenute nella presente mail è proibita e sarà perseguita nei termini di legge. Qualora riceveste questa mail per errore, del quale ci scusiamo, Vi preghiamo di darcene immediata comunicazione rispondendo a questo stesso indirizzo e-mail e di cancellarlo definitivamente dal vostro computer. </span><br style='FONT-SIZE: 8pt'><br style='FONT-SIZE: 8pt'>" +
                   "<span style='FONT-SIZE: 8pt'>The contents of this message, as well as any enclosures, are addressed personally to, and thus solely intended for the addressee. They may contain information regarding a third party. A recipient who is neither the addressee, nor empowered to receive this message on behalf of the addressee, is kindly requested to immediately inform the sender of receipt replying to this e-mail and to delete it from your system. Any use of the contents of this message and/or of the enclosures by any other person than the addressee is illegal towards the sender and the aforementioned third party.</span></font></font> </span></div>";
 
-
-            switch (phase)
-            {
-                case 1:
-                    return HtmlEmailBody[0];
-                    //break;
-                case 2:
-                    return HtmlEmailBody[1];
-                    //break;
-                case 3:
-                    return HtmlEmailBody[2];
-                    //break;
-                default:
-                    return HtmlEmailBody[0];
-                    //break;
             }
+
+            return HtmlEmailBody;
+
+            //switch (phase)
+            //{
+            //    case 1:
+            //        return HtmlEmailBody[0];
+            //        //break;
+            //    case 2:
+            //        return HtmlEmailBody[1];
+            //        //break;
+            //    case 3:
+            //        return HtmlEmailBody[2];
+            //        //break;
+            //    default:
+            //        return HtmlEmailBody[0];
+            //        //break;
+            //}
 
         }
 
