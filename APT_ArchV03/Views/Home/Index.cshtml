@@ -3,6 +3,7 @@
 }
 
 @Styles.Render("~/Content/caw")
+@Scripts.Render("~/bundles/cawscripts")
 
 @section Scripts
     {
@@ -53,17 +54,17 @@
     <tbody>
         <tr>
             <th scope="row" class="summary">CAWS IN SCADENZA NEI PROSSIMI QUINDICI GIORNI:</th>
-            <td style="font-weight:bold;">@ViewData["reporting"]</td>
+            <td style="font-weight:bold;">@ViewData["expiringFifteen"]</td>
         </tr>
 
         <tr class="tr-summary">
             <th scope="row" class="summary">CAWS APERTI ULTIMI SETTE GIORNI:</th>
-            <td style="font-weight:bold;">@ViewData["opened"]</td>
+            <td style="font-weight:bold;">@ViewData["openedlastsevendays"]</td>
         </tr>
 
         <tr class="tr-summary">
             <th scope="row" class="summary">CAWS CHIUSI ULTIMI SETTE GIORNI:</th>
-            <td style="font-weight:bold;">@ViewData["closed"]</td>
+            <td style="font-weight:bold;">@ViewData["closedlastsevendays"]</td>
         </tr>
     </tbody>
 </table>
@@ -94,7 +95,6 @@
 </div>
 
 <style>
-
 
 
     hr {
@@ -152,17 +152,21 @@
     }
 
     #btn-legacy-apt {
-        content: url(/Content/images/cartaceo.png);
+        /*content: url(/Content/images/cartaceo.jpg);*/
         max-width: 250px;
         float: none;
         margin: 0 auto;
+        background: url(/Content/images/cartaceo.png) no-repeat scroll 0 0 / 160px auto rgba(0, 0, 0, 0);
+        min-height: 130px;
     }
 
     #btn-new-apt {
-        content: url(/Content/images/apt.png);
+        /*content: url(/Content/images/apt.jpg);*/
         max-width: 250px;
         float: none;
         margin: 0 auto;
+        background: url(/Content/images/apt.png) no-repeat scroll 0 0 / 160px auto rgba(0, 0, 0, 0);
+        min-height: 130px;
     }
 
     hr.row-footer {

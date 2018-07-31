@@ -17,6 +17,10 @@ namespace APT_ArchV03.Models
         [Display(Name = "Name")]
         public object caw_name;
 
+        [Required]
+        [Display(Name = "CAW URI")]
+        public object caw_uri;
+
         [Display(Name = "Client")]
         public object caw_client;
 

@@ -1,9 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using APT_ArchV03.Helpers
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>@ViewBag.Title - APT Management</title>
     <link href="~/bdofavicon.ico" rel="shortcut icon" type="image/x-icon" />
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/cssjqryUi")
@@ -12,7 +14,20 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryui")
 
+    @{
+        ADUser aDUser = new ADUser();
+        string completeusername = User.Identity.Name;
+        aDUser.UserName = completeusername.Substring(completeusername.IndexOf("\\") + 1);
+        try
+        {
+            aDUser.PopulateADUser(aDUser);
+        }
+        catch (Exception ex)
+        {
+            aDUser.FirstName = User.Identity.Name;
+        }
 
+    }
 
     <link href="~/Content/style.css" rel="stylesheet" />
 
@@ -21,29 +36,16 @@
 <body>
     <header>
         <div id="login-bar" class="align-right">
+            <div id="secondary-nav" class="col-md-12">
+
+                <ul class="nav navbar-nav pull-right">
+                    @*<li>Hello, @User.Identity.Name!</li>*@
+                    <li>Hello, @aDUser.FirstName!</li>
+                </ul>
+            </div>
             <div class="container">
                 <div class="row">
-                    <div id="secondary-nav" class="col-md-12">
-                        @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>*@
-                        @*@Html.ActionLink("Home Page", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
-                        <ul class="nav navbar-nav pull-right">
-                            @*<li>@Html.ActionLink("New", "Create", "Caws")</li>*@
-                            <li>Hello, @User.Identity.Name!</li>
-                            @* <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-                        </ul>
-                    </div>
-                    @*<div class="navbar-collapse collapse">*@
-                    @*<ul class="nav navbar-nav">
-                            <li>@Html.ActionLink("New", "Create", "Caws")</li>
-                            <li>Hello, @User.Identity.Name!</li>
-                             <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        </ul>*@
-                    @*<p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>*@
-                    @*</div>*@
+
                 </div>
             </div>
         </div>
@@ -53,7 +55,6 @@
                     <div class="col-md-2 logo-container">
                         <a href="@Url.Action("Index", "Home")" class="navbar-brand logoLink" style="outline: none;">
                             <div id="logo">
-                                @*<img src="~/Content/img/logo.png" class="logo" title="title" alt="additional title" />*@
                                 <div id="bdo-logo-holder">
                                     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="Laag_1" x="0px" y="0px" viewBox="-199 394.3 109.60073 42.200002" xml:space="preserve" width="109.60073" height="42.200001" focusable="false" style=""><title>BDO</title>
                                     <style type="text/css" id="style3">
@@ -89,9 +90,10 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("My CAWs", "List", "Caws")</li>
+                        <li>@Html.ActionLink("CAWs", "List", "Caws")</li>
                         <li>@Html.ActionLink("Add CAW", "Create", "Caws")</li>
-
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
                     </ul>
 
                 </div>
@@ -106,8 +108,9 @@
             @*codice footer*@
         </footer>
     </div>
-
+    <div class="loader"></div>
 
     @RenderSection("scripts", required: false)
 </body>
 </html>
+

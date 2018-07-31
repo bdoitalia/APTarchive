@@ -31,13 +31,18 @@
 }
 
 .stage3 {
-    background: #218f8b;
+    background: #009E60;
 }
 
 .stage4 {
     background: #ed1a3b;
 }
-
+#CAWList #tbldtcawname, #CAWList #tbldtcawclient {
+    max-width: 250px;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
 a[data-title="drpbutton"][disabled="disabled"] {
     cursor: not-allowed;
 }
@@ -48,7 +53,12 @@ a[data-title="drpbutton"][disabled="disabled"] {
     border: none !important;
 }
 .icon-groove {
-    content: url(/Backload/ContentTypes/16/groove.png)
+    /*content: url(/Backload/ContentTypes/16/groove.png)*/
+    background: url(/Backload/ContentTypes/16/groove.png) 0 0 / 16px auto no-repeat;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    vertical-align: middle;
 }
 /**********************Filter layout***********************/
 .filter-title {

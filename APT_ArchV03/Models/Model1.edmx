@@ -30,6 +30,7 @@
           <Property Name="caw_delplan" Type="int" />
           <Property Name="caw_type" Type="nvarchar" MaxLength="50" />
           <Property Name="caw_archplan" Type="nvarchar" MaxLength="50" />
+          <Property Name="caw_uri" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CawFiles">
           <Key>
@@ -47,6 +48,16 @@
           <Property Name="caw_id" Type="int" Nullable="false" />
           <Property Name="cawjob_jc" Type="nvarchar" MaxLength="50" />
           <Property Name="cawjob_jn" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Db_APT_Arch.dbo.CityCodes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CityCodes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Code" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="NavClients">
           <Key>
@@ -84,11 +95,59 @@
           <Property Name="End Date" Type="datetime" Nullable="false" />
           <Property Name="Region" Type="nvarchar" MaxLength="70" Nullable="false" />
           <Property Name="User name" Type="nvarchar" MaxLength="150" />
-          <Property Name="UserID" Type="int" />
           <Property Name="Active" Type="nvarchar" MaxLength="10" />
-          <Property Name="Diary" Type="nvarchar" MaxLength="10" />
           <Property Name="Email" Type="nvarchar" MaxLength="80" />
-          <Property Name="PlanGroup" Type="nvarchar" MaxLength="80" />
+          <Property Name="Resource Level" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Db_APT_Arch.dbo.VNavClients' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VNavClients">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Client Name" />
+            <PropertyRef Name="Client ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Client Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Client ID" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Db_APT_Arch.dbo.VNavJobs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VNavJobs">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="Client" />
+            <PropertyRef Name="Job Name" />
+            <PropertyRef Name="Job Code" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Client" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Job Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Job Code" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Region" Type="nvarchar" MaxLength="70" />
+          <Property Name="Project Manager" Type="nvarchar" MaxLength="101" />
+          <Property Name="Partner Gestore" Type="nvarchar" MaxLength="101" />
+          <Property Name="Time Capacity" Type="int" />
+          <Property Name="Job Status" Type="nvarchar" MaxLength="101" />
+          <Property Name="Type" Type="nvarchar" MaxLength="223" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Db_APT_Arch.dbo.VNavResources' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VNavResources">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Resource Name" Type="nvarchar" MaxLength="101" />
+          <Property Name="Role" Type="nvarchar" MaxLength="50" />
+          <Property Name="Location" Type="varchar" MaxLength="5" />
+          <Property Name="Staff NO" Type="nvarchar" MaxLength="20" />
+          <Property Name="Start Date" Type="datetime" />
+          <Property Name="End Date" Type="datetime" />
+          <Property Name="Region" Type="nvarchar" MaxLength="70" />
+          <Property Name="User name" Type="nvarchar" MaxLength="150" />
+          <Property Name="Active" Type="nvarchar" MaxLength="10" />
+          <Property Name="Email" Type="nvarchar" MaxLength="80" />
           <Property Name="Resource Level" Type="int" />
         </EntityType>
         <Association Name="FK_caw_id">
@@ -138,6 +197,50 @@
           <EntitySet Name="NavClients" EntityType="Self.NavClients" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NavJobs" EntityType="Self.NavJobs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NavResources" EntityType="Self.NavResources" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CityCodes" EntityType="Self.CityCodes" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CityCodes].[Id] AS [Id], 
+    [CityCodes].[City] AS [City], 
+    [CityCodes].[Code] AS [Code]
+    FROM [dbo].[CityCodes] AS [CityCodes]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VNavClients" EntityType="Self.VNavClients" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VNavClients].[ID] AS [ID], 
+    [VNavClients].[Client Name] AS [Client Name], 
+    [VNavClients].[Client ID] AS [Client ID]
+    FROM [dbo].[VNavClients] AS [VNavClients]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VNavJobs" EntityType="Self.VNavJobs" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VNavJobs].[id] AS [id], 
+    [VNavJobs].[Client] AS [Client], 
+    [VNavJobs].[Job Name] AS [Job Name], 
+    [VNavJobs].[Job Code] AS [Job Code], 
+    [VNavJobs].[Region] AS [Region], 
+    [VNavJobs].[Project Manager] AS [Project Manager], 
+    [VNavJobs].[Partner Gestore] AS [Partner Gestore], 
+    [VNavJobs].[Time Capacity] AS [Time Capacity], 
+    [VNavJobs].[Job Status] AS [Job Status], 
+    [VNavJobs].[Type] AS [Type]
+    FROM [dbo].[VNavJobs] AS [VNavJobs]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VNavResources" EntityType="Self.VNavResources" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VNavResources].[id] AS [id], 
+    [VNavResources].[Resource Name] AS [Resource Name], 
+    [VNavResources].[Role] AS [Role], 
+    [VNavResources].[Location] AS [Location], 
+    [VNavResources].[Staff NO] AS [Staff NO], 
+    [VNavResources].[Start Date] AS [Start Date], 
+    [VNavResources].[End Date] AS [End Date], 
+    [VNavResources].[Region] AS [Region], 
+    [VNavResources].[User name] AS [User name], 
+    [VNavResources].[Active] AS [Active], 
+    [VNavResources].[Email] AS [Email], 
+    [VNavResources].[Resource Level] AS [Resource Level]
+    FROM [dbo].[VNavResources] AS [VNavResources]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_caw_id" Association="Self.FK_caw_id">
             <End Role="Caw" EntitySet="Caw" />
             <End Role="CawJob" EntitySet="CawJob" />
@@ -182,6 +285,7 @@
           <Property Name="caw_delplan" Type="Int32" />
           <Property Name="caw_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="caw_archplan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="caw_uri" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CawJob">
           <Key>
@@ -218,26 +322,6 @@
           <Property Name="Type" Type="String" MaxLength="223" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="NavClient" Relationship="Self.FK_NavJobs_NavClients" FromRole="NavJobs" ToRole="NavClients" />
         </EntityType>
-        <EntityType Name="NavResource">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Resource_Name" Type="String" MaxLength="101" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Location" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Staff_NO" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Start_Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="End_Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Region" Type="String" MaxLength="70" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="User_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="UserID" Type="Int32" />
-          <Property Name="Active" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Diary" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="PlanGroup" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="Resource_Level" Type="Int32" />
-        </EntityType>
         <Association Name="FK_caw_id">
           <End Role="Caw" Type="Self.Caw" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -269,7 +353,6 @@
           <EntitySet Name="CawJobs" EntityType="Self.CawJob" />
           <EntitySet Name="NavClients" EntityType="Self.NavClient" />
           <EntitySet Name="NavJobs" EntityType="Self.NavJob" />
-          <EntitySet Name="NavResources" EntityType="Self.NavResource" />
           <AssociationSet Name="FK_caw_id" Association="Self.FK_caw_id">
             <End Role="Caw" EntitySet="Caws" />
             <End Role="CawJob" EntitySet="CawJobs" />
@@ -283,6 +366,11 @@
             <End Role="Caw" EntitySet="Caws" />
             <End Role="CawFile" EntitySet="CawFiles" />
           </AssociationSet>
+          <EntitySet Name="NavResources" EntityType="Db_APT_ArchModel.NavResource" />
+          <EntitySet Name="CityCodes" EntityType="Db_APT_ArchModel.CityCode" />
+          <EntitySet Name="VNavJobs" EntityType="Db_APT_ArchModel.VNavJob" />
+          <EntitySet Name="VNavResources" EntityType="Db_APT_ArchModel.VNavResource" />
+          <EntitySet Name="VNavClients" EntityType="Db_APT_ArchModel.VNavClient" />
         </EntityContainer>
         <EntityType Name="CawFile">
           <Key>
@@ -307,6 +395,76 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="NavResource">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Resource_Name" Type="String" Nullable="false" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Staff_NO" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Start_Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="End_Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Region" Type="String" Nullable="false" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Name="User_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Resource_Level" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CityCode">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="VNavJob">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="Client" />
+            <PropertyRef Name="Job_Name" />
+            <PropertyRef Name="Job_Code" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Client" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Job_Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Job_Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Region" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Name="Project_Manager" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="Partner_Gestore" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="Time_Capacity" Type="Int32" />
+          <Property Name="Job_Status" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="223" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="VNavResource">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Resource_Name" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Staff_NO" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Start_Date" Type="DateTime" Precision="3" />
+          <Property Name="End_Date" Type="DateTime" Precision="3" />
+          <Property Name="Region" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Name="User_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Resource_Level" Type="Int32" />
+        </EntityType>
+        <EntityType Name="VNavClient">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Client_Name" />
+            <PropertyRef Name="Client_ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Client_Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Client_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -316,6 +474,7 @@
           <EntitySetMapping Name="Caws">
             <EntityTypeMapping TypeName="Db_APT_ArchModel.Caw">
               <MappingFragment StoreEntitySet="Caw">
+                <ScalarProperty Name="caw_uri" ColumnName="caw_uri" />
                 <ScalarProperty Name="caw_archplan" ColumnName="caw_archplan" />
                 <ScalarProperty Name="caw_type" ColumnName="caw_type" />
                 <ScalarProperty Name="caw_delplan" ColumnName="caw_delplan" />
@@ -375,33 +534,82 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="NavResources">
-            <EntityTypeMapping TypeName="Db_APT_ArchModel.NavResource">
-              <MappingFragment StoreEntitySet="NavResources">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Resource_Name" ColumnName="Resource Name" />
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="Staff_NO" ColumnName="Staff NO" />
-                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
-                <ScalarProperty Name="End_Date" ColumnName="End Date" />
-                <ScalarProperty Name="Region" ColumnName="Region" />
-                <ScalarProperty Name="User_name" ColumnName="User name" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="Diary" ColumnName="Diary" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="PlanGroup" ColumnName="PlanGroup" />
-                <ScalarProperty Name="Resource_Level" ColumnName="Resource Level" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CawFiles">
             <EntityTypeMapping TypeName="Db_APT_ArchModel.CawFile">
               <MappingFragment StoreEntitySet="CawFiles">
                 <ScalarProperty Name="cawfiles_fn" ColumnName="cawfiles_fn" />
                 <ScalarProperty Name="caw_id" ColumnName="caw_id" />
                 <ScalarProperty Name="cawfiles_id" ColumnName="cawfiles_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NavResources">
+            <EntityTypeMapping TypeName="Db_APT_ArchModel.NavResource">
+              <MappingFragment StoreEntitySet="NavResources">
+                <ScalarProperty Name="Resource_Level" ColumnName="Resource Level" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="User_name" ColumnName="User name" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="End_Date" ColumnName="End Date" />
+                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
+                <ScalarProperty Name="Staff_NO" ColumnName="Staff NO" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Resource_Name" ColumnName="Resource Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CityCodes">
+            <EntityTypeMapping TypeName="Db_APT_ArchModel.CityCode">
+              <MappingFragment StoreEntitySet="CityCodes">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VNavJobs">
+            <EntityTypeMapping TypeName="Db_APT_ArchModel.VNavJob">
+              <MappingFragment StoreEntitySet="VNavJobs">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Job_Status" ColumnName="Job Status" />
+                <ScalarProperty Name="Time_Capacity" ColumnName="Time Capacity" />
+                <ScalarProperty Name="Partner_Gestore" ColumnName="Partner Gestore" />
+                <ScalarProperty Name="Project_Manager" ColumnName="Project Manager" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="Job_Code" ColumnName="Job Code" />
+                <ScalarProperty Name="Job_Name" ColumnName="Job Name" />
+                <ScalarProperty Name="Client" ColumnName="Client" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VNavResources">
+            <EntityTypeMapping TypeName="Db_APT_ArchModel.VNavResource">
+              <MappingFragment StoreEntitySet="VNavResources">
+                <ScalarProperty Name="Resource_Level" ColumnName="Resource Level" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="User_name" ColumnName="User name" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="End_Date" ColumnName="End Date" />
+                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
+                <ScalarProperty Name="Staff_NO" ColumnName="Staff NO" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Resource_Name" ColumnName="Resource Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VNavClients">
+            <EntityTypeMapping TypeName="Db_APT_ArchModel.VNavClient">
+              <MappingFragment StoreEntitySet="VNavClients">
+                <ScalarProperty Name="Client_ID" ColumnName="Client ID" />
+                <ScalarProperty Name="Client_Name" ColumnName="Client Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

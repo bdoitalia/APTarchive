@@ -18,11 +18,11 @@
 
 }
 
-<h2 class="max-lentght-200">@Model.caw_name@*.Replace(Model.caw_name, Model.caw_name.Substring(0,5) + "...")*@</h2>
+<h2 class="max-lentght-290">@Model.caw_name@*.Replace(Model.caw_name, Model.caw_name.Substring(0,5) + "...")*@</h2>
 
 <div id="detail-page">
     <h4 style="display: inline-flex;">Details</h4>
-    <span id="statusflag" style="display: inline-flex;" class="pull-right stage @(Model.caw_status == 1 ? "stage1" : (Model.caw_status == 2 ? "stage2" : "stage3") )" data-toggle="tooltip" title="@(Model.caw_status == 1 ? "Opened" : (Model.caw_status == 2 ? "Reporting" : (Model.caw_status == 3 ? "Archived" : (Model.caw_status == 4 ? "Delayed" : "Unknown" ) )) )"></span>
+    <span id="statusflag" style="display: inline-flex;" class="pull-right stage @(Model.caw_status == 1 ? "stage1" : (Model.caw_status == 2 ? "stage2" : (Model.caw_status == 3 ? "stage3" : "stage4")) )" data-toggle="tooltip" title="@(Model.caw_status == 1 ? "Opened" : (Model.caw_status == 2 ? "Reporting" : (Model.caw_status == 3 ? "Archived" : (Model.caw_status == 4 ? "Delayed" : "Unknown" ) )) )"></span>
     <hr />
     <div id="accordion">
         <h4>Opening information</h4>
@@ -36,6 +36,15 @@
 
                     <dd>
                         @Html.DisplayFor(model => model.caw_name)
+                    </dd>
+                    </li>
+                    <li class="list-group-item">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.caw_uri)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.caw_uri)
                     </dd>
                     </li>
                     <li class="list-group-item">
@@ -112,11 +121,11 @@
                     </li>
 
                     @*
-                        <dd>
-                            @Html.DisplayFor(model => model.caw_usrcreator)
-                            @Html.ListBox("LstCawJobs", ViewData["LstCawJobs"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
-                            @Html.ListBox("LstCawJobs1", ViewData["LstCawJobs1"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
-                        </dd>*@
+        <dd>
+            @Html.DisplayFor(model => model.caw_usrcreator)
+            @Html.ListBox("LstCawJobs", ViewData["LstCawJobs"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
+            @Html.ListBox("LstCawJobs1", ViewData["LstCawJobs1"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
+        </dd>*@
 
                 </dl>
             </ul>
@@ -151,7 +160,7 @@
         </div>
         <h4>Closing information</h4>
         <div>
-            @if (Model.caw_status == 2)
+            @if (Model.caw_status == 2 || Model.caw_status == 4)
             {
                 @*<script>
                         var $form = null;
@@ -179,23 +188,24 @@
                         </li>
 
                         <li class="list-group-item">
-                            <dt style="padding-top: 6px;">
-                                @Html.DisplayNameFor(model => model.caw_archdate)
-                            </dt>
-                            <dd>
-                                @Html.EditorFor(model => model.caw_archdate, new { htmlAttributes = new { @class = "form-control", required = "required", title = "Archiving date is required" } })
-                                @Html.ValidationMessageFor(model => model.caw_archdate, "", new { @class = "text-danger" })
-                            </dd>
+                        <dt style="padding-top: 6px;">
+                            @Html.DisplayNameFor(model => model.caw_archdate)
+                        </dt>
+                        <dd>
+                            @Html.EditorFor(model => model.caw_archdate, new { htmlAttributes = new { @class = "form-control", required = "required", title = "Archiving date is required" } })
+                            @Html.ValidationMessageFor(model => model.caw_archdate, "", new { @class = "text-danger" })
+                        </dd>
                         </li>
                         <li class="list-group-item">
-                            <dt>
-                                @Html.DisplayNameFor(model => model.caw_archplan)
-                            </dt>
-                            <dd>
-                                @Html.RadioButtonFor(model => model.caw_archplan, "Digital", htmlAttributes: new { @class = "radio-inline", @checked = true, id = "pdigital", style = "margin-top: 0;" }) Digital
-                                @Html.RadioButtonFor(model => model.caw_archplan, "Physical", htmlAttributes: new { @class = "radio-inline", id = "pphysical" }) Physical
-                                @Html.ValidationMessageFor(model => model.caw_archplan, "", new { @class = "text-danger" })
-                            </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.caw_archplan)
+                        </dt>
+                        <dd id="radio-arch-modes-container">
+                            @Html.RadioButtonFor(model => model.caw_archplan, "Digital", htmlAttributes: new { @class = "radio-inline", @checked = true, id = "pdigital", style = "margin-top: 0;" }) Digital
+                            @Html.RadioButtonFor(model => model.caw_archplan, "Physical", htmlAttributes: new { @class = "radio-inline", id = "pphysical" }) Physical
+                            @Html.RadioButtonFor(model => model.caw_archplan, "Both", htmlAttributes: new { @class = "radio-inline", id = "pboth" }) Both
+                            @Html.ValidationMessageFor(model => model.caw_archplan, "", new { @class = "text-danger" })
+                        </dd>
                         </li>
                     </dl>
                 </ul>
@@ -221,7 +231,8 @@
                         var web_app = '/';                                                   // Name of a web application (usually in full IIS mode). Can be found in Properties/Web/Server/Project-Url. Example: http://localhost/Demo (Name of web application is "Demo")
 
 
-                        var url = web_app + 'Backload/FileHandler?objectContext=@(Model.caw_partner_code.ToUpper())&id=@(Model.caw_id)&uploadContext=@(Model.caw_type.Replace(" ", "-"))';
+                        @*var url = web_app + 'Backload/FileHandler?objectContext=@(ViewData["ObjectContext"].ToString().ToUpper())&id=@(Model.caw_id)&uploadContext=@(Model.caw_type.Replace(" ", "-"))';*@
+                        var url = web_app + 'Backload/FileHandler?objectContext=@(ViewData["ObjectContext"])&id=@(Model.caw_id)&uploadContext=@(Model.caw_stdate.Value.Year);@(Model.caw_type)';
 
 
                         // Initialize the jQuery File Upload widget:
@@ -304,7 +315,7 @@
                     $('input[name=caw_archplan]').on('change', function () {
                         if ($('#caw_archdate').val() != "" ) {
                             $('#btnArchive').removeAttr('disabled');
-                        }                        
+                        }
                     })
 
                 </script>
@@ -320,7 +331,7 @@
 
 
 
-                <div class="container">
+                <div class="container stage3-container">
                     <ul class="list-group borderless">
                         <dl class="dl-horizontal">
 
@@ -334,26 +345,35 @@
                             </li>
 
                             <li class="list-group-item">
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.caw_archplan)
-                                </dt>
-                                <dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.caw_archplan)
+                            </dt>
+                            <dd>
+
+                                @if (Model.caw_archplan.ToUpper() == "PHYSICAL" || Model.caw_archplan.ToUpper() == "BOTH")
+                                {
+                                    <a href="http://archivio.bdo.it" target="_blank" data-toggle="tooltip" title="Vai nell'archivio">@Html.DisplayFor(model => model.caw_archplan)</a>
+                                }
+                                else
+                                {
                                     @Html.DisplayFor(model => model.caw_archplan)
-                                </dd>
+                                }
+                            </dd>
+
                             </li>
 
                             @foreach (var file in Model.CawFiles)
-    {
-                        <li class="list-group-item">
-                        <dt>
-                            @*<span class="icon-groove"></span>*@
-                        </dt>
-                        <dd>
-                            <span class="icon-groove"></span> @Html.DisplayFor(modelitem => file.cawfiles_fn)
-                        </dd>
-                        </li>
+                            {
+                                <li class="list-group-item">
+                                <dt>
+                                    @*<span class="icon-groove"></span>*@
+                                </dt>
+                                <dd>
+                                    <span class="icon-groove"></span> @Html.DisplayFor(modelitem => file.cawfiles_fn)
+                                </dd>
+                                </li>
 
-}
+                            }
                         </dl>
                     </ul>
                 </div>
@@ -366,7 +386,11 @@
         @Html.ActionLink("Back to List", "Index")*@
 
     <div class="col-md-12 actionbtn" style="padding-bottom: 31px;">
-        <input type="submit" value="Modify" class="btn btn-default pull-right" onclick="location.href='@Url.Action("Edit","Caws", new { id = Model.caw_id })'" />
+        @if (Roles.IsUserInRole(@"BDOITALIA\APTarchAdmin"))
+        {
+            <input type="submit" value="Modify" class="btn btn-default pull-right" onclick="location.href='@Url.Action("Edit","Caws", new { id = Model.caw_id })'" />
+        }
+
         <input type="button" value="Back" class="btn btn-default pull-right" onclick="location.href='@Url.Action("List","Caws")'" />
     </div>
 </p>
@@ -376,6 +400,7 @@
 
 
     $(document).ready(function () {
+
 
 
         $('#accordion').accordion({
@@ -431,7 +456,8 @@
 
                 data: {
                     id: @Model.caw_id,
-                    formdata: $('input[name=caw_archplan]:checked').val()
+                    //formdata: $('input[name=caw_archplan]:checked').val()
+                    formdata: JSON.stringify($('input[name=caw_archplan]:checked, #caw_archdate').serializeArray())
                 },
 
 
@@ -442,6 +468,17 @@
                     //$('#statusflag').removeClass('stage1').addClass('stage2');
                     //$('#accordion').accordion({ active: 3 });
                     alert(response.responseText);
+
+                    if ($('#pboth').prop('checked') || $('#pphysical').prop('checked')) {
+                        var win = window.open('http://archivio.bdo.it/', '_blank');
+                        if (win) {
+                            //Browser has allowed it to be opened
+                            win.focus();
+                        } else {
+                            //Browser has blocked it
+                            alert('Please allow popups for this website');
+                        }
+                    }
                     location.reload();
 
                 },
@@ -464,6 +501,7 @@
             }, 300);
         });
 
+        
 
 
     });
@@ -472,7 +510,13 @@
         //$('#btnArchive').removeAttr("disabled");
 
     //});
-</script>
 
+
+</script>
+<style>
+    .file-uploader {
+        transition: all cubic-bezier(0.9, -0.01, 0.58, 1) 0.5s;
+    }
+</style>
 
 @*@Scripts.Render("~/bundles/jQuery-File-Upload")*@

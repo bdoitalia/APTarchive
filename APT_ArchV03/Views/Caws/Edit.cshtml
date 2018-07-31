@@ -84,7 +84,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.caw_partner, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Partner", ViewData["Partner"] as SelectListItem[], htmlAttributes: new { @class = "form-control", required = "required", title = "Partner name is required" })
+                @Html.DropDownList("Partner", ViewData["Partner"] as SelectListItem[], htmlAttributes: new { @class = "form-control", required = "required", title = "Partner name is required"})
                 @Html.ValidationMessage("Partner", "", new { @class = "text-danger" })
             </div>
         </div>
@@ -144,6 +144,15 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.caw_uri, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.caw_uri, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter caw URI here" } })
+                <button id="btn-overlay-curi" type="button" class="btn btn-link" data-source="https://helpdesk.bdo.it/kb/faq.php?id=28externalPage.html">Show me how</button>
+                @Html.ValidationMessageFor(model => model.caw_uri, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.caw_notes, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.TextAreaFor(model => model.caw_notes, htmlAttributes: new { @class = "form-control" })
@@ -189,9 +198,10 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.caw_archplan, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-10" style="padding-top: 7px;">
                     @Html.RadioButtonFor(model => model.caw_archplan, "Digital", htmlAttributes: new { @class = "radio-inline", @checked = true, id = "pdigital", style = "margin-top: 0;" }) Digital
                     @Html.RadioButtonFor(model => model.caw_archplan, "Physical", htmlAttributes: new { @class = "radio-inline", id = "pphysical" }) Physical
+                    @Html.RadioButtonFor(model => model.caw_archplan, "Both", htmlAttributes: new { @class = "radio-inline", id = "pboth" }) Both
                     @Html.ValidationMessageFor(model => model.caw_archplan, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -201,7 +211,7 @@
                 <script>
                     $(document).ready(function () {
                         $('.container.file-uploader').toggleClass('anime-hide', 500);
-                    });                    
+                    });
                 </script>
             }
 
@@ -210,11 +220,11 @@
 
 
         @*<div class="form-group">
-                <div class="col-md-12 actionbtn">
-                    <input type="submit" value="Edit" class="btn btn-default pull-right" />
-                    <input type="button" value="Back" class="btn btn-default pull-right" onclick="location.href='@Url.Action("List","Caws")'" />
-                </div>
-            </div>*@
+            <div class="col-md-12 actionbtn">
+                <input type="submit" value="Edit" class="btn btn-default pull-right" />
+                <input type="button" value="Back" class="btn btn-default pull-right" onclick="location.href='@Url.Action("List","Caws")'" />
+            </div>
+        </div>*@
     </div>
 
 }
@@ -240,7 +250,8 @@
                     var web_app = '/';                                                   // Name of a web application (usually in full IIS mode). Can be found in Properties/Web/Server/Project-Url. Example: http://localhost/Demo (Name of web application is "Demo")
 
 
-                    var url = web_app + 'Backload/FileHandler?objectContext=@(Model.caw_partner_code.ToUpper())&id=@(Model.caw_id)&uploadContext=@(Model.caw_type.Replace(" ", "-"))';
+                    @*var url = web_app + 'Backload/FileHandler?objectContext=@(ViewData["ObjectContext"].ToString().ToUpper())&id=@(Model.caw_id)&uploadContext=@(Model.caw_type.Replace(" ", "-"));@(Model.caw_office)';*@
+                    var url = web_app + 'Backload/FileHandler?objectContext=@(ViewData["ObjectContext"])&id=@(Model.caw_id)&uploadContext=@(Model.caw_stdate.Value.Year);@(Model.caw_type)';
 
 
                     // Initialize the jQuery File Upload widget:
@@ -302,6 +313,14 @@
                         //console.log('File Completed');
                         $('#btnArchive').removeAttr('disabled');
                     });
+
+                    //// Unique chunks.
+                    //$(window).bind('fileuploadsubmit', function (e, data) {
+                    //    // Make sure a uuid not exists already
+                    //    if ((data.formData !== typeof undefined) && (data.formData.uuid !== typeof undefined)) {
+                    //        data.formData = { uuid: Math.random().toString(36).substr(2, 8) };
+                    //    }
+                    //});
 
 
                     // Optional: Load existing files:
@@ -365,15 +384,12 @@
 
     $(document).ready(function () {
 
-        //$("Client").on("change", function () { console.log("Changed Client"); })
-
+        setTimeout(function () {
+            $('input[data-title="drpinput"]').removeAttr('disabled');
+        }, 200);
         $('#caw_client').on("change", function () {
-            //var currentval = $('#caw_client').val().split(" - ").shift();
-            //console.log("caw_client val = " + currentval);
-            //console.log("caw_client = " + $('#caw_client'));
-                $("#LstNavJobs, #LstCawJobs").empty();
-                //console.log("Sono lo script");
-            //$("#LstNavJobs, #LstCawJobs").removeAttr("disabled");
+            
+            $("#LstNavJobs, #LstCawJobs").empty();                
 
             var datasource = $("#caw_client").val().split(" - ").shift();
             var iddatatarget = $("#LstNavJobs");
@@ -385,16 +401,7 @@
 
             }
             $(document).ajaxSuccess(function (event, xhr, settings) {
-                //debugger;
-                //console.log($('#LstNavJobs').val());
-                //console.log(event);
-                //console.log(xhr);
-                //console.log(settings.url);
-                //activetarget = $(event.currentTarget.activeElement).attr('id');
-                //activetarget = $(event.currentTarget.activeElement).attr('id');
-                ///Caws/GetJobs
-                //console.log(activetarget);
-
+                
                 if (settings.url == "/Caws/GetJobs") {
 
                     $('input[data-title="drpinput"], a[data-title="drpbutton"]').removeAttr("disabled");
@@ -424,11 +431,7 @@
                     var urltarget = '@Url.Action("GetOffice")';
 
                     PostAjax(datasource, iddatatarget, urltarget);
-
-                    @*var datasource = $("#Clients").val();
-                    var iddatatarget = $("#LstCawJobs");
-                    var urltarget = '@Url.Action("GetJobs")';
-                    PostAjax(datasource, iddatatarget, urltarget);*@
+                    
 
                     $(event.currentTarget).unbind('ajaxSuccess')
                     return false;
@@ -437,7 +440,6 @@
                 }
             })
             return false;
-
 
         });
 

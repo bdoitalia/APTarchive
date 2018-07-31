@@ -167,6 +167,9 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+        //$('#CAWList').dataTable({
+            
+        //});
         $('#CAWList').DataTable();
         $('#block-filter').accordion({
             header: ".filter-title",
@@ -264,7 +267,7 @@
                         '<td id="tbldtcawmanager">' + element.Manager + '</td>' +
                         '<td id="tbldtcawoffice">' + element.Office + '</td>' +
                         '<td id="tbldtcawyear">' + element.Year + '</td>' +
-                        '<td id="tbldtcawyear">' + '<div class="stage stage' + element.Status + '"></div></td>' +
+                        '<td id="tbldtcawstatus" data-order="' + element.Status + '">' + '<span class="stage stage' + element.Status + '" data-toggle="tooltip" title="' + (element.Status == 1 ? 'Opened' : (element.Status == 2 ? 'Reporting' : (element.Status == 3 ? 'Closed' : (element.Status == 4 ? 'Delayed' : 'Unknown')) )) +'"></span></td>' +
                         '</tr>');
 
                 });

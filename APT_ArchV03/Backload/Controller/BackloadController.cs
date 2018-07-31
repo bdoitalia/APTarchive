@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using APT_ArchV03.Models;
 using APT_ArchV03.Backload.Helper;
 using System;
+using System.Data.Entity;
+using System.Linq;
 using APT_ArchV03.Helpers;
 
 namespace Backload.Controllers
@@ -20,7 +22,7 @@ namespace Backload.Controllers
     /// </summary>
     public partial class BackloadController : Controller
     {
-        
+        private Db_APT_ArchEntities db = new Db_APT_ArchEntities();
         /// <summary>
         /// The Backload file handler. 
         /// To access it in an Javascript ajax request use: <code>var url = "/{Application}/Backload/FileHandler/";</code>.
@@ -55,9 +57,11 @@ namespace Backload.Controllers
                         {
                             if (file.StorageInfo.ChunkInfo.ChunksComplete)
                             {
-
+                                //var tmpObjectContext = db.NavResources.FirstOrDefault(x => x.Staff_NO == file.ObjectContext).User_name.ToLower();
+                                //tmpObjectContext = tmpObjectContext.Substring(tmpObjectContext.IndexOf("\\") + 1);
                                 //start file data saving procedure
-                                string filepath = file.ObjectContext + "\\" + file.UploadContext;
+                                string filepath = file.ObjectContext + "\\" + file.UploadContext.Replace(";", "\\"); //<-- Testing file saving with samaccount -->
+                                //string filepath = tmpObjectContext + "\\" + file.UploadContext;
                                 string filename = file.FileName;
                                 int id = Convert.ToInt32(handler.RequestValues.CustomQueryValues["id"]);
                                 var FileSave = new CawFileSave();
@@ -71,7 +75,11 @@ namespace Backload.Controllers
                         {
 
                             //Start File data saving procedure
-                            string filepath = file.ObjectContext + "\\" + file.UploadContext;
+                            //var tmpObjectContext = db.NavResources.FirstOrDefault(x => x.Staff_NO == file.ObjectContext).User_name.ToLower();
+                            //tmpObjectContext = tmpObjectContext.Substring(tmpObjectContext.IndexOf("\\") + 1);
+                            //start file data saving procedure
+                            string filepath = file.ObjectContext + "\\" + file.UploadContext.Replace(";", "\\"); /*<-- Testing file saving with samaccount -->*/
+                            //string filepath = tmpObjectContext + "\\" + file.UploadContext;
                             string filename = file.FileName;
                             int id = Convert.ToInt32(handler.RequestValues.CustomQueryValues["id"]);
                             var FileSave = new CawFileSave();

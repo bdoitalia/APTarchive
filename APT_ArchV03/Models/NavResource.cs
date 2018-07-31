@@ -23,11 +23,8 @@ namespace APT_ArchV03.Models
         public System.DateTime End_Date { get; set; }
         public string Region { get; set; }
         public string User_name { get; set; }
-        public Nullable<int> UserID { get; set; }
         public string Active { get; set; }
-        public string Diary { get; set; }
         public string Email { get; set; }
-        public string PlanGroup { get; set; }
         public Nullable<int> Resource_Level { get; set; }
     }
 }

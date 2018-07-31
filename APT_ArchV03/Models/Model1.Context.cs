@@ -29,7 +29,11 @@ namespace APT_ArchV03.Models
         public virtual DbSet<CawJob> CawJobs { get; set; }
         public virtual DbSet<NavClient> NavClients { get; set; }
         public virtual DbSet<NavJob> NavJobs { get; set; }
-        public virtual DbSet<NavResource> NavResources { get; set; }
         public virtual DbSet<CawFile> CawFiles { get; set; }
+        public virtual DbSet<NavResource> NavResources { get; set; }
+        public virtual DbSet<CityCode> CityCodes { get; set; }
+        public virtual DbSet<VNavJob> VNavJobs { get; set; }
+        public virtual DbSet<VNavResource> VNavResources { get; set; }
+        public virtual DbSet<VNavClient> VNavClients { get; set; }
     }
 }

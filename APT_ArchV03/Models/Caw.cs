@@ -42,6 +42,7 @@ namespace APT_ArchV03.Models
         public Nullable<int> caw_delplan { get; set; }
         public string caw_type { get; set; }
         public string caw_archplan { get; set; }
+        public string caw_uri { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CawJob> CawJobs { get; set; }

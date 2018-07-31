@@ -27,6 +27,14 @@
 };
 
 $(document).ready(function () {
+    var $loading = $('.loader').hide();
+    $(document)
+        .ajaxStart(function () {
+            $loading.show();
+        })
+        .ajaxStop(function () {
+            $loading.hide();
+        });
     //jQuery.validator.methods.date = function () { return Globalize.parseDate(value); };
     $('input[type = datetime]').datepicker({
         dateFormat: "dd/mm/yy",
@@ -105,9 +113,23 @@ $(document).ready(function () {
         
     });
 
-    $('input[name=caw_archplan]').on('change', function () {
-        //console.log($(this).val());
-        $('.container.file-uploader').toggleClass('anime-hide', 500);
+    //$('input[name=caw_archplan]').on('change', function () {
+    //    //console.log($(this).val());
+    //    $('.container.file-uploader').toggleClass('anime-hide', 500);
+    //})
+    //$(document).on('click', '#pdigital, #pphysical', function () {
+    //    if ($('.container.file-uploader').hasClass('anime-hide')) {
+    //        $('.container.file-uploader').removeClass('anime-hide');
+    //    }
+    //});
+    $('#radio-arch-modes-container').on('change', function (event) {
+        console.log(event.target.id);
+        if (event.target.id == 'pphysical') {
+            $('.container.file-uploader').addClass('anime-hide');
+            $('#btnArchive').removeAttr('disabled');
+        } else {
+            $('.container.file-uploader').removeClass('anime-hide');
+        }
     })
 
     $(function () {

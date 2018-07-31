@@ -1,17 +1,109 @@
 ﻿@{
     ViewBag.Title = "Contact";
+
 }
-<h2>@ViewBag.Title.</h2>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/bundles/cawscripts")
+    @Scripts.Render("~/bundles/combobox")
+    @Styles.Render("~/Content/caw")
+}
+<h2>@ViewBag.Title form</h2>
 <h3>@ViewBag.Message</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+@using (Html.BeginForm("Contact", "Home", FormMethod.Post, new { id = "ContactUs" }))
+{
+    @Html.AntiForgeryToken()
 
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @*<address>
+                One Microsoft Way<br />
+                Redmond, WA 98052-6399<br />
+                <abbr title="Phone">P:</abbr>
+                425.555.0100
+            </address>*@
+
+        <div class="form-group" style="margin-top: 35px;">
+            @Html.Label("Subject", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("DrpSubject", ViewData["DrpSubject"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })
+                @*@Html.ValidationMessageFor(model => model.caw_client, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Body", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextArea("ContactBody", htmlAttributes: new { @class = "form-control", style = "min-height: 250px;" })
+                @*@Html.DropDownList("Subject", ViewData["Subject"] as SelectListItem[], htmlAttributes: new { @class = "form-control" })*@
+                @*@Html.ValidationMessageFor(model => model.caw_client, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            <div class="col-md-10">
+                <address>
+                    <strong>Service desk</strong>:</strong>   <a href="https://helpdesk.bdo.it">helpdesk@bdo.it</a><br />*@
+        @*<strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>*@
+        @*</address>
+                    </div>
+            </div>*@
+
+        <div class="form-group">
+            <div class="col-md-5">
+                <input type="button" value="Submit" class="btn btn-default pull-right" />
+            </div>
+        </div>
+
+
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).on('click', 'input[type="button"][value="Submit"]', function (e) {
+        e.preventDefault();
+        var addAntiForgeryToken = function (data) {
+            data.__RequestVerificationToken = $("[name='__RequestVerificationToken']").val();
+            return data;
+        };
+        //debugger;
+        if ($("#ContactBody").val() == '') {
+            alert('Body is required');
+            return false;
+        }
+        $.ajax({
+            type: 'POST',
+            //contentType: "application/json",
+            //processData: false,
+            url: '/Home/Contact',
+            dataType: 'json',
+            data: addAntiForgeryToken({
+                formsubject: $('#DrpSubject').val(),
+                formbody: $('#ContactBody').val()
+            }),
+            success: function (response) {
+                alert(response.responseText);
+                location.reload();
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>
+
+
+@if (ViewData["action"] == "Alert")
+{
+    <script type="text/javascript">
+        alert("Success");
+    </script>
+}
+@if (ViewData["action"] == "BodyBlank")
+{
+    <script type="text/javascript">
+        alert("Body cannot be blank");
+    </script>
+}

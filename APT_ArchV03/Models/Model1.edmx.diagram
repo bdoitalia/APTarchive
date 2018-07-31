@@ -9,11 +9,15 @@
         <EntityTypeShape EntityType="Db_APT_ArchModel.CawJob" Width="1.5" PointX="8" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Db_APT_ArchModel.NavClient" Width="1.5" PointX="0.625" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="Db_APT_ArchModel.NavJob" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="Db_APT_ArchModel.NavResource" Width="1.5" PointX="0.625" PointY="3.375" IsExpanded="true" />
         <AssociationConnector Association="Db_APT_ArchModel.FK_caw_id" ManuallyRouted="false" />
         <AssociationConnector Association="Db_APT_ArchModel.FK_NavJobs_NavClients" ManuallyRouted="false" />
         <EntityTypeShape EntityType="Db_APT_ArchModel.CawFile" Width="1.5" PointX="8" PointY="5.5" />
         <AssociationConnector Association="Db_APT_ArchModel.FK_CawFilesCaw" />
+        <EntityTypeShape EntityType="Db_APT_ArchModel.NavResource" Width="1.5" PointX="0.625" PointY="4.5" />
+        <EntityTypeShape EntityType="Db_APT_ArchModel.CityCode" Width="1.5" PointX="3" PointY="4.5" />
+        <EntityTypeShape EntityType="Db_APT_ArchModel.VNavJob" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="Db_APT_ArchModel.VNavResource" Width="1.5" PointX="5.75" PointY="8.75" />
+        <EntityTypeShape EntityType="Db_APT_ArchModel.VNavClient" Width="1.5" PointX="8.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

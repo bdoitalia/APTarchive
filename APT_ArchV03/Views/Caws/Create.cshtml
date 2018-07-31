@@ -75,7 +75,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.caw_delplan, htmlAttributes: new { @class = "control-label col-md-2" })
-            
+
             <div class="col-md-10">
                 @Html.RadioButtonFor(model => model.caw_delplan, "60", htmlAttributes: new { @class = "radio-inline", @checked = true }) 60
                 @Html.RadioButtonFor(model => model.caw_delplan, "45", htmlAttributes: new { @class = "radio-inline" }) 45
@@ -85,7 +85,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.caw_type, htmlAttributes: new { @class = "control-label col-md-2" })
-            
+
             <div class="col-md-10">
                 @Html.RadioButtonFor(model => model.caw_type, "Financial", htmlAttributes: new { @class = "radio-inline", @checked = true }) Financial
                 @Html.RadioButtonFor(model => model.caw_type, "Non financial", htmlAttributes: new { @class = "radio-inline" }) Non financial
@@ -98,6 +98,15 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.caw_name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter caw name here" } })
                 @Html.ValidationMessageFor(model => model.caw_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.caw_uri, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.caw_uri, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter caw URI here" } })
+                <button id="btn-overlay-curi" type="button" class="btn btn-link" data-source="https://helpdesk.bdo.it/kb/faq.php?id=28externalPage.html">Show me how</button>
+                @Html.ValidationMessageFor(model => model.caw_uri, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -117,6 +126,9 @@
         </div>
     </div>
 }
+    <div id="popup-cawuri" title="CAW URI" style="display: none;">
+            <iframe id="thedialog" width="900" height="350"></iframe>
+    </div>
 
 @*<div>
         @Html.ActionLink("Back to List", "Index")
@@ -134,9 +146,23 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function () {        
+    
+    $("button#btn-overlay-curi").click(function () {
+        $("#thedialog").attr('src', $(this).attr("data-source"));
+        $("#popup-cawuri").dialog({
+            width: 950,
+            height: 450,
+            modal: true,
+            close: function () {
+                $("#thedialog").attr('src', "about:blank");
+            }
+        });
+        return false;
+    });
 
-        $('#caw_client').on("change", function () {
+    $(document).ready(function () {
+
+        @*$('#caw_client').on("change", function () {
             //var currentval = $('#caw_client').val().split(" - ").shift();
             //console.log("caw_client val = " + currentval);
             //console.log("caw_client = " + $('#caw_client'));
@@ -153,16 +179,7 @@
 
             }
             $(document).ajaxSuccess(function (event, xhr, settings) {
-                //debugger;
-                //console.log($('#LstNavJobs').val());
-                //console.log(event);
-                //console.log(xhr);
-                //console.log(settings.url);
-                //activetarget = $(event.currentTarget.activeElement).attr('id');
-                //activetarget = $(event.currentTarget.activeElement).attr('id');
-                ///Caws/GetJobs
-                //console.log(activetarget);
-
+                
                 if (settings.url == "/Caws/GetJobs") {
 
                     $('input[data-title="drpinput"], a[data-title="drpbutton"]').removeAttr("disabled");
@@ -179,7 +196,6 @@
 
                     $("#Manager").empty();
 
-                    //var datasource = $("#Jobs").val();
                     var iddatatarget = $("#Manager");
                     var urltarget = '@Url.Action("GetManager")';
 
@@ -187,16 +203,10 @@
 
                      $("#Office").empty();
 
-                    //var datasource = $("#Jobs").val();
                     var iddatatarget = $("#Office");
                     var urltarget = '@Url.Action("GetOffice")';
 
-                    PostAjax(datasource, iddatatarget, urltarget);
-
-                    @*var datasource = $("#Clients").val();
-                    var iddatatarget = $("#LstCawJobs");
-                    var urltarget = '@Url.Action("GetJobs")';
-                    PostAjax(datasource, iddatatarget, urltarget);*@
+                    PostAjax(datasource, iddatatarget, urltarget);                   
 
                     $(event.currentTarget).unbind('ajaxSuccess')
                     return false;
@@ -207,7 +217,7 @@
             return false;
 
 
-        });
+        });*@
 
         @*$('#LstNavJobs').on("change", function () {
             //var currentval = $('#ClientId').val();
@@ -222,6 +232,72 @@
             PostAjax(datasource, iddatatarget, urltarget);
             return false;
         });*@
+
+        function populatejobbox()
+        {
+            //debugger
+            $("#LstNavJobs, #LstCawJobs").empty();
+            $("#LstNavJobs, #LstCawJobs").removeAttr("disabled");
+
+            var datasource = $("#caw_client").val().split(" - ").shift();
+            var iddatatarget = $("#LstNavJobs");
+            var urltarget = '@Url.Action("GetJobs")';
+
+            var result = PostAjax(datasource, iddatatarget, urltarget);
+            //console.log(result);
+            if (result == 1) {
+
+            }
+            $(document).ajaxSuccess(function (event, xhr, settings) {
+                
+
+                if (settings.url == "/Caws/GetJobs") {
+
+                    $('input[data-title="drpinput"], a[data-title="drpbutton"]').removeAttr("disabled");
+                    ////
+                    //$("#Partner").empty();
+                   // $("#Partner").removeAttr("disabled");
+                    selectDeselect('LstNavJobs', true)
+                    //Getting Jobcode by from LstNavJobs' first element Value after splitting (before " - ")
+                    //var datasource = $("#LstNavJobs").val().shift().split(" - ").shift();
+                    //var iddatatarget = $("#Partner");
+                    //var urltarget = '@Url.Action("GetPartner")';
+
+                    //PostAjax(datasource, iddatatarget, urltarget);
+
+                    $("#Manager").empty();
+
+                    var iddatatarget = $("#Manager");
+                    var urltarget = '@Url.Action("GetManager")';
+
+                    PostAjax(datasource, iddatatarget, urltarget);
+
+                     $("#Office").empty();
+
+                    var iddatatarget = $("#Office");
+                    var urltarget = '@Url.Action("GetOffice")';
+
+                    PostAjax(datasource, iddatatarget, urltarget);
+                                       
+
+                    $(event.currentTarget).unbind('ajaxSuccess')
+                    return false;
+                    /////
+
+                }
+            })
+        }
+
+
+        $('#LstNavJobs').on('change', function () {
+            console.log($("#LstNavJobs").val().shift().split(" - ").shift());
+            $("#Partner").empty();
+            $("#Partner").removeAttr("disabled");
+            var datasource = $("#LstNavJobs").val().shift().split(" - ").shift();
+            var iddatatarget = $("#Partner");
+            var urltarget = '@Url.Action("GetPartner")';
+            PostAjax(datasource, iddatatarget, urltarget);
+	    });
 
         ///////////////////////Combobox
         //debugger;
@@ -253,6 +329,12 @@
             minLength: 2,
             select: function (event, ui) {
                 $("#caw_client").val(ui.item.Client_Name);
+                setTimeout(function () {
+                    console.log($("#caw_client").val());
+                    populatejobbox();
+                }, 300);
+                
+                //populatejobbox();
             }
         });
 
@@ -263,6 +345,26 @@
 
 </script>
 <style>
+    .overlayOuter {
+        background: #000;
+        opacity: 0.7;
+        display: none;
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 100001;
+    }
+
+
+    .overlayInner {
+        position: absolute;
+        top: 40%; /*or whatever*/
+        left: 40% /*or whatever*/
+        width:500px;
+        z-index: 100001;
+    }
     .1custom-combobox {
         position: relative;
         display: inline-block;

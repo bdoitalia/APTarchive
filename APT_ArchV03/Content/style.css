@@ -27,7 +27,7 @@ header {
     left: 0;
     top: 0;
     width: 100%;
-    z-index: 9000;
+    z-index: 90;
 }
 
 #login-bar {
@@ -207,4 +207,42 @@ th.summary {
 
 .btn-container {
     padding-top: 45px;
+}
+.loader {
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #555;
+    width: 30px;
+    height: 30px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 1s linear infinite;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 100;
+    /*display: none;*/
+}
+ .loader.visible {
+        display: block;
+        z-index: 10;
+    }
+/* Safari */
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
